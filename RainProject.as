@@ -7,6 +7,7 @@ import flash.display.Sprite;
 import flash.display.Stage;
 import flash.events.Event;
 
+[SWF(width="1280", height="748", frameRate="30", backgroundColor = "0xFFFFFF")]
 public class RainProject extends Sprite {
 
     private var _engine:Engine;

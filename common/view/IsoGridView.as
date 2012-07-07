@@ -6,10 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view {
+import common.controller.FieldController;
 import common.model.IsoGrid;
 import common.model.IsoTile;
 
 import flash.display.Sprite;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.text.TextField;
 
@@ -19,7 +21,7 @@ import utils.MovieClipHelper;
 public class IsoGridView extends Sprite{
 
     private var _grid:IsoGrid;
-    private var _tile_renderer:IsoTileRenderer = new IsoTileRenderer();
+    private var _tile_renderer:IsoTileRenderer = new IsoTileRenderer(apply_axises);
 
     private var _debug_fields:Array = [];
     private var _used_debug_fields:Array = [];
@@ -48,12 +50,12 @@ public class IsoGridView extends Sprite{
         DebugUtils.stop_profile_block("IsoGridView -> draw()")
     }
 
-
     private function create_debug_field():TextField{
         var debug_field:TextField = _debug_fields.pop();
         if(!debug_field)
             debug_field = new TextField();
 
+        debug_field.mouseEnabled = false;
         _used_debug_fields.push(debug_field);
 
         return debug_field;
@@ -73,6 +75,21 @@ public class IsoGridView extends Sprite{
         y = -bounds.y;
     }
 
+    private var pnt:Point = new Point();
+    public function apply_axises(tile:IsoTile):Point{
+        pnt.x = apply_x_axis(tile);
+        pnt.y = apply_y_axis(tile);
+        return pnt;
+    }
+
+    public function apply_x_axis(tile:IsoTile):int{
+        return tile.x * FieldController.TILE_HEIGHT;
+    }
+
+    public function apply_y_axis(tile:IsoTile):int{
+        var y_inv:int = _grid.height - 1;
+        return (y_inv - tile.y) * FieldController.TILE_HEIGHT;
+    }
 
     public function get grid():IsoGrid {
         return _grid;

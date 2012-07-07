@@ -6,6 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.FieldController;
+import common.controller.FieldController;
+
 import utils.DebugUtils;
 
 public class IsoGrid {
@@ -143,5 +146,14 @@ public class IsoGrid {
 
         return res;
     }
+
+    public function get width():uint {
+        return _width;
+    }
+
+    public function get height():uint {
+        return _height;
+    }
+
 }
 }

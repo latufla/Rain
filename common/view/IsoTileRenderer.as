@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view {
+import common.controller.FieldController;
 import common.model.IsoTile;
 import common.view.IsoTileRenderer;
 
@@ -26,22 +27,29 @@ public class IsoTileRenderer {
 
     private static const DEBUG_COLORS:Array = [REACHABLE_COLOR, 0x0000FF, 0xC2C3C2];
 
-    public function IsoTileRenderer() {
+    private var _apply_axises:Function;
+
+    public function IsoTileRenderer(apply_axises:Function) {
+        _apply_axises = apply_axises;
     }
 
     public function draw(tile:IsoTile, layer:Sprite):void {
+        if(!tile || !layer)
+            throw new Error("IsoTileRenderer -> draw(): Illegal argument");
+
         var color:uint = DEBUG_COLORS[tile.debug_type];
 
         if(!tile.is_reachable)
             color = NON_REACHABLE_COLOR;
 
-        var size:Rectangle = new Rectangle (tile.x * Field.TILE_WIDTH, tile.y * Field.TILE_HEIGHT, Field.TILE_WIDTH - 2, Field.TILE_HEIGHT - 2);
+        var apply_axises_pnt:Point = _apply_axises(tile);
+        var size:Rectangle = new Rectangle (apply_axises_pnt.x, apply_axises_pnt.y, FieldController.TILE_WIDTH - 2, FieldController.TILE_HEIGHT - 2);
         IsoRenderUtil.drawIsoRect(layer, size, 1, color, color, 0.2);
-//        draw_debug_info(tile, layer, new TextField());
     }
 
     public function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {
-        var iso:Point = IsoMathUtil.isoToScreen(tile.x * Field.TILE_WIDTH, tile.y * Field.TILE_HEIGHT);
+        var apply_axises_pnt:Point = _apply_axises(tile);
+        var iso:Point = IsoMathUtil.isoToScreen(apply_axises_pnt.x, apply_axises_pnt.y);
         debug_field.x = iso.x - 15;
         debug_field.y = iso.y + 5;
 
