@@ -6,20 +6,142 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import utils.DebugUtils;
+
 public class IsoGrid {
 
-    private var _list:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
+    private var _tiles:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
+    private var _width:uint;
+    private var _height:uint;
 
-    public function IsoGrid() {
-
+    public function IsoGrid(w:uint, h:uint) {
+        _width = w;
+        _height = h;
     }
 
-    public function create(w:uint, h:uint):void{
-
+    public function create():void{
+        for (var i:int = 0; i < _width; i++){
+            tiles[i] = new Vector.<IsoTile>();
+            for (var j:int = 0; j < _height; j++) {
+                tiles[i][j] = new IsoTile(i, j);
+            }
+        }
     }
 
-    public function resize(w:uint, h:uint):void{
+    public function resize(w:uint, h:uint):void {
+//        DebugUtils.start_profile_block("IsoGrid -> resize()");
+        var new_tiles:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
 
+        // width
+        for (var i:uint = 0; i < w; i++){
+            if(i < _width){
+                new_tiles[i] = _tiles[i];
+                continue;
+            }
+            new_tiles.push(new Vector.<IsoTile>());
+        }
+
+        // height
+        for (i = 0; i < w; i++){
+            for (var j:uint = 0; j < h; j++) {
+                if(i < _width && j < _height)
+                    new_tiles[i][j] = _tiles[i][j];
+                else
+                    new_tiles[i].push(new IsoTile(i, j));
+            }
+            new_tiles[i].length = h;
+        }
+        _width = w;
+        _height = h;
+        _tiles = new_tiles;
+//        DebugUtils.stop_profile_block("IsoGrid -> resize()");
+    }
+
+    // for settin` tile properties
+    public function get_tile(x:uint, y:uint):IsoTile{
+        if(x >= _tiles.length || y >= _tiles[x].length)
+            return null;
+
+        return _tiles[x][y];
+    }
+
+    public function get_tiles_in_square(x:uint, y:uint, w:uint, h:uint):Array{
+        var res:Array = [];
+        var tile:IsoTile;
+        var n:uint = x + w;
+        var m:uint = y + h;
+        for (var i:int = x; i < n; i++) {
+            for (var j:int = y; j < m; j++) {
+                tile = get_tile(i, j);
+                if(tile)
+                    res.push(tile);
+            }
+        }
+        return res;
+    }
+
+    public function debug_generate_random(disp:Number = 0.7):void{
+        for (var i:int = 0; i < _width; i++){
+            tiles[i] = new Vector.<IsoTile>();
+            for (var j:int = 0; j < _height; j++) {
+                trace(tiles[i][j] = new IsoTile(i, j));
+
+                if(Math.random() > disp)
+                    tiles[i][j].is_reachable = false;
+
+            }
+        }
+    }
+
+    public function get tiles():Vector.<Vector.<IsoTile>> {
+        return _tiles;
+    }
+
+    // ort + dia
+    public function get_eight_connected_tiles(tile:IsoTile):Array{
+        var res:Array = [];
+
+        var t_x:uint = tile.x;
+        var t_y:uint = tile.y;
+
+        for (var i:int = t_x - 1; i <= t_x + 1; i++) {
+            if(i < 0 || i > tiles.length - 1)
+                continue;
+
+            var h_tiles:Vector.<IsoTile> = tiles[i];
+            for (var j:int = t_y - 1; j <= t_y + 1; j++) {
+
+                if(j < 0 || j > h_tiles.length - 1 || h_tiles[j] == tile || !h_tiles[j].is_reachable)
+                    continue;
+
+                res.push(h_tiles[j]);
+            }
+        }
+        return res;
+    }
+
+    // ort
+    public function get_four_connected_tiles(tile:IsoTile):Array{
+        var res:Array = [];
+
+        var tx:int = tile.x;
+        var ty:int = tile.y;
+        var tile_coords:Array = [{x:tx - 1, y:ty}, {x:tx + 1, y:ty}, {x:tx,  y:ty - 1}, {x:tx,  y:ty + 1}];
+
+        for each (var p:Object in tile_coords){
+            tx = p.x;
+            ty = p.y;
+
+            if(tx < 0 || tx > tiles.length - 1 || ty < 0 || ty > tiles[tx].length - 1)
+                continue;
+
+            if(!tiles[tx][ty].is_reachable)
+                continue;
+
+            res.push(tiles[tx][ty]);
+        }
+
+        return res;
     }
 }
 }

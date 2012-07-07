@@ -23,7 +23,6 @@ public class IsoTile {
     public function IsoTile(x:int, y:int) {
         _x = x;
         _y = y;
-        trace(x, y);
     }
 
     public function get x():int {
@@ -56,6 +55,12 @@ public class IsoTile {
 
     public function set debug_type(value:int):void {
         _debug_type = value;
+    }
+
+    public function toString():String{
+        return "x: " + _x + ", y: " + _y +
+                ", is_reachable: " + _is_reachable +
+                ", debug type: " + _debug_type;
     }
 }
 }

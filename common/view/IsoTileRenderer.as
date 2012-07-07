@@ -37,13 +37,13 @@ public class IsoTileRenderer {
 
         var size:Rectangle = new Rectangle (tile.x * Field.TILE_WIDTH, tile.y * Field.TILE_HEIGHT, Field.TILE_WIDTH - 2, Field.TILE_HEIGHT - 2);
         IsoRenderUtil.drawIsoRect(layer, size, 1, color, color, 0.2);
-        draw_debug_info(tile, layer, new TextField());
+//        draw_debug_info(tile, layer, new TextField());
     }
 
-    private function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {
+    public function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {
         var iso:Point = IsoMathUtil.isoToScreen(tile.x * Field.TILE_WIDTH, tile.y * Field.TILE_HEIGHT);
-        debug_field.x = iso.x;
-        debug_field.y = iso.y;
+        debug_field.x = iso.x - 15;
+        debug_field.y = iso.y + 5;
 
         debug_field.autoSize = TextFieldAutoSize.LEFT;
         debug_field.text = "x" + tile.x + " y" + tile.y;
