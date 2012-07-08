@@ -76,5 +76,11 @@ public class ObjectBase {
     public function get bottomDiagonalId():int{
         return x - y;
     }
+
+    public function intersects(o:ObjectBase):Boolean{
+        var obj_1:Object = {x: x, y: y, w: width, h: length};
+        var obj_2:Object = {x: o.x, y: o.y, w: o.width, h: o.length};
+        return FieldUtils.intersects(obj_1, obj_2);
+    }
 }
 }
