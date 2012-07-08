@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import utils.FieldUtils;
+
 public class ObjectBase {
 
     protected var _x:uint;

@@ -28,7 +28,7 @@ public class FieldObjectView extends Sprite{
         var color:uint = 0xC2C3C2;
         var g:Graphics = graphics;
         g.clear();
-        g.lineStyle(2, 0x0000FF);
+        g.lineStyle(2, 0xFF0000);
 
         var w:uint = _object.width * FieldController.TILE_WIDTH - 2;
         var l:uint = _object.length * FieldController.TILE_LENGTH - 2;
@@ -47,30 +47,30 @@ public class FieldObjectView extends Sprite{
 
         //front-left face
         g.moveTo(lfb.x, lfb.y);
-        g.beginFill(color);
+//        g.beginFill(color);
         g.lineTo(lft.x, lft.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(rfb.x, rfb.y);
         g.lineTo(lfb.x, lfb.y);
-        g.endFill();
+//        g.endFill();
 
         //front-right face
         g.moveTo(rbb.x, rbb.y);
-        g.beginFill(color);
+//        g.beginFill(color);
         g.lineTo(rfb.x, rfb.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(rbt.x, rbt.y);
         g.lineTo(rbb.x, rbb.y);
-        g.endFill();
+//        g.endFill();
 
         //top face
         g.moveTo(lbt.x, lbt.y);
-        g.beginFill(color);
+//        g.beginFill(color);
         g.lineTo(rbt.x, rbt.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(lft.x, lft.y);
         g.lineTo(lbt.x, lbt.y);
-        g.endFill();
+//        g.endFill();
     }
 
     public function get object():FieldObject{
