@@ -97,12 +97,10 @@ public class FieldController {
         _objects_view.y = _grid_view.y;
     }
 
-    public function debug_generate_random_buildings(disp:Number = 0.9):void{
-        for (var i:int = 0; i < _grid.width; i += 1){
-            for (var j:int = 0; j < _grid.length; j += 1) {
-                if(Math.random() > disp)
-                    create_building(i, j, 1, 1);
-            }
+    public function debug_generate_random_buildings():void{
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
+        for each(var o:Object in fld){
+            create_building(o.x, o.y, o.w, o.h);
         }
     }
 

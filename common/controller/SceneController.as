@@ -27,7 +27,7 @@ public class SceneController {
 //        _field_c.create_building(2, 1, 1, 1);
 //        _field_c.create_building(2, 2, 1, 1);
 
-        _field_c.debug_generate_random_buildings(0.9);
+        _field_c.debug_generate_random_buildings();
         _field_c.draw();
 
         RainProject.STAGE.addChild(_field_c.view);
