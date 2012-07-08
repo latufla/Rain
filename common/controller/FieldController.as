@@ -59,7 +59,7 @@ public class FieldController {
     }
 
     public function draw_grid():void{
-        _grid_view.draw();
+        _grid_view.draw(apply_axises);
     }
 
     public function draw_buildings():void{

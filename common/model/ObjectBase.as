@@ -10,11 +10,11 @@ public class ObjectBase {
 
     protected var _x:uint;
     protected var _y:uint;
-    protected var _width:uint
-    protected var _length:uint;
+    protected var _width:uint = 1;
+    protected var _length:uint = 1;
 
-    private var _is_reachable:Boolean;
-    private var _is_occupied:Boolean;
+    protected var _is_reachable:Boolean;
+    protected var _is_occupied:Boolean;
 
     public function ObjectBase() {
     }

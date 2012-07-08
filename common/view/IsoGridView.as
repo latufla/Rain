@@ -6,12 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view {
-import common.controller.FieldController;
 import common.model.IsoGrid;
 import common.model.IsoTile;
 
 import flash.display.Sprite;
-import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.text.TextField;
 
@@ -21,7 +19,7 @@ import utils.MovieClipHelper;
 public class IsoGridView extends Sprite{
 
     private var _grid:IsoGrid;
-    private var _tile_renderer:IsoTileRenderer = new IsoTileRenderer(apply_axises);
+    private var _tile_renderer:IsoTileRenderer = new IsoTileRenderer();
 
     private var _debug_fields:Array = [];
     private var _used_debug_fields:Array = [];
@@ -29,7 +27,7 @@ public class IsoGridView extends Sprite{
     public function IsoGridView() {
     }
 
-    public function draw():void{
+    public function draw(apply_axises:Function):void{
         if(!_grid)
             throw new Error("IsoGridView -> draw(): grid is null" );
 
@@ -41,8 +39,8 @@ public class IsoGridView extends Sprite{
         var self:Sprite = this;
         _grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
             v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
-                _tile_renderer.draw(tile, self);
-                _tile_renderer.draw_debug_info(tile, self, create_debug_field());
+                _tile_renderer.draw(tile, self, apply_axises);
+                _tile_renderer.draw_debug_info(tile, self, apply_axises, create_debug_field());
             });
         });
 
@@ -75,21 +73,6 @@ public class IsoGridView extends Sprite{
         y = -bounds.y;
     }
 
-    private var pnt:Point = new Point();
-    public function apply_axises(tile:IsoTile):Point{
-        pnt.x = apply_x_axis(tile);
-        pnt.y = apply_y_axis(tile);
-        return pnt;
-    }
-
-    public function apply_x_axis(tile:IsoTile):int{
-        return tile.x * FieldController.TILE_LENGTH;
-    }
-
-    public function apply_y_axis(tile:IsoTile):int{
-        var y_inv:int = _grid.length - 1;
-        return (y_inv - tile.y) * FieldController.TILE_LENGTH;
-    }
 
     public function get grid():IsoGrid {
         return _grid;

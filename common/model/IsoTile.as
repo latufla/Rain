@@ -9,11 +9,7 @@ package common.model {
 
 // width and height are single
 // real width and real heights counts by Field.TILE_WIDTH, Field.TILE_WIDTH
-public class IsoTile {
-
-    private var _x:int;
-    private var _y:int;
-    private var _is_reachable:Boolean = true;
+public class IsoTile extends ObjectBase{
 
     // DEBUG
     private var _debug_type:int = 0;
@@ -23,30 +19,7 @@ public class IsoTile {
     public function IsoTile(x:int, y:int) {
         _x = x;
         _y = y;
-    }
-
-    public function get x():int {
-        return _x;
-    }
-
-    public function set x(value:int):void {
-        _x = value;
-    }
-
-    public function get y():int {
-        return _y;
-    }
-
-    public function set y(value:int):void {
-        _y = value;
-    }
-
-    public function get is_reachable():Boolean {
-        return _is_reachable;
-    }
-
-    public function set is_reachable(value:Boolean):void {
-        _is_reachable = value;
+        _is_reachable = true;
     }
 
     public function get debug_type():int {
