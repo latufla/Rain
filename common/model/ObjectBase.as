@@ -66,5 +66,13 @@ public class ObjectBase {
     public function set is_occupied(value:Boolean):void {
         _is_occupied = value;
     }
+
+    public function get topDiagonalId():int{
+        return (x + width) - (y  + length);
+    }
+
+    public function get bottomDiagonalId():int{
+        return x - y;
+    }
 }
 }

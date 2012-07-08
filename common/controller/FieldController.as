@@ -15,6 +15,8 @@ import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import utils.ZorderUtils;
+
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
@@ -24,7 +26,7 @@ public class FieldController {
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
 
-    private var _objects:Array = [];
+    private var _objects:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
     private var _objects_view:Sprite = new Sprite();
 
     private var _view:Sprite = new Sprite();
@@ -58,6 +60,15 @@ public class FieldController {
         _objects.push(building_c);
     }
 
+    public function debug_generate_random_buildings(disp:Number = 0.9):void{
+        for (var i:int = 0; i < _grid.width; i += 1){
+            for (var j:int = 0; j < _grid.length; j += 1) {
+                if(Math.random() > disp)
+                    create_building(i, j, 1, 1);
+            }
+        }
+    }
+
     public function draw_grid():void{
         _grid_view.draw(apply_axises);
     }
@@ -75,6 +86,8 @@ public class FieldController {
     }
 
     public function draw():void{
+        ZorderUtils.custom_zorder(_objects);
+
         var tiles:Array;
         for each(var p:FieldObjectController in _objects){
             tiles = _grid.get_tiles_in_square(p.object.x, p.object.y, p.object.width, p.object.length);

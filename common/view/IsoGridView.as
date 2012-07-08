@@ -32,7 +32,6 @@ public class IsoGridView extends Sprite{
             throw new Error("IsoGridView -> draw(): grid is null" );
 
         clear_debug_fields();
-
         graphics.clear();
 
         DebugUtils.start_profile_block("IsoGridView -> draw()");
