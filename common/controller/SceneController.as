@@ -11,6 +11,8 @@ import common.model.IsoTile;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
+import utils.creator.DemoFieldCreator;
+
 import utils.iso.IsoMathUtil;
 
 public class SceneController {
@@ -21,13 +23,13 @@ public class SceneController {
     }
 
     private function init():void {
-        _field_c = new FieldController();
-        _field_c.create_grid(10, 10);
+        _field_c = DemoFieldCreator.create();
+//        _field_c.create_grid(10, 10);
 
 //        _field_c.create_building(2, 1, 1, 1);
 //        _field_c.create_building(2, 2, 1, 1);
 
-        _field_c.debug_generate_random_buildings();
+//        _field_c.debug_generate_random_buildings();
         _field_c.draw();
 
         RainProject.STAGE.addChild(_field_c.view);
