@@ -7,10 +7,8 @@
  */
 package common.controller {
 import common.model.FieldObject;
-import common.model.FieldObjectsList;
 import common.model.IsoGrid;
 import common.model.IsoTile;
-import common.view.FieldObjectView;
 import common.view.IsoGridView;
 
 import flash.display.Sprite;
@@ -68,18 +66,15 @@ public class FieldController {
         var inv_y:uint = _grid.length;
 
         for each(var p:FieldObjectController in _objects){
-            p.draw();
+            p.draw(apply_axises);
             _objects_view.addChild(p.view);
         }
 
-        draw_grid();
         _objects_view.x = _grid_view.x;
         _objects_view.y = _grid_view.y;
     }
 
     public function draw():void{
-        draw_buildings();
-
         var tiles:Array;
         for each(var p:FieldObjectController in _objects){
             tiles = _grid.get_tiles_in_square(p.object.x, p.object.y, p.object.width, p.object.length);
@@ -87,8 +82,8 @@ public class FieldController {
                 t.is_reachable = false;
             }
         }
-
         draw_grid();
+        draw_buildings();
     }
 
     private function on_click(e:MouseEvent):void {
@@ -98,7 +93,6 @@ public class FieldController {
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;
         }
-
         draw_grid();
     }
 
@@ -108,6 +102,24 @@ public class FieldController {
 
     public function get grid():IsoGrid{
         return _grid;
+    }
+
+
+    var pnt:Point = new Point();
+    private function apply_axises(o:*):Point{
+        pnt.x = apply_x_axis(o);
+        pnt.y = apply_y_axis(o);
+        return pnt;
+    }
+
+    private function apply_x_axis(o:*):int{
+        return o.x * TILE_WIDTH;
+    }
+
+    private function apply_y_axis(o:*):int{
+        var y_inv:int = _grid.length - 1;
+        var l_inv:int = o.length - 1;
+        return (y_inv - (o.y + l_inv)) * TILE_LENGTH;
     }
 }
 }

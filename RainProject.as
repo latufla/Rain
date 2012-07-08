@@ -18,13 +18,14 @@ public class RainProject extends Sprite {
     }
 
     public function onAddStage(e:Event):void {
+        removeEventListener(Event.ADDED_TO_STAGE, onAddStage);
         stage.scaleMode = "noScale";
         stage.align = "left";
         STAGE = stage;
 
-
         _engine = new Engine();
         _engine.init();
+
     }
 }
 }

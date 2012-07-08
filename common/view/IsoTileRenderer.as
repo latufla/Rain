@@ -8,16 +8,13 @@
 package common.view {
 import common.controller.FieldController;
 import common.model.IsoTile;
-import common.view.IsoTileRenderer;
 
 import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.geom.Rectangle;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
-import utils.MovieClipHelper;
 import utils.iso.IsoMathUtil;
 import utils.iso.IsoRenderUtil;
 
@@ -44,7 +41,7 @@ public class IsoTileRenderer {
 
         var apply_axises_pnt:Point = _apply_axises(tile);
         var size:Rectangle = new Rectangle (apply_axises_pnt.x, apply_axises_pnt.y, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
-        IsoRenderUtil.drawIsoRect(layer, size, 1, color, color, 0.2);
+        IsoRenderUtil.drawIsoRect(layer, size, 1, color, color, 0.5);
     }
 
     public function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {

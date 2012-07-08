@@ -12,7 +12,6 @@ public class Engine {
 
     private var _scene_c:SceneController;
     public function Engine() {
-        init();
     }
 
     public function init():void{

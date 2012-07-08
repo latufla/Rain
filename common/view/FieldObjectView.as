@@ -14,9 +14,6 @@ import common.model.FieldObject;
 
 import flash.display.Graphics;
 import flash.display.Sprite;
-import flash.geom.Point;
-
-import utils.iso.IsoMathUtil;
 
 public class FieldObjectView extends Sprite{
 
@@ -27,13 +24,6 @@ public class FieldObjectView extends Sprite{
     public function draw():void{
         if(!_object)
             throw new Error("FieldObjectView -> draw(): object is null" );
-
-        var y_inv:int = 9;
-        var l_inv:int = _object.length - 1;
-        var pnt:Point = IsoMathUtil.isoToScreen(_object.x * FieldController.TILE_WIDTH,
-                (y_inv - (_object.y + l_inv)) * FieldController.TILE_LENGTH);
-        x = pnt.x;
-        y = pnt.y;
 
         var g:Graphics = graphics;
         g.clear();
@@ -61,7 +51,7 @@ public class FieldObjectView extends Sprite{
         g.lineTo(rft.x, rft.y);
         g.lineTo(rfb.x, rfb.y);
         g.lineTo(lfb.x, lfb.y);
-        g.endFill();
+//        g.endFill();
 
         //front-right face
         g.moveTo(rbb.x, rbb.y);
@@ -70,7 +60,7 @@ public class FieldObjectView extends Sprite{
         g.lineTo(rft.x, rft.y);
         g.lineTo(rbt.x, rbt.y);
         g.lineTo(rbb.x, rbb.y);
-        g.endFill();
+//        g.endFill();
 
         //top face
         g.moveTo(lbt.x, lbt.y);
