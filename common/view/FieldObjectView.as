@@ -28,8 +28,10 @@ public class FieldObjectView extends Sprite{
         if(!_object)
             throw new Error("FieldObjectView -> draw(): object is null" );
 
+        var y_inv:int = 9;
+        var l_inv:int = _object.length - 1;
         var pnt:Point = IsoMathUtil.isoToScreen(_object.x * FieldController.TILE_WIDTH,
-                (9 - _object.y) * FieldController.TILE_LENGTH);
+                (y_inv - (_object.y + l_inv)) * FieldController.TILE_LENGTH);
         x = pnt.x;
         y = pnt.y;
 
@@ -37,8 +39,8 @@ public class FieldObjectView extends Sprite{
         g.clear();
         g.lineStyle(2, 0x0000FF);
 
-        var w:uint = _object.width * FieldController.TILE_WIDTH;
-        var l:uint = _object.length * FieldController.TILE_LENGTH;
+        var w:uint = _object.width * FieldController.TILE_WIDTH - 2;
+        var l:uint = _object.length * FieldController.TILE_LENGTH - 2;
         var h:uint = _object.debug_height * FieldController.TILE_LENGTH;
 
         //all pts are named in following order "x", "y", "z" via rfb = right, front, bottom
@@ -54,7 +56,7 @@ public class FieldObjectView extends Sprite{
 
         //front-left face
         g.moveTo(lfb.x, lfb.y);
-        g.beginFill(0xFFFFFF);
+//        g.beginFill(0xFFFFFF);
         g.lineTo(lft.x, lft.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(rfb.x, rfb.y);
@@ -63,7 +65,7 @@ public class FieldObjectView extends Sprite{
 
         //front-right face
         g.moveTo(rbb.x, rbb.y);
-        g.beginFill(0xFFFFFF);
+//        g.beginFill(0xFFFFFF);
         g.lineTo(rfb.x, rfb.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(rbt.x, rbt.y);
@@ -72,7 +74,7 @@ public class FieldObjectView extends Sprite{
 
         //top face
         g.moveTo(lbt.x, lbt.y);
-        g.beginFill(0xFFFFFF);
+//        g.beginFill(0xFFFFFF);
         g.lineTo(rbt.x, rbt.y);
         g.lineTo(rft.x, rft.y);
         g.lineTo(lft.x, lft.y);

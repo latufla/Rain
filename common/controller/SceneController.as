@@ -23,7 +23,12 @@ public class SceneController {
     private function init():void {
         _field_c = new FieldController();
         _field_c.create_grid(10, 10);
-        _field_c.draw_grid();
+
+        _field_c.create_building(5, 5, 2, 3);
+        _field_c.create_building(1, 0, 1, 1);
+
+        _field_c.draw();
+
         RainProject.STAGE.addChild(_field_c.view);
     }
 }

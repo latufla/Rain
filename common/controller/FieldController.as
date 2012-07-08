@@ -26,9 +26,8 @@ public class FieldController {
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
 
-    private var _building:FieldObject;
-    private var _building_c:FieldObjectController;
-    private var _buildings_map:Sprite = new Sprite();
+    private var _objects:Array = [];
+    private var _objects_view:Sprite = new Sprite();
 
     private var _view:Sprite = new Sprite();
 
@@ -38,6 +37,8 @@ public class FieldController {
 
     private function init():void {
         _view.addEventListener(MouseEvent.CLICK, on_click);
+        _view.addChild(_grid_view);
+        _view.addChild(_objects_view);
     }
 
     public function create_grid(w:uint, h:uint):void{
@@ -50,25 +51,44 @@ public class FieldController {
     }
 
     public function create_building(x:uint, y:uint, w:uint, l:uint):void{
-        _building = new FieldObject(w, l, 2);
-        _building.x = x;
-        _building.y = y;
+        var building:FieldObject = new FieldObject(w, l, 2);
+        building.x = x;
+        building.y = y;
 
-        _building_c = new FieldObjectController();
-        _building_c.object = _building;
-        _building_c.draw();
-
-        _buildings_map.x = _grid_view.x;
-        _buildings_map.y = _grid_view.y;
-        _buildings_map.addChild(_building_c.view);
-        _view.addChild(_buildings_map);
+        var building_c:FieldObjectController = new FieldObjectController();
+        building_c.object = building;
+        _objects.push(building_c);
     }
 
     public function draw_grid():void{
         _grid_view.draw();
-        _view.addChild(_grid_view);
+    }
 
-        create_building(5, 5, 1, 1);
+    public function draw_buildings():void{
+        var inv_y:uint = _grid.length;
+
+        for each(var p:FieldObjectController in _objects){
+            p.draw();
+            _objects_view.addChild(p.view);
+        }
+
+        draw_grid();
+        _objects_view.x = _grid_view.x;
+        _objects_view.y = _grid_view.y;
+    }
+
+    public function draw():void{
+        draw_buildings();
+
+        var tiles:Array;
+        for each(var p:FieldObjectController in _objects){
+            tiles = _grid.get_tiles_in_square(p.object.x, p.object.y, p.object.width, p.object.length);
+            for each(var t:IsoTile in tiles){
+                t.is_reachable = false;
+            }
+        }
+
+        draw_grid();
     }
 
     private function on_click(e:MouseEvent):void {
