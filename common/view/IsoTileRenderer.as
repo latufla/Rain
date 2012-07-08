@@ -43,7 +43,7 @@ public class IsoTileRenderer {
             color = NON_REACHABLE_COLOR;
 
         var apply_axises_pnt:Point = _apply_axises(tile);
-        var size:Rectangle = new Rectangle (apply_axises_pnt.x, apply_axises_pnt.y, FieldController.TILE_WIDTH - 2, FieldController.TILE_HEIGHT - 2);
+        var size:Rectangle = new Rectangle (apply_axises_pnt.x, apply_axises_pnt.y, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
         IsoRenderUtil.drawIsoRect(layer, size, 1, color, color, 0.2);
     }
 

@@ -15,23 +15,23 @@ public class IsoGrid {
 
     private var _tiles:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
     private var _width:uint;
-    private var _height:uint;
+    private var _length:uint;
 
-    public function IsoGrid(w:uint, h:uint) {
+    public function IsoGrid(w:uint, l:uint) {
         _width = w;
-        _height = h;
+        _length = l;
     }
 
     public function create():void{
         for (var i:int = 0; i < _width; i++){
             tiles[i] = new Vector.<IsoTile>();
-            for (var j:int = 0; j < _height; j++) {
+            for (var j:int = 0; j < _length; j++) {
                 tiles[i][j] = new IsoTile(i, j);
             }
         }
     }
 
-    public function resize(w:uint, h:uint):void {
+    public function resize(w:uint, l:uint):void {
 //        DebugUtils.start_profile_block("IsoGrid -> resize()");
         var new_tiles:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
 
@@ -46,16 +46,16 @@ public class IsoGrid {
 
         // height
         for (i = 0; i < w; i++){
-            for (var j:uint = 0; j < h; j++) {
-                if(i < _width && j < _height)
+            for (var j:uint = 0; j < l; j++) {
+                if(i < _width && j < _length)
                     new_tiles[i][j] = _tiles[i][j];
                 else
                     new_tiles[i].push(new IsoTile(i, j));
             }
-            new_tiles[i].length = h;
+            new_tiles[i].length = l;
         }
         _width = w;
-        _height = h;
+        _length = l;
         _tiles = new_tiles;
 //        DebugUtils.stop_profile_block("IsoGrid -> resize()");
     }
@@ -68,11 +68,11 @@ public class IsoGrid {
         return _tiles[x][y];
     }
 
-    public function get_tiles_in_square(x:uint, y:uint, w:uint, h:uint):Array{
+    public function get_tiles_in_square(x:uint, y:uint, w:uint, l:uint):Array{
         var res:Array = [];
         var tile:IsoTile;
         var n:uint = x + w;
-        var m:uint = y + h;
+        var m:uint = y + l;
         for (var i:int = x; i < n; i++) {
             for (var j:int = y; j < m; j++) {
                 tile = get_tile(i, j);
@@ -86,7 +86,7 @@ public class IsoGrid {
     public function debug_generate_random(disp:Number = 0.7):void{
         for (var i:int = 0; i < _width; i++){
             tiles[i] = new Vector.<IsoTile>();
-            for (var j:int = 0; j < _height; j++) {
+            for (var j:int = 0; j < _length; j++) {
                 trace(tiles[i][j] = new IsoTile(i, j));
 
                 if(Math.random() > disp)
@@ -151,8 +151,8 @@ public class IsoGrid {
         return _width;
     }
 
-    public function get height():uint {
-        return _height;
+    public function get length():uint {
+        return _length;
     }
 
 }

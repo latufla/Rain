@@ -83,12 +83,12 @@ public class IsoGridView extends Sprite{
     }
 
     public function apply_x_axis(tile:IsoTile):int{
-        return tile.x * FieldController.TILE_HEIGHT;
+        return tile.x * FieldController.TILE_LENGTH;
     }
 
     public function apply_y_axis(tile:IsoTile):int{
-        var y_inv:int = _grid.height - 1;
-        return (y_inv - tile.y) * FieldController.TILE_HEIGHT;
+        var y_inv:int = _grid.length - 1;
+        return (y_inv - tile.y) * FieldController.TILE_LENGTH;
     }
 
     public function get grid():IsoGrid {
