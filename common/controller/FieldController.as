@@ -6,10 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import common.model.Building;
+import common.model.FieldObject;
+import common.model.FieldObjectsList;
 import common.model.IsoGrid;
 import common.model.IsoTile;
-import common.view.BuildingView;
+import common.view.FieldObjectView;
 import common.view.IsoGridView;
 
 import flash.display.Sprite;
@@ -25,8 +26,8 @@ public class FieldController {
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
 
-    private var _building:Building;
-    private var _building_view:BuildingView;
+    private var _building:FieldObject;
+    private var _building_c:FieldObjectController;
     private var _buildings_map:Sprite = new Sprite();
 
     private var _view:Sprite = new Sprite();
@@ -49,16 +50,17 @@ public class FieldController {
     }
 
     public function create_building(x:uint, y:uint, w:uint, l:uint):void{
-        _building = new Building(w, l, 2);
+        _building = new FieldObject(w, l, 2);
         _building.x = x;
         _building.y = y;
 
-        _building_view = new BuildingView();
-        _building_view.building = _building;
-        _building_view.draw();
+        _building_c = new FieldObjectController();
+        _building_c.object = _building;
+        _building_c.draw();
+
         _buildings_map.x = _grid_view.x;
         _buildings_map.y = _grid_view.y;
-        _buildings_map.addChild(_building_view);
+        _buildings_map.addChild(_building_c.view);
         _view.addChild(_buildings_map);
     }
 

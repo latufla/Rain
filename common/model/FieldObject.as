@@ -6,14 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-public class Building extends ObjectBase{
+public class FieldObject extends ObjectBase{
 
     protected var _is_target:Boolean;
     private var _bots:Array;
 
     private var _debug_height:uint;
 
-    public function Building(w:uint, l:uint, h:uint) {
+    public function FieldObject(w:uint, l:uint, h:uint) {
         width = w;
         length = l;
         _debug_height = h;

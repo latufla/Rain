@@ -10,25 +10,26 @@ import as3isolib.geom.IsoMath;
 import as3isolib.geom.Pt;
 
 import common.controller.FieldController;
-import common.model.Building;
+import common.model.FieldObject;
+
 import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.geom.Point;
 
 import utils.iso.IsoMathUtil;
 
-public class BuildingView extends Sprite{
+public class FieldObjectView extends Sprite{
 
-    private var _building:Building;
-    public function BuildingView() {
+    private var _object:FieldObject;
+    public function FieldObjectView() {
     }
 
     public function draw():void{
-        if(!_building)
-            throw new Error("IsoGridView -> draw(): building is null" );
+        if(!_object)
+            throw new Error("FieldObjectView -> draw(): object is null" );
 
-        var pnt:Point = IsoMathUtil.isoToScreen(_building.x * FieldController.TILE_WIDTH,
-                (9 - _building.y) * FieldController.TILE_LENGTH);
+        var pnt:Point = IsoMathUtil.isoToScreen(_object.x * FieldController.TILE_WIDTH,
+                (9 - _object.y) * FieldController.TILE_LENGTH);
         x = pnt.x;
         y = pnt.y;
 
@@ -36,9 +37,9 @@ public class BuildingView extends Sprite{
         g.clear();
         g.lineStyle(2, 0x0000FF);
 
-        var w:uint = _building.width * FieldController.TILE_WIDTH;
-        var l:uint = _building.length * FieldController.TILE_LENGTH;
-        var h:uint = _building.debug_height * FieldController.TILE_LENGTH;
+        var w:uint = _object.width * FieldController.TILE_WIDTH;
+        var l:uint = _object.length * FieldController.TILE_LENGTH;
+        var h:uint = _object.debug_height * FieldController.TILE_LENGTH;
 
         //all pts are named in following order "x", "y", "z" via rfb = right, front, bottom
         var lbb:Pt = IsoMath.isoToScreen(new Pt(0, 0, 0));
@@ -79,12 +80,12 @@ public class BuildingView extends Sprite{
         g.endFill();
     }
 
-    public function get building():Building {
-        return _building;
+    public function get object():FieldObject{
+        return _object;
     }
 
-    public function set building(value:Building):void {
-        _building = value;
+    public function set object(value:FieldObject):void {
+        _object = value;
     }
 }
 }
