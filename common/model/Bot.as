@@ -35,9 +35,10 @@ public class Bot extends ObjectBase{
         _grid = grid;
     }
 
-    public function find_path(end:IsoTile):void{
+    public function find_path(end:IsoTile):Array{
         _grid.clear_p_nodes();
         _path = PathfindUtils.a_star_find_path(position_tile, end, _grid.get_four_connected_p_nodes);
+        return _path;
     }
 
     public function get position_tile():IsoTile{

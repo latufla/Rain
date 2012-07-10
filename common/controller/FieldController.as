@@ -139,7 +139,7 @@ public class FieldController {
     // RENDER
     public function draw(need_resort:Boolean = true):void{
         if(need_resort)
-            ZorderUtils.custom_zorder(_all_objects);
+            z_sort();
 
         // set underbuilding tiles reachability
         var tiles:Array;
@@ -150,6 +150,16 @@ public class FieldController {
             }
         }
         draw_grid();
+        draw_all_objects();
+    }
+
+    private function z_sort():void{
+        ZorderUtils.custom_zorder(_all_objects);
+    }
+
+    private function resort_single_object(o_c:BotController):void{
+        _all_objects.splice(_all_objects.indexOf(o_c), 1);
+        ZorderUtils.insert_resort_single_object(o_c, _all_objects);
         draw_all_objects();
     }
 
@@ -201,7 +211,8 @@ public class FieldController {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
         var inv_y:uint = _grid.length;
         var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, inv_y - coords.y / TILE_LENGTH);
-        _bots[0].object.find_path(tile);
+        //_bots[0].object.find_path(tile);
+        _bots[0].move_to(tile, resort_single_object);
         draw_grid();
     }
 

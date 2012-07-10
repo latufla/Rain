@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view {
-import common.controller.FieldController;
 import common.model.Bot;
 
 import flash.display.Sprite;

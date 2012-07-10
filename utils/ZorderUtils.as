@@ -44,6 +44,7 @@ public class ZorderUtils {
 //        return -1;
 //    }
 
+
 //    public static function insert_resort_single_object(obj:ObjectBase, v:Vector.<ObjectBase>):void {
 //        if(tile_object_compare(v[0], obj) == 1){
 //            v.unshift(obj);
@@ -55,7 +56,7 @@ public class ZorderUtils {
 //            return;
 //        }
 //
-////        find first top in ordered view_list
+//        find first top in ordered view_list
 //        for (var i:int = 0; i < v.length; i++) {
 //            if(tile_object_compare(v[i], obj) == 1){
 //                v.splice(i, 0, obj);
@@ -64,5 +65,24 @@ public class ZorderUtils {
 //        }
 //    }
 
+    public static function insert_resort_single_object(obj_c:*, a:Array):void {
+        if(tile_object_compare(a[0], obj_c) == 1){
+            a.unshift(obj_c);
+            return;
+        }
+
+        if(tile_object_compare(a[a.length - 1], obj_c) == -1){
+            a.push(obj_c);
+            return;
+        }
+
+//        find first top in ordered view_list
+        for (var i:int = 0; i < a.length; i++) {
+            if(tile_object_compare(a[i], obj_c) == 1){
+                a.splice(i, 0, obj_c);
+                return;
+            }
+        }
+    }
 }
 }
