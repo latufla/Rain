@@ -131,7 +131,7 @@ public class FieldController {
         bot_c.object = bot;
 //        _objects.push(bot_c);
         _bots.push(bot_c);
-
+    // TODO: USE OBJECTS to store bots or change zsort
         return true;
     }
 
@@ -204,6 +204,8 @@ public class FieldController {
         process_bot_click(e);
     }
 
+
+    // TODO: make `em walk
     private function process_bot_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
         var inv_y:uint = _grid.length;

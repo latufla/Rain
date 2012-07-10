@@ -28,7 +28,7 @@ public class PNode{
         _tile = tile;
     }
 
-    private function clone():PNode {
+    public function clone():PNode {
         var res:PNode = new PNode(_tile);
         res.f = _f;
         res.g = _g;

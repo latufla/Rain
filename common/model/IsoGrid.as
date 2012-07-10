@@ -15,8 +15,6 @@ public class IsoGrid {
     private var _width:uint;
     private var _length:uint;
 
-    private var _p_nodes:Vector.<Vector.<PNode>> = new Vector.<Vector.<PNode>>();
-
     public function IsoGrid(w:uint, l:uint) {
         _width = w;
         _length = l;
@@ -193,6 +191,27 @@ public class IsoGrid {
     public function get length():uint {
         return _length;
     }
+
+    public function clear_p_nodes():void{
+        _tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
+            v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
+                tile.p_node.fill_params(null, 0, 0, 0);
+            });
+        });
+    }
+
+//    private function get p_nodes():Vector.<Vector.<PNode>>{
+//        var res:Vector.<Vector.<PNode>> = new Vector.<Vector.<PNode>>();
+//        var n:uint = _tiles.length;
+//        var m:uint = _tiles[0].length;
+//        for (var i:int = 0; i < n; i++) {
+//            res[i] = new Vector.<PNode>();
+//            for (var j:int = 0; j < m; j++) {
+//                res[i][j] = new PNode(_tiles[i][j]);
+//            }
+//       }
+//       return res;
+//    }
 
 }
 }
