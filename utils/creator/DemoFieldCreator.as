@@ -57,9 +57,9 @@ public class DemoFieldCreator {
 
         }
 
-//        for each (var p:Object in OBJECTS){
-//            field_c.create_building(p.x, p.y, p.w, p.l);
-//        }
+        for each (var p:Object in OBJECTS){
+            field_c.create_building(p.x, p.y, p.w, p.l);
+        }
 
         for each (var p:Object in BOTS){
             field_c.create_bot(p.x, p.y, p.w, p.l);

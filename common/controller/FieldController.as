@@ -30,9 +30,10 @@ public class FieldController {
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
 
-    private var _objects:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
+    private var _all_objects:Array = [];
     private var _objects_view:Sprite = new Sprite();
 
+    private var _buildings:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
     private var _bots:Vector.<BotController> = new Vector.<BotController>(); // draw on objects view
 
     private var _view:Sprite = new Sprite();
@@ -66,7 +67,7 @@ public class FieldController {
         var obj_1:Object = {x: x, y: y, w: w, h: l};
         var obj_2:Object = {};
         var building:FieldObject;
-        for each(var p:FieldObjectController in _objects){
+        for each(var p:FieldObjectController in _buildings){
             building = p.object;
             obj_2.x = building.x;
             obj_2.y = building.y;
@@ -83,13 +84,14 @@ public class FieldController {
 
         var building_c:FieldObjectController = new FieldObjectController();
         building_c.object = building;
-        _objects.push(building_c);
+        _buildings.push(building_c);
+        _all_objects.push(building_c);
 
         return true;
     }
 
-    public function draw_buildings():void{
-        for each(var p:FieldObjectController in _objects){
+    public function draw_all_objects():void{
+        for each(var p:* in _all_objects){
             p.draw(apply_axises);
             _objects_view.addChild(p.view);
         }
@@ -112,7 +114,7 @@ public class FieldController {
         var obj_1:Object = {x: x, y: y, w: w, h: l};
         var obj_2:Object = {};
         var building:FieldObject;
-        for each(var p:FieldObjectController in _objects){
+        for each(var p:FieldObjectController in _buildings){
             building = p.object;
             obj_2.x = building.x;
             obj_2.y = building.y;
@@ -129,37 +131,26 @@ public class FieldController {
 
         var bot_c:BotController = new BotController();
         bot_c.object = bot;
-//        _objects.push(bot_c);
         _bots.push(bot_c);
-    // TODO: USE OBJECTS to store bots or change zsort
+        _all_objects.push(bot_c);
         return true;
     }
 
-    public function draw_bots():void{
-        for each(var p:BotController in _bots){
-            p.draw(apply_axises);
-            _objects_view.addChild(p.view);
-        }
-
-        _objects_view.x = _grid_view.x;
-        _objects_view.y = _grid_view.y;
-    }
-
     // RENDER
-    public function draw():void{
-        ZorderUtils.custom_zorder(_objects);
+    public function draw(need_resort:Boolean = true):void{
+        if(need_resort)
+            ZorderUtils.custom_zorder(_all_objects);
 
         // set underbuilding tiles reachability
         var tiles:Array;
-        for each(var p:FieldObjectController in _objects){
+        for each(var p:* in _buildings){
             tiles = _grid.get_tiles_in_square(p.object.x, p.object.y, p.object.width, p.object.length);
             for each(var t:IsoTile in tiles){
                 t.is_reachable = p.object.is_reachable;
             }
         }
         draw_grid();
-        draw_buildings();
-        draw_bots();
+        draw_all_objects();
     }
 
     public function get view():Sprite {

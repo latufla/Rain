@@ -14,14 +14,14 @@ public class ZorderUtils {
 //    }
 
 
-    public static function custom_zorder(list:Vector.<FieldObjectController>):Vector.<FieldObjectController>{
+    public static function custom_zorder(list:Array):Array{
         var start_time:Number = getTimer();
-        var res:Vector.<FieldObjectController> = list.sort(tile_object_compare);
+        var res:Array = list.sort(tile_object_compare);
         trace("custom_zorder end. Elapsed: ", getTimer() - start_time);
         return res;
     }
 
-    public static function tile_object_compare(a_c:FieldObjectController, b_c:FieldObjectController):int{
+    public static function tile_object_compare(a_c:*, b_c:*):int{
         var a:ObjectBase = a_c.object;
         var b:ObjectBase = b_c.object;
 
