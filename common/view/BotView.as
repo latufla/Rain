@@ -23,9 +23,9 @@ public class BotView extends Sprite{
         if(!_object)
             throw new Error("BotView -> draw(): object is null" );
 
-        var w:uint = _object.width * FieldController.TILE_WIDTH - 2;
-        var l:uint = _object.length * FieldController.TILE_LENGTH - 2;
-        var h:uint = _object.debug_height * FieldController.TILE_LENGTH;
+        var w:uint = _object.width * 10;
+        var l:uint = _object.length * 10;
+        var h:uint = 40;
         IsoRenderUtil.draw_iso_box(this, w, l, h, 0xC2C3C2);
     }
 

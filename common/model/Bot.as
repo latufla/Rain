@@ -24,6 +24,7 @@ public class Bot extends ObjectBase{
     public function Bot(type:int, grid:IsoGrid) {
         _type = type;
         _is_reachable = true;
+        _debug_height = 1;
         init(grid);
     }
 
