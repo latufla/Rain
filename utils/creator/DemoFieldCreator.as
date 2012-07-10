@@ -37,6 +37,11 @@ public class DemoFieldCreator {
         {x:9, y:11, w:2, l:2}
     ]
 
+    private static const BOTS:Array = [
+        {x:8, y:1, w:1, l:1},
+        {x:12, y:6, w:1, l:1}
+    ]
+
     public function DemoFieldCreator() {
     }
 
@@ -46,16 +51,21 @@ public class DemoFieldCreator {
 
         for (var i:int = 0; i < GRID.length; i++) {
             for (var j:int = 0; j < GRID[i].length; j++) {
-                if(GRID[i][j] == 1)
+                if(GRID[i][j] == 0)
                     field_c.grid.get_tile(i, j).is_reachable = false;
             }
 
         }
 
-        for each (var p:Object in OBJECTS){
-            field_c.create_building(p.x, p.y, p.w, p.l);
+//        for each (var p:Object in OBJECTS){
+//            field_c.create_building(p.x, p.y, p.w, p.l);
+//        }
+
+        for each (var p:Object in BOTS){
+            field_c.create_bot(p.x, p.y, p.w, p.l);
         }
         return field_c;
+
     }
 }
 }

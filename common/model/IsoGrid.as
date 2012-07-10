@@ -6,16 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-import common.controller.FieldController;
-import common.controller.FieldController;
-
 import utils.DebugUtils;
+import utils.PNode;
 
 public class IsoGrid {
 
     private var _tiles:Vector.<Vector.<IsoTile>> = new Vector.<Vector.<IsoTile>>();
     private var _width:uint;
     private var _length:uint;
+
+    private var _p_nodes:Vector.<Vector.<PNode>> = new Vector.<Vector.<PNode>>();
 
     public function IsoGrid(w:uint, l:uint) {
         _width = w;
@@ -24,12 +24,27 @@ public class IsoGrid {
 
     public function create():void{
         for (var i:int = 0; i < _width; i++){
-            tiles[i] = new Vector.<IsoTile>();
+            _tiles[i] = new Vector.<IsoTile>();
             for (var j:int = 0; j < _length; j++) {
-                tiles[i][j] = new IsoTile(i, j);
+                _tiles[i][j] = new IsoTile(i, j);
             }
         }
+//        update_p_nodes();
     }
+
+    // pathfinding info, call after any grid resizing
+//    private function update_p_nodes():void{
+//        _p_nodes = new Vector.<Vector.<PNode>>();
+//
+//        var n:uint = _tiles.length;
+//        var m:uint = _tiles[0].length;
+//        for (var i:int = 0; i < n; i++) {
+//            _p_nodes[i] = new Vector.<PNode>();
+//            for (var j:int = 0; j < m; j++) {
+//                _p_nodes[i][j] = _tiles[i][j].p_node;
+//            }
+//       }
+//    }
 
     public function resize(w:uint, l:uint):void {
 //        DebugUtils.start_profile_block("IsoGrid -> resize()");
@@ -57,6 +72,8 @@ public class IsoGrid {
         _width = w;
         _length = l;
         _tiles = new_tiles;
+
+//        update_p_nodes();
 //        DebugUtils.stop_profile_block("IsoGrid -> resize()");
     }
 
@@ -144,6 +161,28 @@ public class IsoGrid {
             res.push(tiles[tx][ty]);
         }
 
+        return res;
+    }
+
+    public function get_four_connected_p_nodes(node:PNode):Array{
+        var res:Array = [];
+
+        var tx:int = node.tile.x;
+        var ty:int = node.tile.y;
+        var tile_coords:Array = [{x:tx - 1, y:ty}, {x:tx + 1, y:ty}, {x:tx,  y:ty - 1}, {x:tx,  y:ty + 1}];
+
+        for each (var p:Object in tile_coords){
+            tx = p.x;
+            ty = p.y;
+
+            if(tx < 0 || tx > tiles.length - 1 || ty < 0 || ty > tiles[tx].length - 1)
+                continue;
+
+            if(!tiles[tx][ty].is_reachable)
+                continue;
+
+            res.push(tiles[tx][ty].p_node);
+        }
         return res;
     }
 

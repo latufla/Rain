@@ -6,11 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import utils.PNode;
 
 // width and height are single
 // real width and real heights counts by Field.TILE_WIDTH, Field.TILE_WIDTH
 public class IsoTile extends ObjectBase{
 
+    private var _p_node:PNode;
     // DEBUG
     private var _debug_type:int = 0;
     public static const DEBUG_KEY_POINT:int = 1;
@@ -20,6 +22,7 @@ public class IsoTile extends ObjectBase{
         _x = x;
         _y = y;
         _is_reachable = true;
+        _p_node = new PNode(this);
     }
 
     public function get debug_type():int {
@@ -34,6 +37,10 @@ public class IsoTile extends ObjectBase{
         return "x: " + _x + ", y: " + _y +
                 ", is_reachable: " + _is_reachable +
                 ", debug type: " + _debug_type;
+    }
+
+    public function get p_node():PNode {
+        return _p_node;
     }
 }
 }

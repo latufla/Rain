@@ -7,6 +7,7 @@
  */
 package common.controller {
 import common.controller.FieldObjectController;
+import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
@@ -31,6 +32,8 @@ public class FieldController {
 
     private var _objects:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
     private var _objects_view:Sprite = new Sprite();
+
+    private var _bots:Vector.<BotController> = new Vector.<BotController>(); // draw on objects view
 
     private var _view:Sprite = new Sprite();
 
@@ -86,8 +89,6 @@ public class FieldController {
     }
 
     public function draw_buildings():void{
-        var inv_y:uint = _grid.length;
-
         for each(var p:FieldObjectController in _objects){
             p.draw(apply_axises);
             _objects_view.addChild(p.view);
@@ -104,6 +105,46 @@ public class FieldController {
         }
     }
 
+    public function create_bot(x:uint, y:uint, w:uint = 1, l:uint = 1):Boolean{
+        if(x + w > field_width || y + l > field_length)
+            return false;
+
+        var obj_1:Object = {x: x, y: y, w: w, h: l};
+        var obj_2:Object = {};
+        var building:FieldObject;
+        for each(var p:FieldObjectController in _objects){
+            building = p.object;
+            obj_2.x = building.x;
+            obj_2.y = building.y;
+            obj_2.w = building.width;
+            obj_2.h = building.length;
+
+            if(FieldUtils.intersects(obj_1, obj_2))
+                return false;
+        }
+
+        var bot:Bot = new Bot(1, _grid);
+        bot.x = x;
+        bot.y = y;
+
+        var bot_c:BotController = new BotController();
+        bot_c.object = bot;
+//        _objects.push(bot_c);
+        _bots.push(bot_c);
+
+        return true;
+    }
+
+    public function draw_bots():void{
+        for each(var p:BotController in _bots){
+            p.draw(apply_axises);
+            _objects_view.addChild(p.view);
+        }
+
+        _objects_view.x = _grid_view.x;
+        _objects_view.y = _grid_view.y;
+    }
+
     // RENDER
     public function draw():void{
         ZorderUtils.custom_zorder(_objects);
@@ -118,6 +159,7 @@ public class FieldController {
         }
         draw_grid();
         draw_buildings();
+        draw_bots();
     }
 
     public function get view():Sprite {
@@ -158,7 +200,16 @@ public class FieldController {
     // test clicks processing
     private function on_click(e:MouseEvent):void {
 //        process_grid_click(e)
-        process_building_click(e);
+//        process_building_click(e);
+        process_bot_click(e);
+    }
+
+    private function process_bot_click(e:MouseEvent):void {
+        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
+        var inv_y:uint = _grid.length;
+        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, inv_y - coords.y / TILE_LENGTH);
+        _bots[0].object.find_path(tile);
+        draw_grid();
     }
 
     private function process_building_click(e:MouseEvent):void {

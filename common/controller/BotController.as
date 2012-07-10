@@ -1,31 +1,28 @@
 /**
  * Created with IntelliJ IDEA.
  * User: alexvasilyev
- * Date: 7/8/12
- * Time: 11:55 AM
+ * Date: 7/10/12
+ * Time: 4:14 PM
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
+import common.model.Bot;
+import common.view.BotView;
 
-import common.model.FieldObject;
-import common.view.FieldObjectView;
-
-import flash.display.Sprite;
 import flash.geom.Point;
 
 import utils.iso.IsoMathUtil;
 
-public class FieldObjectController {
+public class BotController {
 
-    private var _object:FieldObject;
-    private var _view:FieldObjectView = new FieldObjectView();
-    public function FieldObjectController() {
-
+    private var _object:Bot;
+    private var _view:BotView = new BotView();
+    public function BotController() {
     }
 
     public function draw(apply_axises:Function):void{
         if(!_object)
-            throw new Error("FieldObjectController -> draw(): object is null");
+            throw new Error("BotController -> draw(): object is null");
 
         _view.object = _object;
         _view.draw();
@@ -36,16 +33,17 @@ public class FieldObjectController {
         _view.y = pnt.y;
     }
 
-    public function get view():Sprite {
+    public function get view():BotView {
         return _view;
     }
 
-    public function get object():FieldObject {
+    public function get object():Bot {
         return _object;
     }
 
-    public function set object(value:FieldObject):void {
+    public function set object(value:Bot):void {
         _object = value;
     }
+
 }
 }
