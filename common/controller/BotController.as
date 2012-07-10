@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
+import com.greensock.TimelineLite;
 import com.greensock.TweenLite;
+import com.greensock.easing.Linear;
 
 import common.model.Bot;
 import common.model.IsoTile;
@@ -37,6 +39,13 @@ public class BotController {
         update_position();
     }
 
+//    private function update_position():void{
+//        var pnt:Point = _apply_axises(_object);
+//        pnt = IsoMathUtil.isoToScreen(pnt.x, pnt.y);
+//        _view.x = pnt.x;
+//        _view.y = pnt.y;
+//    }
+
     private function update_position():void{
         var pnt:Point = _apply_axises(_object);
         pnt = IsoMathUtil.isoToScreen(pnt.x, pnt.y);
@@ -56,18 +65,21 @@ public class BotController {
         _object = value;
     }
 
+    private var _my_timeline:TimelineLite = new TimelineLite();
     public function move_to(end:IsoTile, resorter:Function):void{
+        _my_timeline.stop();
+        _my_timeline.clear();
+        _my_timeline.restart();
+
         var path:Array = _object.find_path(end);
         path.shift();
-        var self:BotController = this;
-        var id:uint = setInterval(function():void{
-            _object.x = path[0].x;
-            _object.y = path[0].y;
-            resorter(self);
-            path.shift();
-            if(path.length == 0)
-                clearInterval(id);
-        }, 200);
-    }
+        var pnt:Point;
+
+        for each(var p:IsoTile in path){
+            pnt = IsoMathUtil.isoToScreen(p.x * FieldController.TILE_WIDTH, (14 - p.y) * FieldController.TILE_LENGTH);
+            _my_timeline.append(new TweenLite(_view, 1, {x:pnt.x, y:pnt.y, ease:Linear.easeNone}), 0);
+        }
+        _my_timeline.play();
+     }
 }
 }
