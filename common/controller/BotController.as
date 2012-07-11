@@ -15,8 +15,6 @@ import common.model.IsoTile;
 import common.view.BotView;
 
 import flash.geom.Point;
-import flash.utils.clearInterval;
-import flash.utils.setInterval;
 
 import utils.iso.IsoMathUtil;
 
@@ -24,31 +22,27 @@ public class BotController {
 
     private var _object:Bot;
     private var _view:BotView = new BotView();
+
+    // moving
+    private var _moving_queue:TimelineLite = new TimelineLite();
+
     public function BotController() {
     }
 
-    private var _apply_axises:Function;
-    public function draw(apply_axises:Function):void{
+    public function draw(update_only:Boolean = false):void{
         if(!_object)
-            throw new Error("BotController -> draw(): object is null");
+            throw new Error("FieldObjectController -> draw(): object is null");
 
-        _view.object = _object;
-        _view.draw();
+        if(!update_only){
+            _view.object = _object;
+            _view.draw();
+        }
 
-        _apply_axises = apply_axises;
         update_position();
     }
 
-//    private function update_position():void{
-//        var pnt:Point = _apply_axises(_object);
-//        pnt = IsoMathUtil.isoToScreen(pnt.x, pnt.y);
-//        _view.x = pnt.x;
-//        _view.y = pnt.y;
-//    }
-
     private function update_position():void{
-        var pnt:Point = _apply_axises(_object);
-        pnt = IsoMathUtil.isoToScreen(pnt.x, pnt.y);
+        var pnt:Point = IsoMathUtil.isoToScreen(_object.x_px, _object.y_px);
         _view.x = pnt.x;
         _view.y = pnt.y;
     }
@@ -65,21 +59,37 @@ public class BotController {
         _object = value;
     }
 
-    private var _my_timeline:TimelineLite = new TimelineLite();
-    public function move_to(end:IsoTile, resorter:Function):void{
-        _my_timeline.stop();
-        _my_timeline.clear();
-        _my_timeline.restart();
-
+    public function move_to(end:IsoTile, single_resorter:Function):void{
+        clear_moving_queue();
         var path:Array = _object.find_path(end);
         path.shift();
-        var pnt:Point;
+        fill_moving_queue(path, single_resorter);
+        start_moving_queue()
+    }
 
+    // procedurin` wrapper
+    private function clear_moving_queue():void {
+        _moving_queue.stop();
+        _moving_queue.clear();
+        _moving_queue.restart();
+    }
+
+    private function start_moving_queue():void{
+        _moving_queue.play();
+    }
+
+    private function fill_moving_queue(path:Array, on_complete_resort:Function):void{
+        var step:Object;
         for each(var p:IsoTile in path){
-            pnt = IsoMathUtil.isoToScreen(p.x * FieldController.TILE_WIDTH, (14 - p.y) * FieldController.TILE_LENGTH);
-            _my_timeline.append(new TweenLite(_view, 1, {x:pnt.x, y:pnt.y, ease:Linear.easeNone}), 0);
+            step = {x_px:p.x_px, y_px:p.y_px, ease:Linear.easeNone, onUpdate: update_position, onComplete: on_complete_step};
+            _moving_queue.append(new TweenLite(_object, 0.5, step));
         }
-        _my_timeline.play();
-     }
+
+        var self:BotController = this;
+        function on_complete_step():void{
+            _object.move_to_px(_object.x_px, _object.y_px); // tweening via
+            on_complete_resort(self);
+        }
+    }
 }
 }

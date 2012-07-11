@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import common.controller.FieldObjectController;
 import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
@@ -16,6 +15,8 @@ import common.view.IsoGridView;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+
+import utils.DebugUtils;
 
 import utils.FieldUtils;
 
@@ -56,7 +57,7 @@ public class FieldController {
     }
 
     public function draw_grid():void{
-        _grid_view.draw(apply_axises);
+        _grid_view.draw();
     }
 
     // BUILDINGS
@@ -79,8 +80,7 @@ public class FieldController {
         }
 
         var building:FieldObject = new FieldObject(w, l, 2);
-        building.x = x;
-        building.y = y;
+        building.move_to(x, y);
 
         var building_c:FieldObjectController = new FieldObjectController();
         building_c.object = building;
@@ -90,9 +90,9 @@ public class FieldController {
         return true;
     }
 
-    public function draw_all_objects():void{
+    public function draw_all_objects(update_only:Boolean = false):void{
         for each(var p:* in _all_objects){
-            p.draw(apply_axises);
+            p.draw(update_only);
             _objects_view.addChild(p.view);
         }
 
@@ -126,8 +126,7 @@ public class FieldController {
         }
 
         var bot:Bot = new Bot(1, _grid);
-        bot.x = x;
-        bot.y = y;
+        bot.move_to(x, y);
 
         var bot_c:BotController = new BotController();
         bot_c.object = bot;
@@ -155,12 +154,13 @@ public class FieldController {
 
     private function z_sort():void{
         ZorderUtils.custom_zorder(_all_objects);
+        draw_all_objects(true);
     }
 
     private function resort_single_object(o_c:BotController):void{
         _all_objects.splice(_all_objects.indexOf(o_c), 1);
         ZorderUtils.insert_resort_single_object(o_c, _all_objects);
-        draw_all_objects();
+        draw_all_objects(true);
     }
 
     public function get view():Sprite {
@@ -169,24 +169,6 @@ public class FieldController {
 
     public function get grid():IsoGrid{
         return _grid;
-    }
-
-    // orient axis
-    var pnt:Point = new Point();
-    private function apply_axises(o:*):Point{
-        pnt.x = apply_x_axis(o);
-        pnt.y = apply_y_axis(o);
-        return pnt;
-    }
-
-    private function apply_x_axis(o:*):int{
-        return o.x * TILE_WIDTH;
-    }
-
-    private function apply_y_axis(o:*):int{
-        var y_inv:int = _grid.length - 1;
-        var l_inv:int = o.length - 1;
-        return (y_inv - (o.y + l_inv)) * TILE_LENGTH;
     }
 
     // field width is same to grid width
@@ -205,28 +187,25 @@ public class FieldController {
         process_bot_click(e);
     }
 
-
     // TODO: make `em walk
     private function process_bot_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-        var inv_y:uint = _grid.length;
-        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, inv_y - coords.y / TILE_LENGTH);
-        //_bots[0].object.find_path(tile);
+        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
+//        _bots[0].object.find_path(tile);
         _bots[0].move_to(tile, resort_single_object);
         draw_grid();
     }
 
     private function process_building_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-        var inv_y:uint = _grid.length;
-        if(create_building(coords.x / TILE_WIDTH, inv_y - coords.y / TILE_LENGTH, 3, 2))
+
+        if(create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 3, 2))
             draw();
     }
 
     private function process_grid_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-        var inv_y:uint = _grid.length;
-        var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, inv_y - coords.y / TILE_LENGTH, 3, 2);
+        var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 3, 2);
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;
         }

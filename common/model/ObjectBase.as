@@ -6,22 +6,58 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.FieldController;
+
+import flash.geom.Point;
+
 import utils.FieldUtils;
 
+// base not abstract
 public class ObjectBase {
 
-    protected var _x:uint;
-    protected var _y:uint;
-    protected var _width:uint = 1;
-    protected var _length:uint = 1;
-    protected var _debug_height:uint = 2;
+    protected var _x_px:Number; // draw by this pixel coords
+    protected var _y_px:Number;
 
-    protected var _is_reachable:Boolean;
-    protected var _is_occupied:Boolean;
-    protected var _is_target:Boolean;
-    protected var _type:int;
+    protected var _x:uint; // tile field pos
+    protected var _y:uint;
+    protected var _width:uint = 1; // tile field size
+    protected var _length:uint = 1;
+    protected var _debug_height:uint = 2; // so we got box here
+
+    protected var _is_reachable:Boolean; // true - u can walk here
+    protected var _is_occupied:Boolean;  // false - u can build here
+    protected var _is_target:Boolean; // true - bots go for it
+
+    protected var _type:int; // use for bots etc.
 
     public function ObjectBase() {
+    }
+
+    // move to exact tile, pos in definite point into the tile
+    var pnt:Point = new Point();
+    public function move_to(x, y):void{
+        _x = x;
+        _y = y;
+        _x_px = _x * FieldController.TILE_WIDTH;
+        _y_px = _y * FieldController.TILE_LENGTH;
+    }
+
+    // move to any field point but connected to exact tile
+    public function move_to_px(x_px:int, y_px:int):void{
+        _x_px = x_px;
+        _y_px = y_px;
+        _x = _x_px / FieldController.TILE_WIDTH;
+        _y = _y_px / FieldController.TILE_LENGTH;
+    }
+
+    // use for z-order
+    public function get topDiagonalId():int{
+        return x + width - 1  + y;
+    }
+
+    // use for z-order
+    public function get bottomDiagonalId():int{
+        return x + y + length - 1;
     }
 
     public function get x():uint {
@@ -72,14 +108,6 @@ public class ObjectBase {
         _is_occupied = value;
     }
 
-    public function get topDiagonalId():int{
-        return (x + width) - (y  + length);
-    }
-
-    public function get bottomDiagonalId():int{
-        return x - y;
-    }
-
     public function intersects(o:ObjectBase):Boolean{
         var obj_1:Object = {x: x, y: y, w: width, h: length};
         var obj_2:Object = {x: o.x, y: o.y, w: o.width, h: o.length};
@@ -108,6 +136,22 @@ public class ObjectBase {
 
     public function set debug_height(value:uint):void {
         _debug_height = value;
+    }
+
+    public function get x_px():Number {
+        return _x_px;
+    }
+
+    public function get y_px():Number {
+        return _y_px;
+    }
+
+    public function set x_px(value:Number):void {
+        _x_px = value;
+    }
+
+    public function set y_px(value:Number):void {
+        _y_px = value;
     }
 }
 }

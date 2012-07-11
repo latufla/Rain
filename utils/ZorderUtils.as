@@ -28,7 +28,7 @@ public class ZorderUtils {
         if(a.x > b.x && a.bottomDiagonalId >= b.topDiagonalId)
             return 1;
 
-        if(a.y + a.length <= b.y && a.topDiagonalId > b.bottomDiagonalId)
+        if(a.y >= b.y + b.length && a.topDiagonalId > b.bottomDiagonalId)
             return 1;
 
         return -1;

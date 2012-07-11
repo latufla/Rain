@@ -12,8 +12,8 @@ public class Bot extends ObjectBase{
 
     public static const SIMPLE_TYPE:int = 1;
 
-    protected var _x_px:int; // may be not directly connected with tiled x and y
-    protected var _y_px:int;
+//    protected var _x_px:int; // may be not directly connected with tiled x and y
+//    protected var _y_px:int;
 
 //    protected var _pathfinding_nodes:Vector.<PNode> = new Vector.<PNode>();
 
@@ -43,22 +43,6 @@ public class Bot extends ObjectBase{
 
     public function get position_tile():IsoTile{
         return _grid.get_tile(x, y);
-    }
-
-    public function get x_px():int {
-        return _x_px;
-    }
-
-    public function set x_px(value:int):void {
-        _x_px = value;
-    }
-
-    public function get y_px():int {
-        return _y_px;
-    }
-
-    public function set y_px(value:int):void {
-        _y_px = value;
     }
 }
 }

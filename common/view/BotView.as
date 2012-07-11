@@ -35,6 +35,5 @@ public class BotView extends Sprite{
     public function set object(value:Bot):void {
         _object = value;
     }
-
 }
 }

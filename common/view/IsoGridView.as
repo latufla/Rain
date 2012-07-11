@@ -27,7 +27,7 @@ public class IsoGridView extends Sprite{
     public function IsoGridView() {
     }
 
-    public function draw(apply_axises:Function):void{
+    public function draw():void{
         if(!_grid)
             throw new Error("IsoGridView -> draw(): grid is null" );
 
@@ -38,8 +38,8 @@ public class IsoGridView extends Sprite{
         var self:Sprite = this;
         _grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
             v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
-                _tile_renderer.draw(tile, self, apply_axises);
-                _tile_renderer.draw_debug_info(tile, self, apply_axises, create_debug_field());
+                _tile_renderer.draw(tile, self);
+                _tile_renderer.draw_debug_info(tile, self, create_debug_field());
             });
         });
 
@@ -71,7 +71,6 @@ public class IsoGridView extends Sprite{
         x = -bounds.x;
         y = -bounds.y;
     }
-
 
     public function get grid():IsoGrid {
         return _grid;

@@ -14,6 +14,7 @@ import flash.display.Sprite;
 import flash.geom.Point;
 
 import utils.iso.IsoMathUtil;
+import utils.iso.IsoRenderUtil;
 
 public class FieldObjectController {
 
@@ -23,15 +24,20 @@ public class FieldObjectController {
 
     }
 
-    public function draw(apply_axises:Function):void{
+    public function draw(update_only:Boolean = false):void{
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
-        _view.object = _object;
-        _view.draw();
+        if(!update_only){
+            _view.object = _object;
+            _view.draw();
+        }
 
-        var pnt:Point = apply_axises(_object);
-        pnt = IsoMathUtil.isoToScreen(pnt.x, pnt.y);
+        update_position();
+    }
+
+    private function update_position():void {
+        var pnt:Point = IsoMathUtil.isoToScreen(_object.x_px, _object.y_px);
         _view.x = pnt.x;
         _view.y = pnt.y;
     }
