@@ -8,13 +8,15 @@
 package utils.creator {
 import common.controller.FieldController;
 
+import flash.utils.setTimeout;
+
 public class DemoFieldCreator {
 
     private static const GRID:Array = [
         [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
         [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -52,21 +54,30 @@ public class DemoFieldCreator {
 
         for (var i:int = 0; i < GRID.length; i++) {
             for (var j:int = 0; j < GRID[i].length; j++) {
-                if(GRID[i][j] == 0)
-                    field_c.grid.get_tile(i, j).is_reachable = false;
+                switch (GRID[i][j]){
+                    case 0:
+                        field_c.grid.get_tile(i, j).is_reachable = false;
+                        break;
+                    case 2:
+                        field_c.grid.get_tile(i, j).is_target = true;
+                    default:
+                        // do nothing
+                }
             }
-
         }
 
         for each (var p:Object in OBJECTS){
             field_c.create_building(p.x, p.y, p.w, p.l);
         }
 
-        for each (var p:Object in BOTS){
-            field_c.create_bot(p.x, p.y, p.w, p.l);
-        }
-        return field_c;
 
+        for each (var p:Object in BOTS){
+            i = 0;
+            while(i++ < 25)
+                setTimeout(field_c.create_bot, i * 1000, p.x, p.y, p.w, p.l);
+        }
+
+        return field_c;
     }
 }
 }

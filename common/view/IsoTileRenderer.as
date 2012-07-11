@@ -36,6 +36,9 @@ public class IsoTileRenderer {
         if(!tile.is_reachable)
             color = NON_REACHABLE_COLOR;
 
+        if(tile.is_target)
+            color = 0x0000FF;
+
         var size:Rectangle = new Rectangle (tile.x_px, tile.y_px, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
         IsoRenderUtil.draw_iso_rect(layer, size, 1, color, color, 0.2);
     }

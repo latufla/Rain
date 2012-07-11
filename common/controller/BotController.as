@@ -61,10 +61,16 @@ public class BotController {
 
     public function move_to(end:IsoTile, single_resorter:Function):void{
         clear_moving_queue();
+
         var path:Array = _object.find_path(end);
         path.shift();
+
         fill_moving_queue(path, single_resorter);
         start_moving_queue()
+    }
+
+    public function move_to_target(single_resorter:Function){
+        move_to(_object.find_target(), single_resorter);
     }
 
     // procedurin` wrapper
@@ -82,7 +88,7 @@ public class BotController {
         var step:Object;
         for each(var p:IsoTile in path){
             step = {x_px:p.x_px, y_px:p.y_px, ease:Linear.easeNone, onUpdate: update_position, onComplete: on_complete_step};
-            _moving_queue.append(new TweenLite(_object, 0.5, step));
+            _moving_queue.append(new TweenLite(_object, 2, step));
         }
 
         var self:BotController = this;

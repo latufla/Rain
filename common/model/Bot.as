@@ -20,6 +20,7 @@ public class Bot extends ObjectBase{
 
     protected var _grid:IsoGrid;
     protected var _path:Array = [];
+    protected var _target:IsoTile;
 
     public function Bot(type:int, grid:IsoGrid) {
         _type = type;
@@ -44,5 +45,14 @@ public class Bot extends ObjectBase{
     public function get position_tile():IsoTile{
         return _grid.get_tile(x, y);
     }
+
+    public function find_target():IsoTile{
+        return _grid.get_tile(3, 13);
+    }
+
+    public function find_path_to_target():Array{
+        return find_path(find_target());
+    }
+
 }
 }

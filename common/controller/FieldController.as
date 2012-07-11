@@ -132,6 +132,10 @@ public class FieldController {
         bot_c.object = bot;
         _bots.push(bot_c);
         _all_objects.push(bot_c);
+
+        bot_c.move_to_target(resort_single_object);
+        bot_c.draw();
+        z_sort();
         return true;
     }
 
