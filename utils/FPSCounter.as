@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package utils{
+import common.model.ObjectBase;
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.text.TextField;

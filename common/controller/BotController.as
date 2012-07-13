@@ -36,6 +36,7 @@ public class BotController {
         if(!update_only){
             _view.object = _object;
             _view.draw();
+
         }
 
         update_position();

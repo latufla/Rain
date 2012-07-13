@@ -28,7 +28,7 @@ public class PathfindUtils {
     }
 
     public static function find_path(first_node:PNode, destination_node:PNode, connected_node_function:Function ):Array 	{
-        DebugUtils.start_profile_block("find_path");
+//        DebugUtils.start_profile_block("find_path");
         var open_nodes:Array = []; // sortOn
         var closed_nodes:Vector.<PNode> = new Vector.<PNode>();
         var current_node:PNode = first_node;
@@ -73,7 +73,7 @@ public class PathfindUtils {
             current_node = open_nodes.shift() as PNode;
         }
 
-        DebugUtils.stop_profile_block("find_path");
+//        DebugUtils.stop_profile_block("find_path");
         return build_path(destination_node, first_node);
     }
 

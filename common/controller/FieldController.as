@@ -13,6 +13,7 @@ import common.model.IsoTile;
 import common.view.IsoGridView;
 
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
@@ -130,12 +131,14 @@ public class FieldController {
 
         var bot_c:BotController = new BotController();
         bot_c.object = bot;
-        _bots.push(bot_c);
-        _all_objects.push(bot_c);
-
         bot_c.move_to_target(resort_single_object);
         bot_c.draw();
-        z_sort();
+
+        _bots.push(bot_c);
+        // TODO: temprorary, cause in blitting engine we will redraw screen every frame
+        ZorderUtils.insert_resort_single_object(bot_c, _all_objects);
+        draw_all_objects(true);
+
         return true;
     }
 

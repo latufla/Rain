@@ -30,7 +30,10 @@ public class ObjectBase {
 
     protected var _type:int; // use for bots etc.
 
+    protected var _id:uint = 0;
+    public static var count:int = 0;
     public function ObjectBase() {
+
     }
 
     // move to exact tile, pos in definite point into the tile
@@ -152,6 +155,10 @@ public class ObjectBase {
 
     public function set y_px(value:Number):void {
         _y_px = value;
+    }
+
+    public function get id():uint {
+        return _id;
     }
 }
 }

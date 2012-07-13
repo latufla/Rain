@@ -73,7 +73,7 @@ public class DemoFieldCreator {
 
         for each (var p:Object in BOTS){
             i = 0;
-            while(i++ < 25)
+            while(i++ < 50)
                 setTimeout(field_c.create_bot, i * 1000, p.x, p.y, p.w, p.l);
         }
 

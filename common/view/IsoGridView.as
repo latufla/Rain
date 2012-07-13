@@ -9,7 +9,12 @@ package common.view {
 import common.model.IsoGrid;
 import common.model.IsoTile;
 
+import flash.display.Bitmap;
+
+import flash.display.BitmapData;
+
 import flash.display.Sprite;
+import flash.geom.Matrix;
 import flash.geom.Rectangle;
 import flash.text.TextField;
 
@@ -35,13 +40,27 @@ public class IsoGridView extends Sprite{
         graphics.clear();
 
         DebugUtils.start_profile_block("IsoGridView -> draw()");
-        var self:Sprite = this;
+//        var self:Sprite = this;
+        var sp:Sprite = new Sprite();
         _grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
             v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
-                _tile_renderer.draw(tile, self);
-                _tile_renderer.draw_debug_info(tile, self, create_debug_field());
+                _tile_renderer.draw(tile, sp);
+//                _tile_renderer.draw_debug_info(tile, self, create_debug_field());
             });
         });
+
+        var bounds:Rectangle = sp.getBounds(sp);
+        var bd:BitmapData = new BitmapData(bounds.width, bounds.height);
+        var m:Matrix = new Matrix();
+        m.translate(-bounds.x, -bounds.y);
+        bd.draw(sp, m);
+
+//
+        var bitmap:Bitmap = new Bitmap();
+        bitmap.bitmapData = bd;
+        bitmap.x = bounds.x;
+        bitmap.y = bounds.y;
+        addChild(bitmap);
 
         align_by_bounds();
         DebugUtils.stop_profile_block("IsoGridView -> draw()")

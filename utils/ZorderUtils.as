@@ -15,15 +15,23 @@ public class ZorderUtils {
 
 
     public static function custom_zorder(list:Array):Array{
-        var start_time:Number = getTimer();
+//        var start_time:Number = getTimer();
         var res:Array = list.sort(tile_object_compare);
-        trace("custom_zorder end. Elapsed: ", getTimer() - start_time);
+//        trace("custom_zorder end. Elapsed: ", getTimer() - start_time);
         return res;
     }
 
     public static function tile_object_compare(a_c:*, b_c:*):int{
         var a:ObjectBase = a_c.object;
         var b:ObjectBase = b_c.object;
+
+        // determine same tile objects
+        if(a.x == b.x && a.y == b.y){
+            if(a.id < b.id)
+                return 1;
+            else
+                return -1;
+        }
 
         if(a.x > b.x && a.bottomDiagonalId >= b.topDiagonalId)
             return 1;
