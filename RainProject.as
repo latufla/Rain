@@ -8,6 +8,9 @@ import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
+import utils.ArrayUtils;
+import utils.DebugUtils;
+
 import utils.FPSCounter;
 import utils.iso.IsoRenderUtil;
 
@@ -27,9 +30,15 @@ public class RainProject extends Sprite {
         stage.align = "left";
         STAGE = stage;
 
+        var a:Array = [];//[1, 3, 4, 7, 9];
+
+        for(var i:uint = 1; i < 2000; i += int(Math.random() * 10))
+            a.push(i);
         _engine = new Engine();
         _engine.init();
         STAGE.addChild(new FPSCounter());
+
+
 
 //        var sp:Sprite = new Sprite();
 //        IsoRenderUtil.draw_iso_box(sp, 10, 10, 50, 0xC2C3C2);

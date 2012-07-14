@@ -10,15 +10,13 @@ public class ArrayUtils {
     public function ArrayUtils() {
     }
 
-    public function bin_search(a:Array, e:*, cmp:Function): int{
+    public static function get_insert_index_in_sorted(a:Array, e:*, cmp:Function): int{
         var leftIndex:int;
         var rightIndex:int = a.length - 1;
         var middleIndex:int;
         var middleElement:*;
 
         var cmp_res:int;
-
-        //[1, 2, 5, 6, 8, 12, 21];
 
         while (leftIndex <= rightIndex)
         {
@@ -39,6 +37,5 @@ public class ArrayUtils {
 
         return middleIndex + 1;
     }
-
 }
 }

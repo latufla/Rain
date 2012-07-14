@@ -164,10 +164,14 @@ public class FieldController {
         draw_all_objects(true);
     }
 
+    // TODO: temprorary decision before blitting
     private function resort_single_object(o_c:BotController):void{
         _all_objects.splice(_all_objects.indexOf(o_c), 1);
-        ZorderUtils.insert_resort_single_object(o_c, _all_objects);
-        draw_all_objects(true);
+//        ZorderUtils.insert_resort_single_object(o_c, _all_objects);
+        var idx:int = ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
+        idx = idx == 0 ? 1 : idx;
+        _objects_view.setChildIndex(o_c.view, idx);
+        //draw_all_objects(true);
     }
 
     public function get view():Sprite {
