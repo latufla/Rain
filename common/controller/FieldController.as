@@ -59,6 +59,11 @@ public class FieldController {
 
     public function draw_grid():void{
         _grid_view.draw();
+        _view.addEventListener(Event.ENTER_FRAME, on_ef)
+    }
+
+    private function on_ef(e:Event):void {
+        draw_all_objects(true);
     }
 
     // BUILDINGS
@@ -135,9 +140,7 @@ public class FieldController {
         bot_c.draw();
 
         _bots.push(bot_c);
-        // TODO: temprorary, cause in blitting engine we will redraw screen every frame
         ZorderUtils.insert_resort_single_object(bot_c, _all_objects);
-        draw_all_objects(true);
 
         return true;
     }
@@ -168,10 +171,7 @@ public class FieldController {
     private function resort_single_object(o_c:BotController):void{
         _all_objects.splice(_all_objects.indexOf(o_c), 1);
 //        ZorderUtils.insert_resort_single_object(o_c, _all_objects);
-        var idx:int = ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
-        idx = idx == 0 ? 1 : idx;
-        _objects_view.setChildIndex(o_c.view, idx);
-        //draw_all_objects(true);
+       ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
     }
 
     public function get view():Sprite {

@@ -14,7 +14,7 @@ import utils.DebugUtils;
 import utils.FPSCounter;
 import utils.iso.IsoRenderUtil;
 
-[SWF(width="1280", height="748", frameRate="60", backgroundColor = "0xFFFFFF")]
+[SWF(width="1280", height="748", frameRate="30", backgroundColor = "0xFFFFFF")]
 public class RainProject extends Sprite {
 
     private var _engine:Engine;
