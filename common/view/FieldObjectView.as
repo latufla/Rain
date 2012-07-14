@@ -20,12 +20,11 @@ import flash.geom.Rectangle;
 import utils.iso.IsoRenderUtil;
 
 public class FieldObjectView extends Sprite{
+    private var _bd:BitmapData;
+    private var _x_offset:int;// we need them, cause draw at 0, 0 on bd
+    private var _y_offset:int;
 
     private var _object:FieldObject;
-
-    public var bd:BitmapData;
-    public var x_offset:int;
-    public var y_offset:int;
 
     public function FieldObjectView() {
     }
@@ -34,20 +33,24 @@ public class FieldObjectView extends Sprite{
         if(!_object)
             throw new Error("FieldObjectView -> draw(): object is null" );
 
-        var sp:Sprite = new Sprite();
+        var sp:Sprite = sprite_to_draw;
+        var bounds:Rectangle = sp.getBounds(sp);
+        _x_offset = bounds.x;
+        _y_offset = bounds.y;
+        _bd = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
+        var m:Matrix = new Matrix();
+        m.translate(-_x_offset, -_y_offset);
+        bd.draw(sp, m);
+    }
+
+    private function get sprite_to_draw():Sprite{
         var w:uint = _object.width * FieldController.TILE_WIDTH - 2;
         var l:uint = _object.length * FieldController.TILE_LENGTH - 2;
         var h:uint = _object.debug_height * FieldController.TILE_LENGTH;
+        var sp:Sprite = new Sprite();
         IsoRenderUtil.draw_iso_box(sp, w, l, h, 0xC2C3C2);
 
-        var bounds:Rectangle = sp.getBounds(sp);
-
-        bd = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
-        var m:Matrix = new Matrix();
-        m.translate(-bounds.x, -bounds.y);
-        bd.draw(sp, m);
-        x_offset = bounds.x;
-        y_offset = bounds.y;
+        return sp;
     }
 
     public function get object():FieldObject{
@@ -56,6 +59,18 @@ public class FieldObjectView extends Sprite{
 
     public function set object(value:FieldObject):void {
         _object = value;
+    }
+
+    public function get bd():BitmapData {
+        return _bd;
+    }
+
+    public function get y_offset():int {
+        return _y_offset;
+    }
+
+    public function get x_offset():int {
+        return _x_offset;
     }
 }
 }
