@@ -19,6 +19,9 @@ import flash.geom.Rectangle;
 import utils.iso.IsoRenderUtil;
 
 public class BotView extends Sprite{
+    public var bd:BitmapData;
+    public var x_offset:int;
+    public var y_offset:int;
 
     private var _object:Bot;
     public function BotView() {
@@ -35,17 +38,13 @@ public class BotView extends Sprite{
         IsoRenderUtil.draw_iso_box(sp, w, l, h, 0xC2C3C2);
 
         var bounds:Rectangle = sp.getBounds(sp);
-        var bd:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
+
+        bd = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
         var m:Matrix = new Matrix();
         m.translate(-bounds.x, -bounds.y);
         bd.draw(sp, m);
-
-//
-        var bitmap:Bitmap = new Bitmap();
-        bitmap.bitmapData = bd;
-        bitmap.x = bounds.x;
-        bitmap.y = bounds.y;
-        addChild(bitmap);
+        x_offset = bounds.x;
+        y_offset = bounds.y;
     }
 
     public function get object():Bot{

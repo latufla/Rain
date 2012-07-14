@@ -14,7 +14,10 @@ import common.model.Bot;
 import common.model.IsoTile;
 import common.view.BotView;
 
+import flash.display.BitmapData;
+
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
 import utils.iso.IsoMathUtil;
 
@@ -29,7 +32,7 @@ public class BotController {
     public function BotController() {
     }
 
-    public function draw(update_only:Boolean = false):void{
+    public function draw(bd:BitmapData, update_only:Boolean = false):void{
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
@@ -40,6 +43,9 @@ public class BotController {
         }
 
         update_position();
+        bd.copyPixels(_view.bd,
+                new Rectangle(0, 0, _view.bd.width, _view.bd.height),
+                new Point(_view.x + 748 + _view.x_offset, _view.y + _view.y_offset), null, null, true );
     }
 
     private function update_position():void{
