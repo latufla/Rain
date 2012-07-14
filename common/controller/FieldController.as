@@ -52,6 +52,7 @@ public class FieldController {
 
     private function init():void {
         _view.addEventListener(MouseEvent.CLICK, on_click);
+        _view.addEventListener(Event.ENTER_FRAME, on_ef_render);
         _view.addChild(_grid_view);
         _view.addChild(_objects_view);
     }
@@ -65,13 +66,11 @@ public class FieldController {
 
     public function draw_grid():void{
         _grid_view.draw();
-        trace("grid", _grid_view.x, _grid_view.y);
-        _view.addEventListener(Event.ENTER_FRAME, on_ef)
     }
 
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
     private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
-    private function on_ef(e:Event):void {
+    private function on_ef_render(e:Event):void {
         if(_buffer[1].bitmapData)
             _buffer[1].bitmapData.dispose();
 
@@ -114,8 +113,7 @@ public class FieldController {
         var building_c:FieldObjectController = new FieldObjectController();
         building_c.object = building;
         _buildings.push(building_c);
-        _all_objects.push(building_c);
-
+        ZorderUtils.bin_insert_resort_single_object(building_c, _all_objects);
         return true;
     }
 
@@ -157,13 +155,12 @@ public class FieldController {
         bot_c.object = bot;
         bot_c.move_to_target(resort_single_object);
         _bots.push(bot_c);
-
-        ZorderUtils.insert_resort_single_object(bot_c, _all_objects);
+        ZorderUtils.bin_insert_resort_single_object(bot_c, _all_objects);
         return true;
     }
 
     // RENDER
-    public function draw(need_resort:Boolean = true):void{
+    public function draw(need_resort:Boolean = false):void{
         if(need_resort)
             z_sort();
 
@@ -181,13 +178,10 @@ public class FieldController {
 
     private function z_sort():void{
         ZorderUtils.custom_zorder(_all_objects);
-        //draw_all_objects(true);
     }
 
-    // TODO: temprorary decision before blitting
     private function resort_single_object(o_c:BotController):void{
         _all_objects.splice(_all_objects.indexOf(o_c), 1);
-//        ZorderUtils.insert_resort_single_object(o_c, _all_objects);
        ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
     }
 

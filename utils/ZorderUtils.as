@@ -73,28 +73,28 @@ public class ZorderUtils {
 //        }
 //    }
 
-    public static function insert_resort_single_object(obj_c:*, a:Array):void {
-        if(tile_object_compare(a[0], obj_c) == 1){
-            a.unshift(obj_c);
-            return;
-        }
-
-        if(tile_object_compare(a[a.length - 1], obj_c) == -1){
-            a.push(obj_c);
-            return;
-        }
-
-//        find first top in ordered view_list
-        for (var i:int = 0; i < a.length; i++) {
-            if(tile_object_compare(a[i], obj_c) == 1){
-                a.splice(i, 0, obj_c);
-                return;
-            }
-        }
-    }
+//    public static function insert_resort_single_object(obj_c:*, a:Array):void {
+//        if(tile_object_compare(a[0], obj_c) == 1){
+//            a.unshift(obj_c);
+//            return;
+//        }
+//
+//        if(tile_object_compare(a[a.length - 1], obj_c) == -1){
+//            a.push(obj_c);
+//            return;
+//        }
+//
+////        find first top in ordered view_list
+//        for (var i:int = 0; i < a.length; i++) {
+//            if(tile_object_compare(a[i], obj_c) == 1){
+//                a.splice(i, 0, obj_c);
+//                return;
+//            }
+//        }
+//    }
 
     public static function bin_insert_resort_single_object(obj_c:*, a:Array):int{
-        if(tile_object_compare(a[0], obj_c) == 1){
+        if(a.length == 0 || tile_object_compare(a[0], obj_c) == 1){
             a.unshift(obj_c);
             return 0;
         }

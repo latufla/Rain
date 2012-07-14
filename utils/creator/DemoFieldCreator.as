@@ -35,8 +35,8 @@ public class DemoFieldCreator {
         {x:11, y:6, w:1, l:2},
         {x:1, y:3, w:1, l:2},
 //        {x:3, y:10, w:1, l:1},
+        {x:4, y:8, w:1, l:2},
         {x:2, y:8, w:1, l:3},
-        {x:4, y:7, w:1, l:2},
         {x:9, y:11, w:2, l:2}
     ]
 
