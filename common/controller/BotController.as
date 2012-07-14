@@ -36,7 +36,7 @@ public class BotController {
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
-        if(!update_only){
+        if(!update_only || !_view.bd){
             _view.object = _object;
             _view.draw();
 

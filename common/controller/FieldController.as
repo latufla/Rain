@@ -71,7 +71,6 @@ public class FieldController {
 
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
     private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
-    private var _d_bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
     private function on_ef(e:Event):void {
         if(_buffer[1].bitmapData)
             _buffer[1].bitmapData.dispose();
@@ -123,11 +122,7 @@ public class FieldController {
     public function draw_all_objects(update_only:Boolean = false):void{
         for each(var p:* in _all_objects){
             p.draw(_bd, update_only);
-           // _objects_view.addChild(p.view);
         }
-
-//        _objects_view.x = _grid_view.x;
-//        _objects_view.y = _grid_view.y;
     }
 
     public function debug_generate_random_buildings():void{
@@ -161,11 +156,9 @@ public class FieldController {
         var bot_c:BotController = new BotController();
         bot_c.object = bot;
         bot_c.move_to_target(resort_single_object);
-        bot_c.draw(_bd);
-
         _bots.push(bot_c);
-        ZorderUtils.insert_resort_single_object(bot_c, _all_objects);
 
+        ZorderUtils.insert_resort_single_object(bot_c, _all_objects);
         return true;
     }
 
@@ -219,7 +212,7 @@ public class FieldController {
     private function on_click(e:MouseEvent):void {
 //        process_grid_click(e)
 //        process_building_click(e);
-        process_bot_click(e);
+        //process_bot_click(e);
     }
 
     // TODO: make `em walk
