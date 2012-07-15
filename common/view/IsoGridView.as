@@ -12,6 +12,7 @@ import common.model.IsoTile;
 import flash.display.Bitmap;
 
 import flash.display.BitmapData;
+import flash.display.Shape;
 
 import flash.display.Sprite;
 import flash.geom.Matrix;
@@ -29,6 +30,11 @@ public class IsoGridView extends Sprite{
     private var _debug_fields:Array = [];
     private var _used_debug_fields:Array = [];
 
+    private var _shape_sprite:Sprite = new Sprite(); // sprite is for adding fields
+    private var _grid_view:Bitmap = new Bitmap();
+    private var _bd:BitmapData;
+    private var _matrix:Matrix = new Matrix();
+
     public function IsoGridView() {
     }
 
@@ -36,34 +42,44 @@ public class IsoGridView extends Sprite{
         if(!_grid)
             throw new Error("IsoGridView -> draw(): grid is null" );
 
-        clear_debug_fields();
-        graphics.clear();
-
         DebugUtils.start_profile_block("IsoGridView -> draw()");
-//        var self:Sprite = this;
-        var sp:Sprite = new Sprite();
-        _grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
+
+        clear_debug_fields();
+        draw_grid_shape(_grid, _tile_renderer);
+        draw_grid_bitmap(_bd, _matrix, _shape_sprite);
+        addChild(_grid_view);
+
+        align_by_bounds(); //TODO: sorry for that
+
+        DebugUtils.stop_profile_block("IsoGridView -> draw()")
+    }
+
+    private function draw_grid_shape(grid:IsoGrid, renderer:IsoTileRenderer):Sprite {
+        _shape_sprite.graphics.clear();
+        grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
             v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
-                _tile_renderer.draw(tile, sp);
-//                _tile_renderer.draw_debug_info(tile, self, create_debug_field());
+                renderer.draw(tile, _shape_sprite);
+//                renderer.draw_debug_info(tile, _shape_sprite, create_debug_field());
             });
         });
+        return _shape_sprite;
+    }
 
-        var bounds:Rectangle = sp.getBounds(sp);
-        var bd:BitmapData = new BitmapData(bounds.width, bounds.height);
-        var m:Matrix = new Matrix();
+    // TODO:fuck the double buffring now
+    private function draw_grid_bitmap(bd:BitmapData, m:Matrix, source:Sprite):Bitmap {
+        if(bd)
+            bd.dispose();
+
+        var bounds:Rectangle = source.getBounds(source);
+        bd = new BitmapData(bounds.width, bounds.height);
+        m.identity();
         m.translate(-bounds.x, -bounds.y);
-        bd.draw(sp, m);
+        bd.draw(source, m);
 
-//
-        var bitmap:Bitmap = new Bitmap();
-        bitmap.bitmapData = bd;
-        bitmap.x = bounds.x;
-        bitmap.y = bounds.y;
-        addChild(bitmap);
-
-        align_by_bounds();
-        DebugUtils.stop_profile_block("IsoGridView -> draw()")
+        _grid_view.bitmapData = bd;
+        _grid_view.x = bounds.x;
+        _grid_view.y = bounds.y;
+        return _grid_view;
     }
 
     private function create_debug_field():TextField{
