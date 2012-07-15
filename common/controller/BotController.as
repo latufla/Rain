@@ -45,7 +45,7 @@ public class BotController {
         update_position();
         bd.copyPixels(_view.bd,
                 new Rectangle(0, 0, _view.bd.width, _view.bd.height),
-                new Point(_view.x + _view.x_offset + 748, _view.y + _view.y_offset), null, null, true );
+                new Point(_view.x + 748, _view.y), null, null, true );
     }
 
     private function update_position():void{

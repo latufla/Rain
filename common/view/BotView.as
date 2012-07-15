@@ -63,6 +63,14 @@ public class BotView extends Sprite{
         return _bd;
     }
 
+    override public function get x():Number{
+        return super.x + _x_offset;
+    }
+
+    override public function get y():Number{
+        return super.y + _y_offset;
+    }
+
     public function get y_offset():int {
         return _y_offset;
     }

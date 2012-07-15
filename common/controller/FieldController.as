@@ -204,12 +204,12 @@ public class FieldController {
 
     // test clicks processing
     private function on_click(e:MouseEvent):void {
-        //process_grid_click(e)
-//        process_building_click(e);
+//       process_grid_click(e)
+        process_building_click(e);
         //process_bot_click(e);
     }
 
-    // TODO: make `em walk
+    // TODO: don`t use before refactoring
     private function process_bot_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
         var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
@@ -219,14 +219,12 @@ public class FieldController {
     }
 
     private function process_building_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-
-        if(create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 3, 2))
-            draw();
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - 748, e.localY);
+        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 2, 1);
     }
 
     private function process_grid_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - 748, e.localY);  // TODO: resolve 748
         var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 3, 2);
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;

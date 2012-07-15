@@ -31,7 +31,7 @@ public class FieldObjectController {
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
-        if(!update_only){
+        if(!update_only || !_view.bd){
             _view.object = _object;
             _view.draw();
         }
@@ -39,7 +39,7 @@ public class FieldObjectController {
         update_position();
         bd.copyPixels(_view.bd,
                 new Rectangle(0, 0, _view.bd.width, _view.bd.height),
-                new Point(_view.x + _view.x_offset  + 748, _view.y + _view.y_offset), null, null, true );
+                new Point(_view.x + 748, _view.y), null, null, true); // TODO: resolve 748
     }
 
     private function update_position():void {
