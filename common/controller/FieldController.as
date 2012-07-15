@@ -21,6 +21,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
 import utils.DebugUtils;
 
@@ -64,8 +65,22 @@ public class FieldController {
         _grid_view.grid = _grid;
     }
 
+    // ----
+    // normally iso coords are both - and + by x
+    // but we want display field view in 0, 0 of screen and
+    // see all the field from the most left point
+    // ----
+    // next time we click on _view or add some objects we translate
+    // coords with _x_grid_offset
+    private var _x_grid_offset:Number;
     public function draw_grid():void{
         _grid_view.draw();
+
+        var bounds:Rectangle = _grid_view.getBounds(_grid_view);
+        _grid_view.x = -bounds.x;
+        _grid_view.y = -bounds.y;
+
+        _x_grid_offset = -bounds.x;
     }
 
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
@@ -119,7 +134,7 @@ public class FieldController {
 
     public function draw_all_objects(update_only:Boolean = false):void{
         for each(var p:* in _all_objects){
-            p.draw(_bd, update_only);
+            p.draw(_bd, update_only, _x_grid_offset);
         }
     }
 
@@ -204,8 +219,8 @@ public class FieldController {
 
     // test clicks processing
     private function on_click(e:MouseEvent):void {
-//       process_grid_click(e)
-        process_building_click(e);
+       process_grid_click(e)
+//        process_building_click(e);
         //process_bot_click(e);
     }
 
@@ -219,13 +234,13 @@ public class FieldController {
     }
 
     private function process_building_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX - 748, e.localY);
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
         create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 2, 1);
     }
 
     private function process_grid_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX - 748, e.localY);  // TODO: resolve 748
-        var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 3, 2);
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);  // TODO: resolve 748
+        var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 1);
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;
         }

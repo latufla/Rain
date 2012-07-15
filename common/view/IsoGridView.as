@@ -49,8 +49,6 @@ public class IsoGridView extends Sprite{
         draw_grid_bitmap(_bd, _matrix, _shape_sprite);
         addChild(_grid_view);
 
-        align_by_bounds(); //TODO: sorry for that
-
         DebugUtils.stop_profile_block("IsoGridView -> draw()")
     }
 
@@ -75,9 +73,8 @@ public class IsoGridView extends Sprite{
         m.identity();
         m.translate(-bounds.x, -bounds.y);
         bd.draw(source, m);
-
         _grid_view.bitmapData = bd;
-        _grid_view.x = bounds.x;
+        _grid_view.x = bounds.x; //save native iso offsets
         _grid_view.y = bounds.y;
         return _grid_view;
     }
@@ -99,12 +96,6 @@ public class IsoGridView extends Sprite{
         }
         _debug_fields =_debug_fields.concat(_used_debug_fields);
         _used_debug_fields = [];
-    }
-
-    private function align_by_bounds():void{
-        var bounds:Rectangle = getBounds(this);
-        x = -bounds.x;
-        y = -bounds.y;
     }
 
     public function get grid():IsoGrid {

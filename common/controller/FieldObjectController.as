@@ -27,7 +27,7 @@ public class FieldObjectController {
 
     }
 
-    public function draw(bd:BitmapData, update_only:Boolean = false):void{
+    public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
@@ -39,7 +39,7 @@ public class FieldObjectController {
         update_position();
         bd.copyPixels(_view.bd,
                 new Rectangle(0, 0, _view.bd.width, _view.bd.height),
-                new Point(_view.x + 748, _view.y), null, null, true); // TODO: resolve 748
+                new Point(_view.x + x_offset, _view.y), null, null, true); // TODO: resolve 748
     }
 
     private function update_position():void {
