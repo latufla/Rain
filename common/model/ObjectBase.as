@@ -27,6 +27,7 @@ public class ObjectBase {
     protected var _is_reachable:Boolean; // true - u can walk here
     protected var _is_occupied:Boolean;  // false - u can build here
     protected var _is_target:Boolean; // true - bots go for it
+    protected var _is_spawn_point:Boolean; // true - ,bots spawns here
 
     protected var _type:int; // use for bots etc.
 
@@ -159,6 +160,14 @@ public class ObjectBase {
 
     public function get id():uint {
         return _id;
+    }
+
+    public function get is_spawn_point():Boolean {
+        return _is_spawn_point;
+    }
+
+    public function set is_spawn_point(value:Boolean):void {
+        _is_spawn_point = value;
     }
 }
 }

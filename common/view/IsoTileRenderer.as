@@ -22,7 +22,10 @@ public class IsoTileRenderer {
     private static const NON_REACHABLE_COLOR:uint = 0xFF0000;
     private static const REACHABLE_COLOR:uint = 0x00FF00;
 
-    private static const DEBUG_COLORS:Array = [REACHABLE_COLOR, 0x0000FF, 0xC2C3C2];
+
+    private static const SPAWN_POINT_COLOR:uint = 0x0000FF;
+    private static const TARGET_POINT_COLOR:uint = 0x8000FF;
+
 
     public function IsoTileRenderer() {
     }
@@ -31,15 +34,17 @@ public class IsoTileRenderer {
         if(!tile || !layer)
             throw new Error("IsoTileRenderer -> draw(): Illegal argument");
 
-        var color:uint = DEBUG_COLORS[tile.debug_type];
-
-        if(!tile.is_reachable)
-            color = NON_REACHABLE_COLOR;
+        var color:uint = NON_REACHABLE_COLOR;
+        if(tile.is_reachable)
+            color = REACHABLE_COLOR;
 
         if(tile.is_target)
-            color = 0x0000FF;
+            color = TARGET_POINT_COLOR;
 
-        var size:Rectangle = new Rectangle (tile.x_px, tile.y_px, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
+        if(tile.is_spawn_point)
+            color = SPAWN_POINT_COLOR;
+
+        var size:Rectangle = new Rectangle(tile.x_px, tile.y_px, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
         IsoRenderUtil.draw_iso_rect(layer, size, 1, color, color, 0.2);
     }
 
