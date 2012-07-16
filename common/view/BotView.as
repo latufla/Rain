@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view {
+import common.controller.FieldController;
 import common.model.Bot;
 
 import flash.display.Bitmap;
@@ -43,9 +44,9 @@ public class BotView extends Sprite{
 
     private function get sprite_to_draw():Sprite{
         var sp:Sprite = new Sprite();
-        var w:uint = _object.width * 10;
-        var l:uint = _object.length * 10;
-        var h:uint = 40;
+        var w:uint = FieldController.TILE_WIDTH / 6;
+        var l:uint = FieldController.TILE_LENGTH / 6;
+        var h:uint = FieldController.TILE_LENGTH / 2;
         IsoRenderUtil.draw_iso_box(sp, w, l, h, 0xC2C3C2);
 
         return sp;
