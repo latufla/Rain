@@ -93,7 +93,7 @@ public class BotController {
     private function fill_moving_queue(path:Array, on_complete_resort:Function):void{
         var step:Object;
         for each(var p:IsoTile in path){
-            step = {x_px:p.x_px, y_px:p.y_px, ease:Linear.easeNone, onUpdate: update_position, onComplete: on_complete_step};
+            step = {x_px:p.x_px, y_px:p.y_px, ease:Linear.easeNone, onComplete: on_complete_step};
             _moving_queue.append(new TweenLite(_object, 2, step));
         }
 
