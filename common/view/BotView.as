@@ -44,9 +44,9 @@ public class BotView extends Sprite{
 
     private function get sprite_to_draw():Sprite{
         var sp:Sprite = new Sprite();
-        var w:uint = FieldController.TILE_WIDTH / 6;
-        var l:uint = FieldController.TILE_LENGTH / 6;
-        var h:uint = FieldController.TILE_LENGTH / 2;
+        var w:uint = 7;
+        var l:uint = 7;
+        var h:uint = 20;
         IsoRenderUtil.draw_iso_box(sp, w, l, h, 0xC2C3C2);
 
         return sp;

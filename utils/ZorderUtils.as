@@ -25,7 +25,7 @@ public class ZorderUtils {
         var a:ObjectBase = a_c.object;
         var b:ObjectBase = b_c.object;
 
-        // determine same tile objects
+//        determine same tile objects
         if(a.x == b.x && a.y == b.y){
             if(a.id < b.id)
                 return 1;
@@ -94,16 +94,6 @@ public class ZorderUtils {
 //    }
 
     public static function bin_insert_resort_single_object(obj_c:*, a:Array):int{
-        if(a.length == 0 || tile_object_compare(a[0], obj_c) == 1){
-            a.unshift(obj_c);
-            return 0;
-        }
-
-        if(tile_object_compare(a[a.length - 1], obj_c) == -1){
-            a.push(obj_c);
-            return a.length - 1;
-        }
-
         var idx:int = ArrayUtils.get_insert_index_in_sorted(a, obj_c, tile_object_compare);
         a.splice(idx, 0, obj_c);
         return idx;

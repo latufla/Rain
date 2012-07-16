@@ -15,6 +15,7 @@ public class FieldObject extends ObjectBase{
 
     public function FieldObject(w:uint, l:uint, h:uint) {
         width = w;
+
         length = l;
         _debug_height = h;
 
@@ -39,6 +40,14 @@ public class FieldObject extends ObjectBase{
 
     public function remove_last_bot():void{
         _bots.pop();
+    }
+
+    public function get spawn_point():Point {
+        return _spawn_point;
+    }
+
+    public function set spawn_point(value:Point):void {
+        _spawn_point = value;
     }
 }
 }

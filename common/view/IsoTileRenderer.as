@@ -24,7 +24,7 @@ public class IsoTileRenderer {
 
 
     private static const SPAWN_POINT_COLOR:uint = 0x0000FF;
-    private static const TARGET_POINT_COLOR:uint = 0x8000FF;
+    private static const TARGET_POINT_COLOR:uint = 0x000000;
 
 
     public function IsoTileRenderer() {
@@ -46,7 +46,7 @@ public class IsoTileRenderer {
             color = SPAWN_POINT_COLOR;
 
         var size:Rectangle = new Rectangle(tile.x_px, tile.y_px, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
-        IsoRenderUtil.draw_iso_rect(layer, size, 1, color, color, 0.2);
+        IsoRenderUtil.draw_iso_rect(layer, size, 1, color, color, 1);
     }
 
     public function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {

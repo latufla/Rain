@@ -72,7 +72,7 @@ public class FieldController {
     // ----
     // next time we click on _view or add some objects we translate
     // coords with _x_grid_offset
-    private var _x_grid_offset:Number;
+    private var _x_grid_offset:int;
     public function draw_grid():void{
         _grid_view.draw();
 
@@ -81,14 +81,12 @@ public class FieldController {
         _grid_view.y = -bounds.y;
 
         _x_grid_offset = -bounds.x;
+        _grid_view.visible = false;
     }
 
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
     private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
     private function on_ef_render(e:Event):void {
-        if(_buffer[1].bitmapData)
-            _buffer[1].bitmapData.dispose();
-
         _bd = new BitmapData(1280, 768, true, 0xFFFFFF);
         draw_all_objects(true);
         _buffer[1].bitmapData = _bd;
@@ -132,6 +130,25 @@ public class FieldController {
         return true;
     }
 
+    public function resolve_spawn_points():void{
+        var nearest_points:Array;
+        var tile:IsoTile;
+        for each(var p:FieldObjectController in _buildings){
+            nearest_points = p.object.nearest_points;
+            if(!nearest_points || nearest_points.length < 0)
+                continue;
+
+            for each(var s:Point in nearest_points){
+                tile = _grid.get_tile(s.x, s.y);
+                if(tile.is_reachable){
+                    tile.is_spawn_point = true;
+                    p.object.spawn_point = new Point(s.x, s.y);
+                    break;
+                }
+            }
+        }
+    }
+
     public function draw_all_objects(update_only:Boolean = false):void{
         for each(var p:* in _all_objects){
             p.draw(_bd, update_only, _x_grid_offset);
@@ -170,6 +187,7 @@ public class FieldController {
         bot_c.object = bot;
         bot_c.move_to_target(resort_single_object);
         _bots.push(bot_c);
+//        _all_objects.push(bot_c);
         ZorderUtils.bin_insert_resort_single_object(bot_c, _all_objects);
         return true;
     }
@@ -187,7 +205,6 @@ public class FieldController {
                 t.is_reachable = p.object.is_reachable;
             }
         }
-
         draw_grid();
         draw_all_objects();
     }
@@ -246,6 +263,10 @@ public class FieldController {
             p.is_reachable = !p.is_reachable;
         }
         draw_grid();
+    }
+
+    public function get buildings():Vector.<FieldObjectController> {
+        return _buildings;
     }
 }
 }

@@ -35,7 +35,7 @@ public class IsoRenderUtil {
     public static function draw_iso_box(layer:Sprite, w:int, l:int, h:int, color:uint):void{
         var g:Graphics = layer.graphics;
         g.clear();
-        g.lineStyle(2, 0xFF0000);
+        g.lineStyle(1, 0xFF0000);
 
         //all pts are named in following order "x", "y", "z" via rfb = right, front, bottom
         var lbb:Point = IsoMathUtil.isoToScreen(0, 0, 0);

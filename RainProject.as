@@ -30,12 +30,9 @@ public class RainProject extends Sprite {
         stage.align = "left";
         STAGE = stage;
 
-        var a:Array = [];//[1, 3, 4, 7, 9];
-
-        for(var i:uint = 1; i < 2000; i += int(Math.random() * 10))
-            a.push(i);
         _engine = new Engine();
         _engine.init();
+
         STAGE.addChild(new FPSCounter());
 
 
