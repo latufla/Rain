@@ -187,6 +187,7 @@ public class FieldController {
                 t.is_reachable = p.object.is_reachable;
             }
         }
+
         draw_grid();
         draw_all_objects();
     }
@@ -219,7 +220,7 @@ public class FieldController {
 
     // test clicks processing
     private function on_click(e:MouseEvent):void {
-       process_grid_click(e)
+       //process_grid_click(e)
 //        process_building_click(e);
         //process_bot_click(e);
     }

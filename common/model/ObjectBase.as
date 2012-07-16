@@ -118,6 +118,25 @@ public class ObjectBase {
         return FieldUtils.intersects(obj_1, obj_2);
     }
 
+    public function contains(x:int, y:int):Boolean{
+        return (this.x <= x && x < this.x + this.width) && (this.y <= y && y < this.y + this.length);
+    }
+
+    // TODO: make full functional
+    // 01110
+    // 02220
+    // 01110
+    public function get nearest_points():Array{
+        var res:Array = [];
+        for(var i:int = x - 1; i <= x + width; i++){
+            for(var j:int = y; j < y + length; j++){
+                if(!contains(i, j) && i >= 0 && j >= 0)
+                    res.push(new Point(i, j));
+            }
+        }
+        return res;
+    }
+
     public function get is_target():Boolean {
         return _is_target;
     }

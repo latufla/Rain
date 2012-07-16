@@ -38,6 +38,7 @@ public class IsoTileRenderer {
         if(tile.is_reachable)
             color = REACHABLE_COLOR;
 
+
         if(tile.is_target)
             color = TARGET_POINT_COLOR;
 
