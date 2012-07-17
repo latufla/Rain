@@ -34,31 +34,6 @@ public class RainProject extends Sprite {
         _engine.init();
 
         STAGE.addChild(new FPSCounter());
-
-
-
-//        var sp:Sprite = new Sprite();
-//        IsoRenderUtil.draw_iso_box(sp, 10, 10, 50, 0xC2C3C2);
-//        sp.x = 50;
-//        sp.y = 100;
-//        addChild(sp);
-//        sp.graphics.beginFill(0x00FF00);
-//        sp.graphics.drawRect(-2, -2, 4, 4);
-//        sp.graphics.endFill();
-//
-//
-//        var bounds:Rectangle = sp.getBounds(sp);
-//        var bd:BitmapData = new BitmapData(bounds.width, bounds.height);
-//        var m:Matrix = new Matrix();
-//        m.translate(-bounds.x, -bounds.y);
-//        bd.draw(sp, m);
-
-//
-//        var bitmap:Bitmap = new Bitmap();
-//        bitmap.bitmapData = bd;
-//        bitmap.x = 150;
-//        bitmap.y = 100;
-//        addChild(bitmap);
     }
 }
 }

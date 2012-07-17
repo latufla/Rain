@@ -87,7 +87,7 @@ public class DemoFieldCreator {
             b = p.object;
             i = 0;
             j += 70
-            while(i++ < 50)
+            while(i++ < 40)
                 setTimeout(field_c.create_bot, i * 1000 + j, b.spawn_point.x, b.spawn_point.y);
         }
 //
