@@ -8,6 +8,7 @@
 package common.model {
 import utils.DebugUtils;
 import utils.PNode;
+import utils.ZorderUtils;
 
 public class IsoGrid {
 
@@ -27,6 +28,8 @@ public class IsoGrid {
                 _tiles[i][j] = new IsoTile(i, j);
             }
         }
+
+//        trace("get_vertical", ZorderUtils.get_vertical(this, 7));
 //        update_p_nodes();
     }
 

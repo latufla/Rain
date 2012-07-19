@@ -10,6 +10,19 @@ public class ArrayUtils {
     public function ArrayUtils() {
     }
 
+    public static function shuffle(a:Array):Array{
+        var res:Array = [];
+        var rnd_pos:int;
+        while(a.length > 0){
+            rnd_pos = Math.random() * a.length;
+            res.push(a[rnd_pos]);
+            a.splice(rnd_pos, 1);
+
+        }
+        return res;
+    }
+
+    // TODO: check on simle arrays
     public static function get_insert_index_in_sorted(a:Array, e:*, cmp:Function): int{
         var leftIndex:int;
         var rightIndex:int = a.length - 1;
@@ -25,14 +38,14 @@ public class ArrayUtils {
 
             cmp_res = cmp(e, middleElement);
 
-            if(cmp_res == -1){
+            if(cmp_res != 1){
                 rightIndex = middleIndex - 1;
             } else {
                 leftIndex = middleIndex + 1;
             }
         }
 
-        if(cmp_res == -1)
+        if(cmp_res != 1)
             return middleIndex;
 
         return middleIndex + 1;

@@ -14,6 +14,8 @@ public class FieldObject extends ObjectBase{
     private var _spawn_point:Point;
 
     public function FieldObject(w:uint, l:uint, h:uint) {
+        _id = count++;
+
         width = w;
 
         length = l;

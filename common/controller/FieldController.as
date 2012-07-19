@@ -23,10 +23,13 @@ import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import utils.ArrayUtils;
+
 import utils.DebugUtils;
 
 import utils.FieldUtils;
 import utils.MovieClipHelper;
+import utils.ZorderUtils;
 
 import utils.ZorderUtils;
 
@@ -80,8 +83,8 @@ public class FieldController {
         _grid_view.x = -bounds.x;
         _grid_view.y = -bounds.y;
 
-        _x_grid_offset = -bounds.x;
-        _grid_view.visible = false;
+        _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
+//        _grid_view.visible = false;
     }
 
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
@@ -103,9 +106,11 @@ public class FieldController {
 
     // BUILDINGS
     public function create_building(x:uint, y:uint, w:uint, l:uint):Boolean{
+        // check if out of borders
         if(x + w > field_width || y + l > field_length)
             return false;
 
+        // check if there is another object
         var obj_1:Object = {x: x, y: y, w: w, h: l};
         var obj_2:Object = {};
         var building:FieldObject;
@@ -120,13 +125,23 @@ public class FieldController {
                 return false;
         }
 
+        // create object and add to lists
         var building:FieldObject = new FieldObject(w, l, 2);
         building.move_to(x, y);
 
         var building_c:FieldObjectController = new FieldObjectController();
         building_c.object = building;
         _buildings.push(building_c);
-        ZorderUtils.bin_insert_resort_single_object(building_c, _all_objects);
+        _all_objects.push(building_c);
+
+        // fill tiles with additional info
+        var tiles:Array = _grid.get_tiles_in_square(x, y, w, l);
+        for each(var t:IsoTile in tiles){
+            t.is_reachable = building.is_reachable;
+            t.field_object_c = building_c;
+        }
+
+        //ZorderUtils.bin_insert_resort_single_object(building_c, _all_objects);
         return true;
     }
 
@@ -156,9 +171,10 @@ public class FieldController {
     }
 
     public function debug_generate_random_buildings():void{
-        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
+        var fld:Array = FieldUtils.generate_field_with_objects(2, {w:field_width, h:field_length}, new Point(1, 1));
         for each(var o:Object in fld){
             create_building(o.x, o.y, o.w, o.h);
+            trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
         }
     }
 
@@ -194,17 +210,11 @@ public class FieldController {
 
     // RENDER
     public function draw(need_resort:Boolean = false):void{
-        if(need_resort)
-            z_sort();
+        //if(need_resort)
+        //_all_objects = ArrayUtils.shuffle(_all_objects);
+        //z_sort();
+        _all_objects = ZorderUtils.z_sort(_grid);
 
-        // set underbuilding tiles reachability
-        var tiles:Array;
-        for each(var p:* in _buildings){
-            tiles = _grid.get_tiles_in_square(p.object.x, p.object.y, p.object.width, p.object.length);
-            for each(var t:IsoTile in tiles){
-                t.is_reachable = p.object.is_reachable;
-            }
-        }
         draw_grid();
         draw_all_objects();
     }

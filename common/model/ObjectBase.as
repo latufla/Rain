@@ -31,7 +31,7 @@ public class ObjectBase {
 
     protected var _type:int; // use for bots etc.
 
-    protected var _id:uint = 0;
+    protected var _id:int = -1;
     public static var count:int = 0;
     public function ObjectBase() {
 
@@ -177,7 +177,7 @@ public class ObjectBase {
         _y_px = value;
     }
 
-    public function get id():uint {
+    public function get id():int {
         return _id;
     }
 
@@ -187,6 +187,39 @@ public class ObjectBase {
 
     public function set is_spawn_point(value:Boolean):void {
         _is_spawn_point = value;
+    }
+
+    public function get left ():int
+    {
+        return x;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get right ():int
+    {
+        return x + width;
+    }
+
+    //////////////////f//////////////////////////////////////////////
+    //	BACK / FRONT
+    ////////////////////////////////////////////////////////////////
+
+    /**
+     * @inheritDoc
+     */
+    public function get back ():int
+    {
+        return y;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get front ():int
+    {
+        return y + length;
     }
 }
 }

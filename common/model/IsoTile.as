@@ -6,10 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.FieldObjectController;
+
 import utils.PNode;
 
 // field tile, not normally use for extending
 public class IsoTile extends ObjectBase{
+
+    //
+    private var _field_object_c:FieldObjectController;
 
     // pathfinding node
     private var _p_node:PNode;
@@ -18,6 +23,8 @@ public class IsoTile extends ObjectBase{
     private var _debug_type:int = 0;
     public static const DEBUG_KEY_POINT:int = 1;
     public static const DEBUG_OPTIONAL_POINT:int = 2;
+
+
 
     public function IsoTile(x:int, y:int) {
         super();
@@ -45,8 +52,16 @@ public class IsoTile extends ObjectBase{
 
     public function toString():String{
         return "x: " + _x + ", y: " + _y +
-                ", is_reachable: " + _is_reachable +
-                ", debug type: " + _debug_type;
+                ", is_reachable: " + _is_reachable;
+//                + ", debug type: " + _debug_type;
+    }
+
+    public function get field_object_c():FieldObjectController {
+        return _field_object_c;
+    }
+
+    public function set field_object_c(value:FieldObjectController):void {
+        _field_object_c = value;
     }
 }
 }

@@ -9,6 +9,8 @@ import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
 import utils.ArrayUtils;
+
+import utils.ArrayUtils;
 import utils.DebugUtils;
 
 import utils.FPSCounter;
@@ -30,9 +32,12 @@ public class RainProject extends Sprite {
         stage.align = "left";
         STAGE = stage;
 
+//        var a:Array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+//        a = ArrayUtils.shuffle(a);
+//        trace(a);
         _engine = new Engine();
         _engine.init();
-
+//
         STAGE.addChild(new FPSCounter());
     }
 }

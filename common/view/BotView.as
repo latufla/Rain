@@ -16,6 +16,7 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
+import flash.text.TextField;
 
 import utils.iso.IsoRenderUtil;
 
@@ -28,6 +29,7 @@ public class BotView extends Sprite{
     public function BotView() {
     }
 
+    private var _t_f:TextField = new TextField();
     public function draw():void{
         if(!_object)
             throw new Error("BotView -> draw(): object is null" );
@@ -39,6 +41,11 @@ public class BotView extends Sprite{
         _bd = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
         var m:Matrix = new Matrix();
         m.translate(-_x_offset, -_y_offset);
+//        _t_f.text = String(_object.id);
+//        _t_f.y = - 20;
+//        _t_f.x = - 10;
+        //sp.addChild(_t_f);
+
         bd.draw(sp, m);
     }
 
