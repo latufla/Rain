@@ -23,6 +23,9 @@ public class FieldObjectController {
 
     private var _object:FieldObject;
     private var _view:FieldObjectView = new FieldObjectView();
+
+    private var _static_zordered:Boolean; // should be used once when field created
+
     public function FieldObjectController() {
 
     }
@@ -58,6 +61,15 @@ public class FieldObjectController {
 
     public function set object(value:FieldObject):void {
         _object = value;
+    }
+
+
+    public function get static_zordered():Boolean {
+        return _static_zordered;
+    }
+
+    public function set static_zordered(value:Boolean):void {
+        _static_zordered = value;
     }
 }
 }

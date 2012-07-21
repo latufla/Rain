@@ -36,16 +36,16 @@ public class DemoFieldCreator {
     ];
 
     private static const OBJECTS:Array = [
-         { x:3, y:3, w:1, l:1 },
-                 { x:3, y:4, w:2, l:2 },
-                 { x:3, y:6, w:2, l:1 },
-                 { x:4, y:7, w:1, l:1 },
-                 { x:5, y:3, w:1, l:2 },
-                 { x:5, y:5, w:1, l:2 },
-                 { x:6, y:3, w:1, l:1 },
-                 { x:6, y:4, w:2, l:2 },
-                 { x:6, y:6, w:1, l:1 },
-                 { x:7, y:3, w:1, l:1 }
+//         { x:3, y:3, w:1, l:1 },
+//                 { x:3, y:4, w:2, l:2 },
+//                 { x:3, y:6, w:2, l:1 },
+//                 { x:4, y:7, w:1, l:1 },
+//                 { x:5, y:3, w:1, l:2 },
+//                 { x:5, y:5, w:1, l:2 },
+//                 { x:6, y:3, w:1, l:1 },
+//                 { x:6, y:4, w:2, l:2 },
+//                 { x:6, y:6, w:1, l:1 },
+//                 { x:7, y:3, w:1, l:1 }
 //        {x:9, y:1, w:1, l:2},
 //        {x:11, y:6, w:1, l:2},
 //        {x:1, y:3, w:1, l:2},
@@ -56,14 +56,14 @@ public class DemoFieldCreator {
 //        {x:12, y:16, w:1, l:3},
 //        {x:15, y:11, w:3, l:1},
 //        {x:14, y:7, w:1, l:3}
-//        {x:12, y:10, w:1, l:1},
-//        {x:13, y:10, w:1, l:1},
-//        {x:14, y:10, w:1, l:1},
-//        {x:15, y:10, w:1, l:1},
-//        {x:15, y:9, w:1, l:1},
-//        {x:15, y:8, w:1, l:1},
-//        {x:15, y:7, w:1, l:1},
-//        {x:14, y:7, w:1, l:3}
+        {x:2, y:10, w:1, l:1},
+        {x:3, y:10, w:1, l:1},
+        {x:4, y:10, w:1, l:1},
+        {x:5, y:10, w:1, l:1},
+        {x:5, y:9, w:1, l:1},
+        {x:5, y:8, w:1, l:1},
+        {x:5, y:7, w:1, l:1},
+        {x:4, y:7, w:1, l:3}
     ]
 
     private static const BOTS:Array = [
@@ -81,7 +81,7 @@ public class DemoFieldCreator {
 
     public static function create():FieldController{
         var field_c:FieldController = new FieldController();
-        field_c.create_grid(50, 50);
+        field_c.create_grid(12, 12);
 
 //        for (var i:int = 0; i < GRID.length; i++) {
 //            for (var j:int = 0; j < GRID[i].length; j++) {

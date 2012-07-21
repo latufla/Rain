@@ -150,11 +150,13 @@ public class ZorderUtils {
                     if(res.length == 0){
                        res.push(cur_elem);
                        already_traversed_in_vertical.push(cur_elem);
+                       cur_elem.static_zordered = true;
                         continue;
                     }
 
                     // not in res, then insert it before last traversed
-                    if(res.indexOf(cur_elem) == -1){
+                    //if(res.indexOf(cur_elem) == -1){
+                    if(!cur_elem.static_zordered){
                         if(already_traversed_in_vertical.length == 0){
                             res.push(cur_elem);
                         } else{
@@ -164,6 +166,7 @@ public class ZorderUtils {
                         }
                     }
 
+                    cur_elem.static_zordered = true;
                     already_traversed_in_vertical.push(cur_elem);
                 }
 
