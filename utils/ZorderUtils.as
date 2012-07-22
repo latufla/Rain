@@ -86,7 +86,7 @@ public class ZorderUtils {
 //        }
 //    }
 
-    public static function bin_insert_resort_single_object(obj_c:*, a:Array):int{
+    public static function bin_insert_resort_single_object(obj_c:*, a:Vector.<ControllerBase>):int{
         if(a.length == 0 || tile_object_compare(a[0], obj_c) != -1){
             a.unshift(obj_c);
             return 0;
@@ -107,7 +107,6 @@ public class ZorderUtils {
     public static function z_sort(grid:IsoGrid):Vector.<ControllerBase>{
         var res:Vector.<ControllerBase> = new Vector.<ControllerBase>();
 
-        DebugUtils.start_profile_block("z_sort");
         // traverse
         var cur_elem:ControllerBase;
         var cur_vert:Vector.<IsoTile>;
@@ -145,7 +144,7 @@ public class ZorderUtils {
 
             }
         }
-        DebugUtils.stop_profile_block("z_sort");
+
         return res;
     }
 
@@ -159,7 +158,7 @@ public class ZorderUtils {
 
     // TODO: think about field borders
     // 1 x 1 object
-    public static function insert_resort_single_object(o_c:*, all_objects:Array, grid:IsoGrid):void{
+    public static function insert_resort_single_object(o_c:ControllerBase, all_objects:Vector.<ControllerBase>, grid:IsoGrid):void{
         // traverse cur vert down
         // if any object - > insert o_c before
         var insert_obj:ObjectBase = o_c.object;
@@ -173,49 +172,78 @@ public class ZorderUtils {
             if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
                 continue;
 
+            cur_obj = cur_vert[i].field_object_c.object;
 
+//            if (cur_obj.x + cur_obj.width - 1 != insert_obj.x)
+//                continue;
+//
             all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c), 0, o_c);
             return;
         }
 
+//        // all verts before and down
+//        for (i = insert_obj.x - 1; i >= 0; i--) {
+//            cur_vert = get_vertical(grid, i);
+//            for (var j:int = grid.length - 1; j >= insert_obj.x; j--) {
+//                if(!cur_vert[j].field_object_c || !cur_vert[j].field_object_c.object)
+//                    continue;
+//
+//                if(cur_vert[j].field_object_c.object.x == i && cur_vert[j].field_object_c.object.y == j){
+//                    all_objects.splice(all_objects.indexOf(cur_vert[j].field_object_c) + 1, 0, o_c);
+//                    return;
+//                }
+//            }
+//        }
 
-        // traverse cur vert up
-        // if any object -> insert o_c after
+
+//                // traverse cur vert up
+//        // if any object -> insert o_c after
 //        for(i = insert_obj.y - 1; i >= 0; i--){
 //            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
 //                continue;
 //
-//            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
-//            return;
+//            if(cur_vert[i].field_object_c.object.x == insert_obj.x){
+//                all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
+//                return;
+//            }
+//
+//            break;
 //        }
-
-        // traverse all verts after
-        // if any object -> insert o_c after
-        var cur_obj_was_in_vert:Boolean;
-        for (i = insert_obj.x - 1; i >= 0; i--) {
-            cur_vert = get_vertical(grid, i);
-            for (var j:int = grid.length - 1; j >= 0; j--) {
-                if(!cur_vert[j].field_object_c || !cur_vert[j].field_object_c.object)
-                    continue;
-
-                trace("really were here")
-                all_objects.splice(all_objects.indexOf(cur_vert[j].field_object_c) + 1, 0, o_c);
-                return;
-            }
-        }
-
-        // traverse cur vert up
-        // if any object -> insert o_c after
-        cur_vert = get_vertical(grid, insert_obj.x);
-        for(i = insert_obj.y - 1; i >= 0; i--){
-            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
-                continue;
-
-            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
-            return;
-        }
-
-        all_objects.unshift(o_c);
+//
+//        // traverse all verts before
+//        // if any object -> insert o_c after
+//        var cur_obj_was_in_vert:Boolean;
+//        for (i = insert_obj.x - 1; i >= 0; i--) {
+//            cur_vert = get_vertical(grid, i);
+//            for (var j:int = grid.length - 1; j >= 0; j--) {
+//                if(!cur_vert[j].field_object_c || !cur_vert[j].field_object_c.object)
+//                    continue;
+//
+//
+//                if(cur_vert[j].field_object_c.object.y >= insert_obj.y){
+//                    all_objects.splice(all_objects.indexOf(cur_vert[j].field_object_c) + 1, 0, o_c);
+//                    return;
+//                }
+//                    trace("really were here")
+//                if(cur_vert[j].field_object_c.object.x == i && cur_vert[j].field_object_c.object.y == j){
+//                    all_objects.splice(all_objects.indexOf(cur_vert[j].field_object_c) + 1, 0, o_c);
+//                    return;
+//                }
+//            }
+//        }
+//
+//        // traverse cur vert up
+//        // if any object -> insert o_c after
+////        cur_vert = get_vertical(grid, insert_obj.x);
+////        for(i = insert_obj.y - 1; i >= 0; i--){
+////            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
+////                continue;
+////
+////            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
+////            return;
+////        }
+//
+//        all_objects.unshift(o_c);
     }
 }
 }

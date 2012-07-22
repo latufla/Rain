@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package utils {
+import common.controller.ControllerBase;
+
 public class ArrayUtils {
     public function ArrayUtils() {
     }
@@ -23,7 +25,7 @@ public class ArrayUtils {
     }
 
     // TODO: check on simle arrays
-    public static function get_insert_index_in_sorted(a:Array, e:*, cmp:Function): int{
+    public static function get_insert_index_in_sorted(a:Vector.<ControllerBase>, e:*, cmp:Function): int{
         var leftIndex:int;
         var rightIndex:int = a.length - 1;
         var middleIndex:int;

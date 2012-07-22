@@ -84,7 +84,7 @@ public class DemoFieldCreator {
         var field_c:FieldController = new FieldController();
 //        field_c.create_grid(GRID.length, GRID[i].length);
 
-        field_c.create_grid(50, 50);
+        field_c.create_grid(20, 20);
 
 //        for (var i:int = 0; i < GRID.length; i++) {
 //            for (var j:int = 0; j < GRID[i].length; j++) {
