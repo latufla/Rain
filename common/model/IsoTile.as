@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-import common.controller.FieldObjectController;
+import common.controller.ControllerBase;
 
 import utils.PNode;
 
@@ -14,17 +14,13 @@ import utils.PNode;
 public class IsoTile extends ObjectBase{
 
     //
-    private var _field_object_c:*;
+    private var _field_object_c:ControllerBase;
 
     // pathfinding node
     private var _p_node:PNode;
 
     // DEBUG
     private var _debug_type:int = 0;
-    public static const DEBUG_KEY_POINT:int = 1;
-    public static const DEBUG_OPTIONAL_POINT:int = 2;
-
-
 
     public function IsoTile(x:int, y:int) {
         super();
@@ -56,11 +52,11 @@ public class IsoTile extends ObjectBase{
 //                + ", debug type: " + _debug_type;
     }
 
-    public function get field_object_c():* {
+    public function get field_object_c():ControllerBase {
         return _field_object_c;
     }
 
-    public function set field_object_c(value:*):void {
+    public function set field_object_c(value:ControllerBase):void {
         _field_object_c = value;
     }
 }

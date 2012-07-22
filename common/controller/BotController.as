@@ -13,21 +13,21 @@ import com.greensock.easing.Linear;
 import common.model.Bot;
 import common.model.IsoGrid;
 import common.model.IsoTile;
+import common.model.ObjectBase;
 import common.view.BotView;
 
 import flash.display.BitmapData;
+import flash.display.Sprite;
 
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import utils.iso.IsoMathUtil;
 
-public class BotController {
+public class BotController extends ControllerBase{
 
     private var _object:Bot;
     private var _view:BotView = new BotView();
-
-    private var _static_zordered:Boolean; // should be used once when field created
 
     // moving
     private var _moving_queue:TimelineLite = new TimelineLite();
@@ -35,7 +35,7 @@ public class BotController {
     public function BotController() {
     }
 
-    public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:int = 0):void{
+    override public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
@@ -56,16 +56,16 @@ public class BotController {
         _view.y = pnt.y;
     }
 
-    public function get view():BotView {
+    override public function get view():Sprite{
         return _view;
     }
 
-    public function get object():Bot {
+    override public function get object():ObjectBase{
         return _object;
     }
 
-    public function set object(value:Bot):void {
-        _object = value;
+    override public function set object(value:ObjectBase):void {
+        _object = value as Bot;
     }
 
     public function move_to(end:IsoTile, single_resorter:Function):void{
@@ -107,19 +107,11 @@ public class BotController {
         }
     }
 
-    public function apply_params_to_grid(grid:IsoGrid):void{
+    override public function apply_params_to_grid(grid:IsoGrid):void{
         var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
         for each(var t:IsoTile in tiles){
             t.field_object_c = this;
         }
-    }
-
-    public function get static_zordered():Boolean {
-        return _static_zordered;
-    }
-
-    public function set static_zordered(value:Boolean):void {
-        _static_zordered = value;
     }
 }
 }

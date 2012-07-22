@@ -10,6 +10,7 @@ package common.controller {
 import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
+import common.model.ObjectBase;
 import common.view.FieldObjectView;
 
 import flash.display.BitmapData;
@@ -19,20 +20,17 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import utils.iso.IsoMathUtil;
-import utils.iso.IsoRenderUtil;
 
-public class FieldObjectController {
+public class FieldObjectController extends ControllerBase{
 
     private var _object:FieldObject;
     private var _view:FieldObjectView = new FieldObjectView();
-
-    private var _static_zordered:Boolean; // should be used once when field created
 
     public function FieldObjectController() {
 
     }
 
-    public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
+    override public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
         if(!_object)
             throw new Error("FieldObjectController -> draw(): object is null");
 
@@ -53,7 +51,7 @@ public class FieldObjectController {
         _view.y = pnt.y;
     }
 
-    public function apply_params_to_grid(grid:IsoGrid):void{
+    override public function apply_params_to_grid(grid:IsoGrid):void{
         var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
         for each(var t:IsoTile in tiles){
             t.is_reachable = object.is_reachable;
@@ -61,25 +59,16 @@ public class FieldObjectController {
         }
     }
 
-    public function get view():Sprite {
+    override public function get view():Sprite {
         return _view;
     }
 
-    public function get object():FieldObject {
+    override public function get object():ObjectBase {
         return _object;
     }
 
-    public function set object(value:FieldObject):void {
-        _object = value;
-    }
-
-
-    public function get static_zordered():Boolean {
-        return _static_zordered;
-    }
-
-    public function set static_zordered(value:Boolean):void {
-        _static_zordered = value;
+    override public function set object(value:ObjectBase):void {
+        _object = value as FieldObject;
     }
 }
 }

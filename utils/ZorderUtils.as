@@ -1,4 +1,5 @@
 package utils {
+import common.controller.ControllerBase;
 import common.controller.FieldObjectController;
 import common.model.IsoGrid;
 import common.model.IsoTile;
@@ -7,14 +8,6 @@ import common.model.ObjectBase;
 import flash.utils.getTimer;
 
 public class ZorderUtils {
-
-//    public static function custom_zorder(list:Vector.<ObjectBase>):Vector.<ObjectBase>{
-//        var start_time:Number = getTimer();
-//        var res:Vector.<ObjectBase> = list.sort(tile_object_compare);
-//        trace("custom_zorder end. Elapsed: ", getTimer() - start_time);
-//        return res;
-//    }
-
 
     public static function custom_zorder(list:Array):Array{
 //        var start_time:Number = getTimer();
@@ -93,26 +86,6 @@ public class ZorderUtils {
 //        }
 //    }
 
-//    public static function insert_resort_single_object(obj_c:*, a:Array):void {
-//        if(a.length ==0 || tile_object_compare(a[0], obj_c) != -1){
-//            a.unshift(obj_c);
-//            return;
-//        }
-//
-//        if(tile_object_compare(a[a.length - 1], obj_c) == 1){
-//            a.push(obj_c);
-//            return;
-//        }
-//
-//        find first top in ordered view_list
-//        for (var i:int = 0; i < a.length; i++) {
-//            if(tile_object_compare(a[i], obj_c) != -1){
-//                a.splice(i, 0, obj_c);
-//                return;
-//            }
-//        }
-//    }
-
     public static function bin_insert_resort_single_object(obj_c:*, a:Array):int{
         if(a.length == 0 || tile_object_compare(a[0], obj_c) != -1){
             a.unshift(obj_c);
@@ -131,16 +104,16 @@ public class ZorderUtils {
 
 
     // walk through verticals
-    public static function z_sort(grid:IsoGrid):Array{
-        var res:Array = [];
+    public static function z_sort(grid:IsoGrid):Vector.<ControllerBase>{
+        var res:Vector.<ControllerBase> = new Vector.<ControllerBase>();
 
         DebugUtils.start_profile_block("z_sort");
         // traverse
-        var cur_elem:*;
+        var cur_elem:ControllerBase;
         var cur_vert:Vector.<IsoTile>;
-        var already_traversed_in_vertical:Array = [];
+        var already_traversed_in_vertical:Vector.<ControllerBase> = new Vector.<ControllerBase>();
         for (var i:int = 0; i < grid.tiles.length; i++) {
-            already_traversed_in_vertical = [];
+            already_traversed_in_vertical = new Vector.<ControllerBase>();
             cur_vert = get_vertical(grid, i);
             for (var j:int = cur_vert.length - 1; j >= 0; j--) {
                 if(cur_vert[j].field_object_c){
@@ -160,7 +133,7 @@ public class ZorderUtils {
                         if(already_traversed_in_vertical.length == 0){
                             res.push(cur_elem);
                         } else{
-                            var last_traversed:* = already_traversed_in_vertical[already_traversed_in_vertical.length - 1];
+                            var last_traversed:ControllerBase = already_traversed_in_vertical[already_traversed_in_vertical.length - 1];
                             var idx:int = res.indexOf(last_traversed);
                             res.splice(idx, 0, cur_elem);
                         }

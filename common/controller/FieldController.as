@@ -36,13 +36,13 @@ import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
-    public static const TILE_WIDTH:uint = 50;
-    public static const TILE_LENGTH:uint = 50;
+    public static const TILE_WIDTH:uint = 30;
+    public static const TILE_LENGTH:uint = 30;
 
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
 
-    private var _all_objects:Array = [];
+    private var _all_objects:Vector.<ControllerBase> = new Vector.<ControllerBase>();
     private var _objects_view:Sprite = new Sprite();
 
     private var _buildings:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
@@ -143,13 +143,13 @@ public class FieldController {
     }
 
     // sort
-    private function z_sort():Array{
+    private function z_sort():Vector.<ControllerBase>{
         return ZorderUtils.z_sort(_grid);
     }
 
     private function resort_single_object(o_c:BotController):void{
         _all_objects.splice(_all_objects.indexOf(o_c), 1);
-        ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
+        //ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
     }
 
     // ----
@@ -172,7 +172,7 @@ public class FieldController {
     }
 
     public function draw_all_objects(update_only:Boolean = false):void{
-        for each(var p:* in _all_objects){
+        for each(var p:ControllerBase in _all_objects){
             p.draw(_bd, update_only, _x_grid_offset);
         }
     }
@@ -181,7 +181,7 @@ public class FieldController {
     //utils
     public function debug_generate_random_buildings():void{
         var b:FieldObject;
-        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(1, 1));
         for each(var o:Object in fld){
             b = new FieldObject(o.w, o.h, 2);
             b.move_to(o.x, o.y);
@@ -202,7 +202,7 @@ public class FieldController {
                 tile = _grid.get_tile(s.x, s.y);
                 if(tile.is_reachable){
                     tile.is_spawn_point = true;
-                    p.object.spawn_point = new Point(s.x, s.y);
+                    (p.object as FieldObject).spawn_point = new Point(s.x, s.y);
                     break;
                 }
             }
