@@ -104,47 +104,24 @@ public class FieldController {
         MovieClipHelper.try_remove(_buffer[1]);
     }
 
-    // BUILDINGS
-    public function create_building(x:uint, y:uint, w:uint, l:uint):Boolean{
+
+    public function add_building(b:FieldObject):Boolean{
         // check if out of borders
-        if(x + w > field_width || y + l > field_length)
+        if(b.x + b.width > field_width || b.y + b.length > field_length)
             return false;
 
-        // check if there is another object
-        var obj_1:Object = {x: x, y: y, w: w, h: l};
-        var obj_2:Object = {};
-        var building:FieldObject;
+        // check if there is another object on this place
         for each(var p:FieldObjectController in _buildings){
-            building = p.object;
-            obj_2.x = building.x;
-            obj_2.y = building.y;
-            obj_2.w = building.width;
-            obj_2.h = building.length;
-
-            if(FieldUtils.intersects(obj_1, obj_2))
+            if(p.object.intersects(b))
                 return false;
         }
 
-        // create object and add to lists
-        var building:FieldObject = new FieldObject(w, l, 2);
-        building.move_to(x, y);
+        var b_c:FieldObjectController = new FieldObjectController();
+        b_c.object = b;
+        b_c.apply_params_to_grid(_grid);
 
-        var building_c:FieldObjectController = new FieldObjectController();
-        building_c.object = building;
-        _buildings.push(building_c);
-
-        // fill tiles with additional info
-        var tiles:Array = _grid.get_tiles_in_square(x, y, w, l);
-        for each(var t:IsoTile in tiles){
-            t.is_reachable = building.is_reachable;
-            t.field_object_c = building_c;
-        }
-
-        if(w == 1 && l == 1)
-            ZorderUtils.insert_resort_single_object(building_c, _all_objects, grid);
-        else
-            _all_objects.push(building_c);
-
+        _buildings.push(b_c);
+        _all_objects.push(b_c);
         return true;
     }
 
@@ -174,9 +151,12 @@ public class FieldController {
     }
 
     public function debug_generate_random_buildings():void{
+        var b:FieldObject;
         var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
         for each(var o:Object in fld){
-            create_building(o.x, o.y, o.w, o.h);
+            b = new FieldObject(o.w, o.h, 2);
+            b.move_to(o.x, o.y);
+            add_building(b);
             trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
         }
     }
@@ -206,16 +186,13 @@ public class FieldController {
         bot_c.object = bot;
         bot_c.move_to_target(resort_single_object);
         _bots.push(bot_c);
-//        _all_objects.push(bot_c);
-        ZorderUtils.bin_insert_resort_single_object(bot_c, _all_objects);
+        _all_objects.push(bot_c);
+//        ZorderUtils.bin_insert_resort_single_object(bot_c, _all_objects);
         return true;
     }
 
-    // RENDER
+    // first render
     public function draw(need_resort:Boolean = false):void{
-        //if(need_resort)
-        //_all_objects = ArrayUtils.shuffle(_all_objects);
-        //z_sort();
         _all_objects = z_sort();
 
         draw_grid();
@@ -266,7 +243,7 @@ public class FieldController {
 
     private function process_building_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
-        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 1);
+        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 2);
     }
 
     private function process_grid_click(e:MouseEvent):void {

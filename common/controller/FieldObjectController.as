@@ -8,6 +8,8 @@
 package common.controller {
 
 import common.model.FieldObject;
+import common.model.IsoGrid;
+import common.model.IsoTile;
 import common.view.FieldObjectView;
 
 import flash.display.BitmapData;
@@ -49,6 +51,14 @@ public class FieldObjectController {
         var pnt:Point = IsoMathUtil.isoToScreen(_object.x_px, _object.y_px);
         _view.x = pnt.x;
         _view.y = pnt.y;
+    }
+
+    public function apply_params_to_grid(grid:IsoGrid):void{
+        var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
+        for each(var t:IsoTile in tiles){
+            t.is_reachable = object.is_reachable;
+            t.field_object_c = this;
+        }
     }
 
     public function get view():Sprite {

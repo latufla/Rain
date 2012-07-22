@@ -119,51 +119,51 @@ public class IsoGrid {
     }
 
     // ort + dia
-    public function get_eight_connected_tiles(tile:IsoTile):Array{
-        var res:Array = [];
-
-        var t_x:uint = tile.x;
-        var t_y:uint = tile.y;
-
-        for (var i:int = t_x - 1; i <= t_x + 1; i++) {
-            if(i < 0 || i > tiles.length - 1)
-                continue;
-
-            var h_tiles:Vector.<IsoTile> = tiles[i];
-            for (var j:int = t_y - 1; j <= t_y + 1; j++) {
-
-                if(j < 0 || j > h_tiles.length - 1 || h_tiles[j] == tile || !h_tiles[j].is_reachable)
-                    continue;
-
-                res.push(h_tiles[j]);
-            }
-        }
-        return res;
-    }
-
+//    public function get_eight_connected_tiles(tile:IsoTile):Array{
+//        var res:Array = [];
+//
+//        var t_x:uint = tile.x;
+//        var t_y:uint = tile.y;
+//
+//        for (var i:int = t_x - 1; i <= t_x + 1; i++) {
+//            if(i < 0 || i > tiles.length - 1)
+//                continue;
+//
+//            var h_tiles:Vector.<IsoTile> = tiles[i];
+//            for (var j:int = t_y - 1; j <= t_y + 1; j++) {
+//
+//                if(j < 0 || j > h_tiles.length - 1 || h_tiles[j] == tile || !h_tiles[j].is_reachable)
+//                    continue;
+//
+//                res.push(h_tiles[j]);
+//            }
+//        }
+//        return res;
+//    }
+//
     // ort
-    public function get_four_connected_tiles(tile:IsoTile):Array{
-        var res:Array = [];
-
-        var tx:int = tile.x;
-        var ty:int = tile.y;
-        var tile_coords:Array = [{x:tx - 1, y:ty}, {x:tx + 1, y:ty}, {x:tx,  y:ty - 1}, {x:tx,  y:ty + 1}];
-
-        for each (var p:Object in tile_coords){
-            tx = p.x;
-            ty = p.y;
-
-            if(tx < 0 || tx > tiles.length - 1 || ty < 0 || ty > tiles[tx].length - 1)
-                continue;
-
-            if(!tiles[tx][ty].is_reachable)
-                continue;
-
-            res.push(tiles[tx][ty]);
-        }
-
-        return res;
-    }
+//    public function get_four_connected_tiles(tile:IsoTile):Array{
+//        var res:Array = [];
+//
+//        var tx:int = tile.x;
+//        var ty:int = tile.y;
+//        var tile_coords:Array = [{x:tx - 1, y:ty}, {x:tx + 1, y:ty}, {x:tx,  y:ty - 1}, {x:tx,  y:ty + 1}];
+//
+//        for each (var p:Object in tile_coords){
+//            tx = p.x;
+//            ty = p.y;
+//
+//            if(tx < 0 || tx > tiles.length - 1 || ty < 0 || ty > tiles[tx].length - 1)
+//                continue;
+//
+//            if(!tiles[tx][ty].is_reachable)
+//                continue;
+//
+//            res.push(tiles[tx][ty]);
+//        }
+//
+//        return res;
+//    }
 
     public function get_four_connected_p_nodes(node:PNode):Array{
         var res:Array = [];
@@ -202,19 +202,5 @@ public class IsoGrid {
             });
         });
     }
-
-//    private function get p_nodes():Vector.<Vector.<PNode>>{
-//        var res:Vector.<Vector.<PNode>> = new Vector.<Vector.<PNode>>();
-//        var n:uint = _tiles.length;
-//        var m:uint = _tiles[0].length;
-//        for (var i:int = 0; i < n; i++) {
-//            res[i] = new Vector.<PNode>();
-//            for (var j:int = 0; j < m; j++) {
-//                res[i][j] = new PNode(_tiles[i][j]);
-//            }
-//       }
-//       return res;
-//    }
-
 }
 }
