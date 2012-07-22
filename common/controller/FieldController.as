@@ -132,7 +132,6 @@ public class FieldController {
         var building_c:FieldObjectController = new FieldObjectController();
         building_c.object = building;
         _buildings.push(building_c);
-        _all_objects.push(building_c);
 
         // fill tiles with additional info
         var tiles:Array = _grid.get_tiles_in_square(x, y, w, l);
@@ -141,7 +140,11 @@ public class FieldController {
             t.field_object_c = building_c;
         }
 
-        //ZorderUtils.bin_insert_resort_single_object(building_c, _all_objects);
+        if(w == 1 && l == 1)
+            ZorderUtils.insert_resort_single_object(building_c, _all_objects, grid);
+        else
+            _all_objects.push(building_c);
+
         return true;
     }
 
@@ -171,7 +174,7 @@ public class FieldController {
     }
 
     public function debug_generate_random_buildings():void{
-        var fld:Array = FieldUtils.generate_field_with_objects(2, {w:field_width, h:field_length}, new Point(1, 1));
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
         for each(var o:Object in fld){
             create_building(o.x, o.y, o.w, o.h);
             trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
@@ -213,14 +216,14 @@ public class FieldController {
         //if(need_resort)
         //_all_objects = ArrayUtils.shuffle(_all_objects);
         //z_sort();
-        _all_objects = ZorderUtils.z_sort(_grid);
+        _all_objects = z_sort();
 
         draw_grid();
         draw_all_objects();
     }
 
-    private function z_sort():void{
-        ZorderUtils.custom_zorder(_all_objects);
+    private function z_sort():Array{
+        return ZorderUtils.z_sort(_grid);
     }
 
     private function resort_single_object(o_c:BotController):void{
@@ -248,7 +251,7 @@ public class FieldController {
     // test clicks processing
     private function on_click(e:MouseEvent):void {
        //process_grid_click(e)
-//        process_building_click(e);
+        process_building_click(e);
         //process_bot_click(e);
     }
 
@@ -263,7 +266,7 @@ public class FieldController {
 
     private function process_building_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
-        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 2, 1);
+        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 1);
     }
 
     private function process_grid_click(e:MouseEvent):void {

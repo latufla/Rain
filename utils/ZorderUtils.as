@@ -93,25 +93,25 @@ public class ZorderUtils {
 //        }
 //    }
 
-    public static function insert_resort_single_object(obj_c:*, a:Array):void {
-        if(a.length ==0 || tile_object_compare(a[0], obj_c) != -1){
-            a.unshift(obj_c);
-            return;
-        }
-
-        if(tile_object_compare(a[a.length - 1], obj_c) == 1){
-            a.push(obj_c);
-            return;
-        }
-
+//    public static function insert_resort_single_object(obj_c:*, a:Array):void {
+//        if(a.length ==0 || tile_object_compare(a[0], obj_c) != -1){
+//            a.unshift(obj_c);
+//            return;
+//        }
+//
+//        if(tile_object_compare(a[a.length - 1], obj_c) == 1){
+//            a.push(obj_c);
+//            return;
+//        }
+//
 //        find first top in ordered view_list
-        for (var i:int = 0; i < a.length; i++) {
-            if(tile_object_compare(a[i], obj_c) != -1){
-                a.splice(i, 0, obj_c);
-                return;
-            }
-        }
-    }
+//        for (var i:int = 0; i < a.length; i++) {
+//            if(tile_object_compare(a[i], obj_c) != -1){
+//                a.splice(i, 0, obj_c);
+//                return;
+//            }
+//        }
+//    }
 
     public static function bin_insert_resort_single_object(obj_c:*, a:Array):int{
         if(a.length == 0 || tile_object_compare(a[0], obj_c) != -1){
@@ -184,5 +184,65 @@ public class ZorderUtils {
         return grid.tiles[id];
     }
 
+    // TODO: think about field borders
+    // 1 x 1 object
+    public static function insert_resort_single_object(o_c:*, all_objects:Array, grid:IsoGrid):void{
+        // traverse cur vert down
+        // if any object - > insert o_c before
+        var insert_obj:ObjectBase = o_c.object;
+        if(insert_obj.width != 1 || insert_obj.length != 1)
+            throw new Error("object not single!");
+
+        var cur_obj:ObjectBase;
+        var cur_vert:Vector.<IsoTile> = get_vertical(grid, insert_obj.x);
+        trace("insert_obj", insert_obj.x, insert_obj.y);
+        for(var i:int = insert_obj.y + 1; i < grid.length; i++){
+            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
+                continue;
+
+
+            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c), 0, o_c);
+            return;
+        }
+
+
+        // traverse cur vert up
+        // if any object -> insert o_c after
+//        for(i = insert_obj.y - 1; i >= 0; i--){
+//            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
+//                continue;
+//
+//            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
+//            return;
+//        }
+
+        // traverse all verts after
+        // if any object -> insert o_c after
+        var cur_obj_was_in_vert:Boolean;
+        for (i = insert_obj.x - 1; i >= 0; i--) {
+            cur_vert = get_vertical(grid, i);
+            for (var j:int = grid.length - 1; j >= 0; j--) {
+                if(!cur_vert[j].field_object_c || !cur_vert[j].field_object_c.object)
+                    continue;
+
+                trace("really were here")
+                all_objects.splice(all_objects.indexOf(cur_vert[j].field_object_c) + 1, 0, o_c);
+                return;
+            }
+        }
+
+        // traverse cur vert up
+        // if any object -> insert o_c after
+        cur_vert = get_vertical(grid, insert_obj.x);
+        for(i = insert_obj.y - 1; i >= 0; i--){
+            if(!cur_vert[i].field_object_c || !cur_vert[i].field_object_c.object)
+                continue;
+
+            all_objects.splice(all_objects.indexOf(cur_vert[i].field_object_c) + 1, 0, o_c);
+            return;
+        }
+
+        all_objects.unshift(o_c);
+    }
 }
 }
