@@ -161,13 +161,9 @@ public class FieldController {
     // sort
     private function z_sort():Vector.<ControllerBase>{
 
-//        DebugUtils.start_profile_block("z_sort");
-        for each (var p:ControllerBase in _all_objects){
-            p.static_zordered = false;
-        }
-
+        DebugUtils.start_profile_block("z_sort");
         var res:Vector.<ControllerBase> = ZorderUtils.z_sort(_grid);
-//        DebugUtils.stop_profile_block("z_sort");
+        DebugUtils.stop_profile_block("z_sort");
 
         return res;
     }
@@ -193,7 +189,7 @@ public class FieldController {
         _grid_view.y = -bounds.y;
 
         _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
-//        _grid_view.visible = false;
+        _grid_view.visible = false;
     }
 
     public function draw_all_objects(update_only:Boolean = false):void{

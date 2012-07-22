@@ -110,39 +110,43 @@ public class ZorderUtils {
         // traverse
         var cur_elem:ControllerBase;
         var cur_vert:Vector.<IsoTile>;
+        var last_traversed:ControllerBase;
+        var idx_last_traversed:int;
         var already_traversed_in_vertical:Vector.<ControllerBase> = new Vector.<ControllerBase>();
-        for (var i:int = 0; i < grid.tiles.length; i++) {
-            already_traversed_in_vertical = new Vector.<ControllerBase>();
+        var n:uint = grid.tiles.length;
+        for (var i:int = 0; i < n; i++) {
+            already_traversed_in_vertical.length = 0;
             cur_vert = get_vertical(grid, i);
             for (var j:int = cur_vert.length - 1; j >= 0; j--) {
-                if(cur_vert[j].field_object_c){
-                    cur_elem = cur_vert[j].field_object_c;
-
+                cur_elem = cur_vert[j].field_object_c;
+                if(cur_elem){
                     // first found in vertical
                     if(res.length == 0){
                        res.push(cur_elem);
                        already_traversed_in_vertical.push(cur_elem);
                        cur_elem.static_zordered = true;
-                        continue;
+                       continue;
                     }
 
                     // not in res, then insert it before last traversed
-                    //if(res.indexOf(cur_elem) == -1){
                     if(!cur_elem.static_zordered){
                         if(already_traversed_in_vertical.length == 0){
                             res.push(cur_elem);
                         } else{
-                            var last_traversed:ControllerBase = already_traversed_in_vertical[already_traversed_in_vertical.length - 1];
-                            var idx:int = res.indexOf(last_traversed);
-                            res.splice(idx, 0, cur_elem);
+                            last_traversed = already_traversed_in_vertical[already_traversed_in_vertical.length - 1];
+                            idx_last_traversed = res.indexOf(last_traversed);
+                            res.splice(idx_last_traversed, 0, cur_elem);
                         }
                     }
-
                     cur_elem.static_zordered = true;
                     already_traversed_in_vertical.push(cur_elem);
                 }
-
             }
+        }
+
+        // clear flags
+        for each (var p:ControllerBase in res){
+            p.static_zordered = false;
         }
 
         return res;
@@ -150,8 +154,8 @@ public class ZorderUtils {
 
 
     public static function get_vertical(grid:IsoGrid, id:uint):Vector.<IsoTile>{
-        if(id >= grid.tiles.length)
-            return null;
+//        if(id >= grid.tiles.length)
+//            return null;
 
         return grid.tiles[id];
     }
