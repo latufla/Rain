@@ -11,6 +11,7 @@ import com.greensock.TweenLite;
 import com.greensock.easing.Linear;
 
 import common.model.Bot;
+import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.view.BotView;
 
@@ -25,6 +26,8 @@ public class BotController {
 
     private var _object:Bot;
     private var _view:BotView = new BotView();
+
+    private var _static_zordered:Boolean; // should be used once when field created
 
     // moving
     private var _moving_queue:TimelineLite = new TimelineLite();
@@ -102,6 +105,21 @@ public class BotController {
             _object.move_to_px(_object.x_px, _object.y_px); // tweening via
             on_complete_resort(self);
         }
+    }
+
+    public function apply_params_to_grid(grid:IsoGrid):void{
+        var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
+        for each(var t:IsoTile in tiles){
+            t.field_object_c = this;
+        }
+    }
+
+    public function get static_zordered():Boolean {
+        return _static_zordered;
+    }
+
+    public function set static_zordered(value:Boolean):void {
+        _static_zordered = value;
     }
 }
 }

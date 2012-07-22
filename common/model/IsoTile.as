@@ -14,7 +14,7 @@ import utils.PNode;
 public class IsoTile extends ObjectBase{
 
     //
-    private var _field_object_c:FieldObjectController;
+    private var _field_object_c:*;
 
     // pathfinding node
     private var _p_node:PNode;
@@ -56,11 +56,11 @@ public class IsoTile extends ObjectBase{
 //                + ", debug type: " + _debug_type;
     }
 
-    public function get field_object_c():FieldObjectController {
+    public function get field_object_c():* {
         return _field_object_c;
     }
 
-    public function set field_object_c(value:FieldObjectController):void {
+    public function set field_object_c(value:*):void {
         _field_object_c = value;
     }
 }

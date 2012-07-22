@@ -18,24 +18,16 @@ public class Bot extends ObjectBase{
 //    protected var _pathfinding_nodes:Vector.<PNode> = new Vector.<PNode>();
 
 
-    protected var _grid:IsoGrid;
+    private var _grid:IsoGrid;
     protected var _path:Array = [];
     protected var _target:IsoTile;
 
-    public function Bot(type:int, grid:IsoGrid) {
+    public function Bot(type:int) {
         _id = count++;
 
         _type = type;
         _is_reachable = true;
         _debug_height = 1;
-        init(grid);
-    }
-
-    private function init(grid:IsoGrid):void {
-        if(!grid)
-            throw new Error("Bot -> init(): grid is null");
-
-        _grid = grid;
     }
 
     public function find_path(end:IsoTile):Array{
@@ -56,5 +48,11 @@ public class Bot extends ObjectBase{
         return find_path(find_target());
     }
 
+    public function set grid(value:IsoGrid):void {
+        if(!value)
+            throw new Error("Bot -> set grid(): null argument");
+
+        _grid = value;
+    }
 }
 }

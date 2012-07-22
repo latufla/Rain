@@ -68,25 +68,6 @@ public class FieldController {
         _grid_view.grid = _grid;
     }
 
-    // ----
-    // normally iso coords are both - and + by x
-    // but we want display field view in 0, 0 of screen and
-    // see all the field from the most left point
-    // ----
-    // next time we click on _view or add some objects we translate
-    // coords with _x_grid_offset
-    private var _x_grid_offset:int;
-    public function draw_grid():void{
-        _grid_view.draw();
-
-        var bounds:Rectangle = _grid_view.getBounds(_grid_view);
-        _grid_view.x = -bounds.x;
-        _grid_view.y = -bounds.y;
-
-        _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
-//        _grid_view.visible = false;
-    }
-
     private var _buffer:Array = [new Bitmap(), new Bitmap()];
     private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
     private function on_ef_render(e:Event):void {
@@ -122,7 +103,91 @@ public class FieldController {
 
         _buildings.push(b_c);
         _all_objects.push(b_c);
+
         return true;
+    }
+
+    public function add_bot(b:Bot):Boolean{
+        // check if out of borders
+        if(b.x + b.width > field_width || b.y + b.length > field_length)
+            return false;
+
+        // check if there is another object on this place
+        // can be added on another bot tile
+        for each(var p:FieldObjectController in _buildings){
+            if(p.object.intersects(b))
+                return false;
+        }
+
+        b.grid = _grid;
+
+        var b_c:BotController = new BotController();
+        b_c.object = b;
+        b_c.apply_params_to_grid(_grid);
+
+        //   b_c.move_to_target(resort_single_object);
+
+        _bots.push(b_c);
+        _all_objects.push(b_c);
+
+        return true;
+    }
+
+    // RENDER
+    // first render
+    public function draw(need_resort:Boolean = false):void{
+        _all_objects = z_sort();
+
+        draw_grid();
+        draw_all_objects();
+    }
+
+    // sort
+    private function z_sort():Array{
+        return ZorderUtils.z_sort(_grid);
+    }
+
+    private function resort_single_object(o_c:BotController):void{
+        _all_objects.splice(_all_objects.indexOf(o_c), 1);
+        ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
+    }
+
+    // ----
+    // normally iso coords are both - and + by x
+    // but we want display field view in 0, 0 of screen and
+    // see all the field from the most left point
+    // ----
+    // next time we click on _view or add some objects we translate
+    // coords with _x_grid_offset
+    private var _x_grid_offset:int;
+    public function draw_grid():void{
+        _grid_view.draw();
+
+        var bounds:Rectangle = _grid_view.getBounds(_grid_view);
+        _grid_view.x = -bounds.x;
+        _grid_view.y = -bounds.y;
+
+        _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
+//        _grid_view.visible = false;
+    }
+
+    public function draw_all_objects(update_only:Boolean = false):void{
+        for each(var p:* in _all_objects){
+            p.draw(_bd, update_only, _x_grid_offset);
+        }
+    }
+    //RENDER END
+
+    //utils
+    public function debug_generate_random_buildings():void{
+        var b:FieldObject;
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
+        for each(var o:Object in fld){
+            b = new FieldObject(o.w, o.h, 2);
+            b.move_to(o.x, o.y);
+            add_building(b);
+            trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
+        }
     }
 
     public function resolve_spawn_points():void{
@@ -142,70 +207,6 @@ public class FieldController {
                 }
             }
         }
-    }
-
-    public function draw_all_objects(update_only:Boolean = false):void{
-        for each(var p:* in _all_objects){
-            p.draw(_bd, update_only, _x_grid_offset);
-        }
-    }
-
-    public function debug_generate_random_buildings():void{
-        var b:FieldObject;
-        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
-        for each(var o:Object in fld){
-            b = new FieldObject(o.w, o.h, 2);
-            b.move_to(o.x, o.y);
-            add_building(b);
-            trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
-        }
-    }
-
-    public function create_bot(x:uint, y:uint, w:uint = 1, l:uint = 1):Boolean{
-        if(x + w > field_width || y + l > field_length)
-            return false;
-
-        var obj_1:Object = {x: x, y: y, w: w, h: l};
-        var obj_2:Object = {};
-        var building:FieldObject;
-        for each(var p:FieldObjectController in _buildings){
-            building = p.object;
-            obj_2.x = building.x;
-            obj_2.y = building.y;
-            obj_2.w = building.width;
-            obj_2.h = building.length;
-
-            if(FieldUtils.intersects(obj_1, obj_2))
-                return false;
-        }
-
-        var bot:Bot = new Bot(1, _grid);
-        bot.move_to(x, y);
-
-        var bot_c:BotController = new BotController();
-        bot_c.object = bot;
-        bot_c.move_to_target(resort_single_object);
-        _bots.push(bot_c);
-        _all_objects.push(bot_c);
-//        ZorderUtils.bin_insert_resort_single_object(bot_c, _all_objects);
-        return true;
-    }
-
-    // first render
-    public function draw(need_resort:Boolean = false):void{
-        _all_objects = z_sort();
-
-        draw_grid();
-        draw_all_objects();
-    }
-
-    private function z_sort():Array{
-        return ZorderUtils.z_sort(_grid);
-    }
-
-    private function resort_single_object(o_c:BotController):void{
-        _all_objects.splice(_all_objects.indexOf(o_c), 1);
-       ZorderUtils.bin_insert_resort_single_object(o_c, _all_objects);
     }
 
     public function get view():Sprite {
@@ -243,7 +244,9 @@ public class FieldController {
 
     private function process_building_click(e:MouseEvent):void {
         var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
-        create_building(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 2);
+        var b:FieldObject = new FieldObject(1, 2, 2);
+        b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
+        add_building(b);
     }
 
     private function process_grid_click(e:MouseEvent):void {

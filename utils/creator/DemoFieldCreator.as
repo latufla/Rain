@@ -7,6 +7,7 @@
  */
 package utils.creator {
 import common.controller.FieldController;
+import common.model.Bot;
 import common.model.FieldObject;
 
 import flash.utils.setTimeout;
@@ -67,13 +68,13 @@ public class DemoFieldCreator {
     ]
 
     private static const BOTS:Array = [
-//        {x:11, y:10, w:1, l:1},
-//        {x:13, y:10, w:1, l:1},
-//        {x:14, y:10, w:1, l:1},
-//        {x:15, y:10, w:1, l:1},
-//        {x:15, y:9, w:1, l:1},
-//        {x:15, y:8, w:1, l:1},
-//        {x:15, y:7, w:1, l:1}
+        {x:11, y:10, w:1, l:1},
+        {x:13, y:10, w:1, l:1},
+        {x:14, y:10, w:1, l:1},
+        {x:15, y:10, w:1, l:1},
+        {x:15, y:9, w:1, l:1},
+        {x:15, y:8, w:1, l:1},
+        {x:15, y:7, w:1, l:1}
     ]
 
     public function DemoFieldCreator() {
@@ -81,23 +82,23 @@ public class DemoFieldCreator {
 
     public static function create():FieldController{
         var field_c:FieldController = new FieldController();
-        field_c.create_grid(10, 10);
+        field_c.create_grid(GRID.length, GRID[i].length);
 
-//        for (var i:int = 0; i < GRID.length; i++) {
-//            for (var j:int = 0; j < GRID[i].length; j++) {
-//                switch (GRID[i][j]){
-//                    case 0:
-//                        field_c.grid.get_tile(i, j).is_reachable = false;
-//                        break;
-//                    case 2:
-//                        field_c.grid.get_tile(i, j).is_target = true;
-//                    default:
-//                        do nothing
-//                }
-//            }
-//        }
-
-        field_c.debug_generate_random_buildings();
+        for (var i:int = 0; i < GRID.length; i++) {
+            for (var j:int = 0; j < GRID[i].length; j++) {
+                switch (GRID[i][j]){
+                    case 0:
+                        field_c.grid.get_tile(i, j).is_reachable = false;
+                        break;
+                    case 2:
+                        field_c.grid.get_tile(i, j).is_target = true;
+                    default:
+                        //do nothing
+                }
+            }
+        }
+//
+//        field_c.debug_generate_random_buildings();
 
 //        for each (var p:Object in OBJECTS){
 //            field_c.create_building(p.x, p.y, p.w, p.l);
@@ -116,12 +117,18 @@ public class DemoFieldCreator {
 //            }
 //        }
 //
-//        for each (var p:Object in BOTS){
+
+        var bot:Bot;
+        for each (var p:Object in BOTS){
 //            i = 0;
 //            while(i++ < 20)
 //                setTimeout(field_c.create_bot, i * 1000, p.x, p.y, p.w, p.l);
-//            field_c.create_bot(p.x, p.y);
-//        }
+
+            bot = new Bot(1);
+            bot.move_to(p.x, p.y);
+            trace("p.x, p.y", p.x, p.y);
+            trace("add_bot", field_c.add_bot(bot));
+        }
 
         return field_c;
     }
