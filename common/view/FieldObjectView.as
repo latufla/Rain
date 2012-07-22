@@ -44,10 +44,10 @@ public class FieldObjectView extends Sprite{
         m.translate(-_x_offset, -_y_offset);
 
 
-        _t_f.text = String(_object.id);
-        _t_f.y = -60;
-        _t_f.x = -10;
-        sp.addChild(_t_f);
+//        _t_f.text = String(_object.id);
+//        _t_f.y = -60;
+//        _t_f.x = -10;
+//        sp.addChild(_t_f);
 
         bd.draw(sp, m);
     }

@@ -37,12 +37,12 @@ public class FieldObjectController extends ControllerBase{
         if(!update_only || !_view.bd){
             _view.object = _object;
             _view.draw();
+            update_position();
         }
 
-        update_position();
         bd.copyPixels(_view.bd,
                 new Rectangle(0, 0, _view.bd.width, _view.bd.height),
-                new Point(_view.x + x_offset, _view.y), null, null, true); // TODO: resolve 748
+                new Point(_view.x + x_offset, _view.y), null, null, true);
     }
 
     private function update_position():void {

@@ -73,13 +73,14 @@ public class FieldController {
     private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
     private function on_ef_render(e:Event):void {
         _bd = new BitmapData(1280, 768, true, 0xFFFFFF);
-//        DebugUtils.start_profile_block("z_sort");
+        //DebugUtils.start_profile_block("z_sort");
         _all_objects = z_sort();
-//        DebugUtils.stop_profile_block("z_sort");
+        //DebugUtils.stop_profile_block("z_sort");
 
-        DebugUtils.start_profile_block("render");
+//        DebugUtils.start_profile_block("render");
+
         draw_all_objects(true);
-        DebugUtils.stop_profile_block("render");
+//        DebugUtils.stop_profile_block("render");
         _buffer[1].bitmapData = _bd;
 
         //swap
@@ -159,10 +160,16 @@ public class FieldController {
 
     // sort
     private function z_sort():Vector.<ControllerBase>{
+
+//        DebugUtils.start_profile_block("z_sort");
         for each (var p:ControllerBase in _all_objects){
             p.static_zordered = false;
         }
-        return ZorderUtils.z_sort(_grid);
+
+        var res:Vector.<ControllerBase> = ZorderUtils.z_sort(_grid);
+//        DebugUtils.stop_profile_block("z_sort");
+
+        return res;
     }
 
     private function resort_single_object(o_c:ControllerBase):void{
@@ -199,12 +206,12 @@ public class FieldController {
     //utils
     public function debug_generate_random_buildings():void{
         var b:FieldObject;
-        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(2, 2));
+        var fld:Array = FieldUtils.generate_field_with_objects(1, {w:field_width, h:field_length}, new Point(1, 1));
         for each(var o:Object in fld){
             b = new FieldObject(o.w, o.h, 2);
             b.move_to(o.x, o.y);
             add_building(b);
-            trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
+           // trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
         }
     }
 
