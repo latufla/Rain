@@ -37,8 +37,8 @@ import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
-    public static const TILE_WIDTH:uint = 50;
-    public static const TILE_LENGTH:uint = 50;
+    public static const TILE_WIDTH:uint = 40;
+    public static const TILE_LENGTH:uint = 40;
 
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
@@ -202,7 +202,7 @@ public class FieldController {
     //utils
     public function debug_generate_random_buildings():void{
         var b:FieldObject;
-        var fld:Array = FieldUtils.generate_field_with_objects(1, {w:field_width, h:field_length}, new Point(1, 1));
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(1, 1));
         for each(var o:Object in fld){
             b = new FieldObject(o.w, o.h, 2);
             b.move_to(o.x, o.y);
