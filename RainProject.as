@@ -1,5 +1,9 @@
 package {
 
+import common.controller.ControllerBase;
+import common.controller.ControllerBase;
+import common.model.IsoTile;
+
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
@@ -32,9 +36,6 @@ public class RainProject extends Sprite {
         stage.align = "left";
         STAGE = stage;
 
-//        var a:Array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-//        a = ArrayUtils.shuffle(a);
-//        trace(a);
         _engine = new Engine();
         _engine.init();
 //

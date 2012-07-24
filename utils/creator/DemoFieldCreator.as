@@ -10,6 +10,8 @@ import common.controller.FieldController;
 import common.model.Bot;
 import common.model.FieldObject;
 
+import flash.geom.Point;
+
 import flash.utils.setTimeout;
 
 public class DemoFieldCreator {
@@ -37,34 +39,16 @@ public class DemoFieldCreator {
     ];
 
     private static const OBJECTS:Array = [
-//         { x:3, y:3, w:1, l:1 },
-//                 { x:3, y:4, w:2, l:2 },
-//                 { x:3, y:6, w:2, l:1 },
-//                 { x:4, y:7, w:1, l:1 },
-//                 { x:5, y:3, w:1, l:2 },
-//                 { x:5, y:5, w:1, l:2 },
-//                 { x:6, y:3, w:1, l:1 },
-//                 { x:6, y:4, w:2, l:2 },
-//                 { x:6, y:6, w:1, l:1 },
-//                 { x:7, y:3, w:1, l:1 }
-//        {x:9, y:1, w:1, l:2},
-//        {x:11, y:6, w:1, l:2},
-//        {x:1, y:3, w:1, l:2},
-//        {x:4, y:8, w:1, l:2},
-//        {x:2, y:11, w:1, l:3},
-//        {x:9, y:11, w:2, l:2},
-//        {x:3, y:16, w:2, l:2},
-//        {x:12, y:16, w:1, l:3},
-//        {x:15, y:11, w:3, l:1},
-//        {x:14, y:7, w:1, l:3}
-        {x:2, y:10, w:1, l:1},
-        {x:3, y:10, w:1, l:1},
-        {x:4, y:10, w:1, l:1},
-        {x:5, y:10, w:1, l:1},
-        {x:5, y:9, w:1, l:1},
-        {x:5, y:8, w:1, l:1},
-        {x:5, y:7, w:1, l:1},
-        {x:4, y:7, w:1, l:3}
+        {x:9, y:1, w:1, l:2},
+        {x:11, y:6, w:1, l:2},
+        {x:1, y:3, w:1, l:2},
+        {x:4, y:8, w:1, l:2},
+        {x:2, y:11, w:1, l:3},
+        {x:9, y:11, w:2, l:2},
+        {x:3, y:16, w:2, l:2},
+        {x:12, y:16, w:1, l:3},
+        {x:15, y:11, w:3, l:1},
+        {x:14, y:7, w:1, l:3}
     ]
 
     private static const BOTS:Array = [
@@ -82,56 +66,47 @@ public class DemoFieldCreator {
 
     public static function create():FieldController{
         var field_c:FieldController = new FieldController();
-//        field_c.create_grid(GRID.length, GRID[i].length);
-
-        field_c.create_grid(20, 20);
-
-//        for (var i:int = 0; i < GRID.length; i++) {
-//            for (var j:int = 0; j < GRID[i].length; j++) {
-//                switch (GRID[i][j]){
-//                    case 0:
-//                        field_c.grid.get_tile(i, j).is_reachable = false;
-//                        break;
-//                    case 2:
-//                        field_c.grid.get_tile(i, j).is_target = true;
-//                    default:
-//                        // do nothing
-//                }
-//            }
-//        }
+        field_c.create_grid(GRID.length, GRID[i].length);
 //
-        field_c.debug_generate_random_buildings();
+//        field_c.create_grid(20, 20);
+//
+        for (var i:int = 0; i < GRID.length; i++) {
+            for (var j:int = 0; j < GRID[i].length; j++) {
+                switch (GRID[i][j]){
+                    case 0:
+                        field_c.grid.get_tile(i, j).is_reachable = false;
+                        break;
+                    case 2:
+                        field_c.grid.get_tile(i, j).is_target = true;
+                    default:
+                        // do nothing
+                }
+            }
+        }
+//
+//        field_c.debug_generate_random_buildings();
 
-//        for each (var p:Object in OBJECTS){
-//            field_c.create_building(p.x, p.y, p.w, p.l);
-//        }
-//
-//        field_c.resolve_spawn_points();
-//
-//        var b:FieldObject;
-//        var j:int = 0;
-//        for each (var p:* in field_c.buildings){
-//            b = p.object;
-//            i = 0;
-//            j += 70
-//            while(i++ < 30){
-//                setTimeout(field_c.create_bot, i * 1000 + j, b.spawn_point.x, b.spawn_point.y);
-//            }
-//        }
-//
+        for each (var p:Object in OBJECTS){
+            var b:FieldObject = new FieldObject(p.w, p.l, 2);
+            b.move_to(p.x, p.y);
+            field_c.add_building(b);
+        }
+        field_c.resolve_spawn_points();
 
-//        var bot:Bot;
-//        for each (var p:Object in BOTS){
-//            i = 0;
-//            while(i++ < 20)
-//                setTimeout(field_c.create_bot, i * 1000, p.x, p.y, p.w, p.l);
-
-//            bot = new Bot(1);
-//            bot.move_to(p.x, p.y);
-//            trace("p.x, p.y", p.x, p.y);
-//            trace("add_bot", field_c.add_bot(bot));
-//        }
-//
+        var b:FieldObject;
+        var j:int = 0;
+        for each (var p:* in field_c.buildings){
+            b = p.object;
+            i = 0;
+            j += 70
+            while(i++ < 30){
+                setTimeout(function (spawn_point:Point):void{
+                    var bot:Bot = new Bot(1);
+                    bot.move_to(spawn_point.x, spawn_point.y);
+                    field_c.add_bot(bot);
+                }, i * 1000 + j, b.spawn_point);
+            }
+        }
         return field_c;
     }
 }

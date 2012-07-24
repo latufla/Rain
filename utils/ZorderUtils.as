@@ -1,5 +1,6 @@
 package utils {
 import common.controller.ControllerBase;
+import common.controller.FieldController;
 import common.controller.FieldObjectController;
 import common.model.IsoGrid;
 import common.model.IsoTile;
@@ -152,12 +153,54 @@ public class ZorderUtils {
         return res;
     }
 
-
     public static function get_vertical(grid:IsoGrid, id:uint):Vector.<IsoTile>{
 //        if(id >= grid.tiles.length)
 //            return null;
 
         return grid.tiles[id];
+    }
+
+    // walk through verticals
+    public static function z_sort_multi(grid:IsoGrid):Vector.<ControllerBase>{
+        var res:Vector.<ControllerBase> = new Vector.<ControllerBase>();
+
+        // traverse
+        var cur_elems:Vector.<ControllerBase>;
+        var cur_vert:Vector.<IsoTile>;
+        var idx_last_traversed:int;
+        var already_traversed_in_vertical:Vector.<ControllerBase> = new Vector.<ControllerBase>();
+        var n:uint = grid.tiles.length;
+        for (var i:int = 0; i < n; i++) {
+            already_traversed_in_vertical.length = 0;
+            cur_vert = get_vertical(grid, i);
+            for (var j:int = cur_vert.length - 1; j >= 0; j--) {
+                cur_elems = cur_vert[j].objects;
+                //trace(cur_elems.length);
+                if(cur_elems.length == 0)
+                    continue;
+
+                    // not in res, then insert it before last traversed
+                if(!cur_elems[0].static_zordered){
+                    for each(var p:ControllerBase in cur_elems){ // add all from cur tile as 1, 2, 3
+                        if(already_traversed_in_vertical.length == 0)
+                            res.push(p);
+                        else
+                            res.splice(idx_last_traversed++, 0, p);
+                    }
+                }
+
+                cur_elems[0].static_zordered = true;
+                already_traversed_in_vertical.push(cur_elems[0]);
+                idx_last_traversed = res.indexOf(cur_elems[0]);
+            }
+        }
+
+        // clear flags
+        for each (var p:ControllerBase in res){
+            p.static_zordered = false;
+        }
+
+        return res;
     }
 
     // TODO: think about field borders

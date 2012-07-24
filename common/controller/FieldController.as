@@ -141,7 +141,7 @@ public class FieldController {
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);
 
-        //   b_c.move_to_target(resort_single_object);
+        b_c.move_to_target(resort_single_object);
 
         _bots.push(b_c);
         _all_objects.push(b_c);
@@ -160,10 +160,7 @@ public class FieldController {
 
     // sort
     private function z_sort():Vector.<ControllerBase>{
-
-        DebugUtils.start_profile_block("z_sort");
-        var res:Vector.<ControllerBase> = ZorderUtils.z_sort(_grid);
-        DebugUtils.stop_profile_block("z_sort");
+        var res:Vector.<ControllerBase> = ZorderUtils.z_sort_multi(_grid);//ZorderUtils.z_sort(_grid);
 
         return res;
     }
