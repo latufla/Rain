@@ -55,7 +55,7 @@ public class FieldObjectController extends ControllerBase{
         var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
         for each(var t:IsoTile in tiles){
             t.is_reachable = object.is_reachable;
-            t.field_object_c = this;
+            t.add_object(this);
         }
     }
 
