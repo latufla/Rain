@@ -15,6 +15,7 @@ public class IsoTile extends ObjectBase{
 
     //
     private var _field_object_c:ControllerBase;
+    private var _objects:Vector.<ControllerBase> = new Vector.<ControllerBase>();
 
     // pathfinding node
     private var _p_node:PNode;
@@ -59,5 +60,30 @@ public class IsoTile extends ObjectBase{
     public function set field_object_c(value:ControllerBase):void {
         _field_object_c = value;
     }
+
+    public function get objects():Vector.<ControllerBase> {
+        return _objects;
+    }
+
+    public function set objects(value:Vector.<ControllerBase>):void {
+        _objects = value;
+    }
+
+    public function add_object(o:ControllerBase):void{
+        o.id_on_tile = _objects.length;
+        _objects.push(o);
+    }
+
+    public function remove_object(o:ControllerBase):ControllerBase{
+        var idx:int = _objects.indexOf(o);
+        if(idx == -1)
+            return null;
+
+        _objects.splice(idx, 1);
+        o.id_on_tile = -1;
+
+        return o;
+    }
+
 }
 }
