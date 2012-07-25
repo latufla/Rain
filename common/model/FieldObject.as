@@ -12,6 +12,7 @@ public class FieldObject extends ObjectBase{
 
     private var _bots:Array;
     private var _spawn_point:Point;
+    private var _bot_count:uint;
 
     public function FieldObject(w:uint, l:uint, h:uint) {
         _id = count++;
@@ -50,6 +51,14 @@ public class FieldObject extends ObjectBase{
 
     public function set spawn_point(value:Point):void {
         _spawn_point = value;
+    }
+
+    public function get bot_count():uint {
+        return _bot_count;
+    }
+
+    public function set bot_count(value:uint):void {
+        _bot_count = value;
     }
 }
 }

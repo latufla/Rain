@@ -124,7 +124,8 @@ public class ObjectBase {
 
     // TODO: make full functional
     // 01110
-    // 02220
+    // 12221
+    // 12221
     // 01110
     public function get nearest_points():Array{
         var res:Array = [];
@@ -134,6 +135,15 @@ public class ObjectBase {
                     res.push(new Point(i, j));
             }
         }
+
+        for(var i:int = x; i < x + width; i++){
+            for(var j:int = y - 1; j <= y + length; j++){
+                if(!contains(i, j) && i >= 0 && j >= 0)
+                    res.push(new Point(i, j));
+            }
+        }
+
+
         return res;
     }
 

@@ -57,7 +57,7 @@ public class IsoGridView extends Sprite{
         grid.tiles.forEach(function (v:Vector.<IsoTile>, index:int, vector:Vector.<Vector.<IsoTile>>):void{
             v.forEach(function (tile:IsoTile, index:int, vector:Vector.<IsoTile>):void{
                 renderer.draw(tile, _shape_sprite);
-                renderer.draw_debug_info(tile, _shape_sprite, create_debug_field());
+//                renderer.draw_debug_info(tile, _shape_sprite, create_debug_field());
             });
         });
         return _shape_sprite;
@@ -73,6 +73,7 @@ public class IsoGridView extends Sprite{
         m.identity();
         m.translate(-bounds.x, -bounds.y);
         bd.draw(source, m);
+        bd.lock();
         _grid_view.bitmapData = bd;
         _grid_view.x = bounds.x; //save native iso offsets
         _grid_view.y = bounds.y;

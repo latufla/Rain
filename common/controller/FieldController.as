@@ -37,8 +37,8 @@ import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
-    public static const TILE_WIDTH:uint = 40;
-    public static const TILE_LENGTH:uint = 40;
+    public static const TILE_WIDTH:uint = 22;
+    public static const TILE_LENGTH:uint = 22;
 
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
@@ -186,7 +186,7 @@ public class FieldController {
         _grid_view.y = -bounds.y;
 
         _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
-        _grid_view.visible = false;
+//        _grid_view.visible = false;
     }
 
     public function draw_all_objects(update_only:Boolean = false):void{

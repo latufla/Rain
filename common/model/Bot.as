@@ -41,7 +41,7 @@ public class Bot extends ObjectBase{
     }
 
     public function find_target():IsoTile{
-        return _grid.get_tile(0, 19);
+        return _grid.get_tile(0, 29);
     }
 
     public function find_path_to_target():Array{

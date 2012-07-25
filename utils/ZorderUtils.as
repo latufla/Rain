@@ -182,7 +182,7 @@ public class ZorderUtils {
                     // not in res, then insert it before last traversed
                 var l:uint = cur_elems.length - 1;
                 if(!cur_elems[0].static_zordered){
-                    for(var k:int = l; k >= 0; k--){
+                    for(var k:int = 0; k <= l; k++){
                         if(already_traversed_in_vertical.length == 0)
                             res.push(cur_elems[k]);
                         else
@@ -190,9 +190,9 @@ public class ZorderUtils {
                     }
                 }
 
-                cur_elems[l].static_zordered = true;
-                already_traversed_in_vertical.push(cur_elems[l]);
-                idx_last_traversed = res.indexOf(cur_elems[l]);
+                cur_elems[0].static_zordered = true;
+                already_traversed_in_vertical.push(cur_elems[0]);
+                idx_last_traversed = res.indexOf(cur_elems[0]);
             }
         }
 
