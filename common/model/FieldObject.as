@@ -10,55 +10,40 @@ import flash.geom.Point;
 
 public class FieldObject extends ObjectBase{
 
-    private var _bots:Array;
-    private var _spawn_point:Point;
-    private var _bot_count:uint;
+    private var _spawn_point:SpawnPoint;
 
     public function FieldObject(w:uint, l:uint, h:uint) {
         _id = count++;
 
         width = w;
-
         length = l;
         _debug_height = h;
-
-        init();
     }
 
-    private function init():void {
-//        find_spawn_point();
+    public function create_default_spawn_point(grid:IsoGrid, bot_count:uint = 0):void {
+        if(bot_count == 0)
+            return;
+
+        var nearest_points:Vector.<Point> = get_nearest_points(grid);
+
+        if(nearest_points.length == 0)
+            throw new Error("can`t create spawn point");
+
+        var p:Point = nearest_points[0];
+        _spawn_point = new SpawnPoint(p.x, p.y);
+
+        for (var i:uint = 0; i < bot_count; i++){
+            _spawn_point.add_bot(new Bot(1));
+        }
     }
 
-//    private function find_spawn_point():void {
-//    }
-//
 
-    public function get bots():Array {
-        return _bots;
-    }
-
-    public function add_bot(bot:Bot):void{
-        _bots.push(bot);
-    }
-
-    public function remove_last_bot():void{
-        _bots.pop();
-    }
-
-    public function get spawn_point():Point {
+    public function get spawn_point():SpawnPoint {
         return _spawn_point;
     }
 
-    public function set spawn_point(value:Point):void {
+    public function set spawn_point(value:SpawnPoint):void {
         _spawn_point = value;
-    }
-
-    public function get bot_count():uint {
-        return _bot_count;
-    }
-
-    public function set bot_count(value:uint):void {
-        _bot_count = value;
     }
 }
 }

@@ -70,7 +70,6 @@ public class IsoTile extends ObjectBase{
     }
 
     public function add_object(o:ControllerBase):void{
-        o.id_on_tile = _objects.length;
         _objects.push(o);
     }
 
@@ -80,8 +79,6 @@ public class IsoTile extends ObjectBase{
             return null;
 
         _objects.splice(idx, 1);
-        o.id_on_tile = -1;
-
         return o;
     }
 

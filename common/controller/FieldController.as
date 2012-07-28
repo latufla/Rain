@@ -10,6 +10,7 @@ import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
+import common.model.SpawnPoint;
 import common.view.IsoGridView;
 
 import flash.display.Bitmap;
@@ -94,7 +95,7 @@ public class FieldController {
     }
 
 
-    public function add_building(b:FieldObject, resort:Boolean = false):Boolean{
+    public function add_building(b:FieldObject, bot_count:uint = 0):Boolean{
         // check if out of borders
         if(b.x + b.width > field_width || b.y + b.length > field_length)
             return false;
@@ -105,20 +106,13 @@ public class FieldController {
                 return false;
         }
 
+        b.create_default_spawn_point(_grid, bot_count);
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);
 
         _buildings.push(b_c);
-
-//        if(resort){
-//            DebugUtils.start_profile_block("insert");
-//            ZorderUtils.insert_resort_single_object(b_c, _all_objects, _grid);
-//            DebugUtils.stop_profile_block("insert");
-//        }
-//        else{
-            _all_objects.push(b_c);
-//        }
+        _all_objects.push(b_c);
 
         return true;
     }
@@ -141,7 +135,7 @@ public class FieldController {
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);
 
-        b_c.move_to_target(resort_single_object);
+        b_c.move_to_target(null);
 
         _bots.push(b_c);
         _all_objects.push(b_c);
@@ -163,11 +157,6 @@ public class FieldController {
         var res:Vector.<ControllerBase> = ZorderUtils.z_sort_multi(_grid);//ZorderUtils.z_sort(_grid);
 
         return res;
-    }
-
-    private function resort_single_object(o_c:ControllerBase):void{
-        _all_objects.splice(_all_objects.indexOf(o_c), 1);
-        ZorderUtils.insert_resort_single_object(o_c, _all_objects, _grid);  //bin_insert_resort_single_object(o_c, _all_objects);
     }
 
     // ----
@@ -208,24 +197,25 @@ public class FieldController {
         }
     }
 
-    public function resolve_spawn_points():void{
-        var nearest_points:Array;
-        var tile:IsoTile;
-        for each(var p:FieldObjectController in _buildings){
-            nearest_points = p.object.nearest_points;
-            if(!nearest_points || nearest_points.length < 0)
-                continue;
-
-            for each(var s:Point in nearest_points){
-                tile = _grid.get_tile(s.x, s.y);
-                if(tile.is_reachable){
-                    tile.is_spawn_point = true;
-                    (p.object as FieldObject).spawn_point = new Point(s.x, s.y);
-                    break;
-                }
-            }
-        }
-    }
+//    public function resolve_spawn_points():void{
+//        var nearest_points:Array;
+//        var tile:IsoTile;
+//        var sp:SpawnPoint;
+//        for each(var p:FieldObjectController in _buildings){
+//            nearest_points = p.object.get_nearest_points(grid);
+//            if(!nearest_points || nearest_points.length < 0)
+//                continue;
+//
+//            for each(var s:Point in nearest_points){
+//                tile = _grid.get_tile(s.x, s.y);
+//                if(tile.is_reachable){
+//                    tile.is_spawn_point = true; // only for view indy
+//                    (p.object as FieldObject).spawn_point = new SpawnPoint(s.x, s.y);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     public function get view():Sprite {
         return _view;
@@ -256,7 +246,7 @@ public class FieldController {
         var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
         var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
 //        _bots[0].object.find_path(tile);
-        _bots[0].move_to(tile, resort_single_object);
+        _bots[0].move_to(tile, null);
         draw_grid();
     }
 
@@ -264,7 +254,7 @@ public class FieldController {
         var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
         var b:FieldObject = new FieldObject(1, 1, 2);
         b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
-        add_building(b, true);
+        add_building(b);
     }
 
     private function process_grid_click(e:MouseEvent):void {

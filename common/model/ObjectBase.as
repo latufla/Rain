@@ -127,24 +127,27 @@ public class ObjectBase {
     // 12221
     // 12221
     // 01110
-    public function get nearest_points():Array{
-        var res:Array = [];
+    public function get_nearest_points(grid:IsoGrid):Vector.<Point>{
+        var res:Vector.<Point> = new Vector.<Point>();
         for(var i:int = x - 1; i <= x + width; i++){
             for(var j:int = y; j < y + length; j++){
-                if(!contains(i, j) && i >= 0 && j >= 0)
+                if(is_valid_nearest_point(i, j, grid))
                     res.push(new Point(i, j));
             }
         }
 
         for(var i:int = x; i < x + width; i++){
             for(var j:int = y - 1; j <= y + length; j++){
-                if(!contains(i, j) && i >= 0 && j >= 0)
+                if(is_valid_nearest_point(i, j, grid))
                     res.push(new Point(i, j));
             }
         }
 
-
         return res;
+    }
+
+    private function is_valid_nearest_point(i:uint, j:uint, grid:IsoGrid):Boolean{
+        return !contains(i, j) && i >= 0 && j >= 0  && grid.get_tile(i, j).is_reachable;
     }
 
     public function get is_target():Boolean {

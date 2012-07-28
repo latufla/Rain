@@ -9,6 +9,7 @@ package utils.creator {
 import common.controller.FieldController;
 import common.model.Bot;
 import common.model.FieldObject;
+import common.model.SpawnPoint;
 
 import flash.geom.Point;
 
@@ -123,10 +124,8 @@ public class DemoFieldCreator {
         for each (var p:Object in OBJECTS){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
             b.move_to(p.x, p.y);
-            b.bot_count = p.b;
-            field_c.add_building(b);
+            field_c.add_building(b, p.b);
         }
-       field_c.resolve_spawn_points();
 
         for each (var p:Object in PASSIVE_OBJECTS){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
@@ -134,7 +133,6 @@ public class DemoFieldCreator {
             field_c.add_building(b);
         }
 
-        // add bots to spawn points
         var b:FieldObject;
         var j:int = 0;
         for each (var p:* in field_c.buildings){
@@ -144,12 +142,10 @@ public class DemoFieldCreator {
 
             i = 0;
             j += 70
-            while(i++ < b.bot_count){
-                setTimeout(function (spawn_point:Point):void{
-                    var bot:Bot = new Bot(1);
-                    bot.move_to(spawn_point.x, spawn_point.y);
+            for each (var bot:Bot in b.spawn_point.bots){
+                setTimeout(function (bot:Bot):void{
                     field_c.add_bot(bot);
-                }, i * 1000 + j, b.spawn_point);
+                }, (i++) * 1000 + j, bot);
             }
         }
 //

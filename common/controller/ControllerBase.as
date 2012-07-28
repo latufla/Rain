@@ -49,13 +49,5 @@ public class ControllerBase {
     public function set static_zordered(value:Boolean):void {
         _static_zordered = value;
     }
-
-    public function get id_on_tile():int {
-        return _id_on_tile;
-    }
-
-    public function set id_on_tile(value:int):void {
-        _id_on_tile = value;
-    }
 }
 }
