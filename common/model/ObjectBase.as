@@ -26,7 +26,8 @@ public class ObjectBase {
 
     protected var _is_reachable:Boolean; // true - u can walk here
     protected var _is_occupied:Boolean;  // false - u can build here
-    protected var _is_target:Boolean; // true - bots go for it
+
+    protected var _has_target_point:Boolean; // true - bots go for it
     protected var _has_spawn_point:Boolean; // true - ,bots spawns here
 
     protected var _type:int; // use for bots etc.
@@ -150,12 +151,12 @@ public class ObjectBase {
         return !contains(i, j) && i >= 0 && j >= 0  && grid.get_tile(i, j).is_reachable;
     }
 
-    public function get is_target():Boolean {
-        return _is_target;
+    public function get has_target_point():Boolean {
+        return _has_target_point;
     }
 
-    public function set is_target(value:Boolean):void {
-        _is_target = value;
+    public function set has_target_point(value:Boolean):void {
+        _has_target_point = value;
     }
 
     public function get type():int {

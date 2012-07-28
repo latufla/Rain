@@ -106,7 +106,7 @@ public class FieldController {
                 return false;
         }
 
-        b.create_default_spawn_point(_grid, bot_count);
+        b.create_spawn_point(_grid, bot_count);
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);

@@ -12,8 +12,6 @@ public class SpawnPoint {
     private var _x:uint; // tile field pos
     private var _y:uint;
 
-
-
     private var _bots:Vector.<Bot> = new Vector.<Bot>();
     private var _next_bot_id:uint  = 0;
     private var _interval:Number = 1000;

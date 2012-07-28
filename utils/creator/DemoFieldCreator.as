@@ -113,7 +113,7 @@ public class DemoFieldCreator {
                         field_c.grid.get_tile(i, j).is_reachable = false;
                         break;
                     case 2:
-                        field_c.grid.get_tile(i, j).is_target = true;
+                        field_c.grid.get_tile(i, j).has_target_point = true;
                     default:
                         // do nothing
                 }
@@ -125,7 +125,7 @@ public class DemoFieldCreator {
         for each (var p:Object in OBJECTS){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
             b.move_to(p.x, p.y);
-            field_c.add_building(b, p.b);
+            field_c.add_building(b, 5);
         }
 
         for each (var p:Object in PASSIVE_OBJECTS){
