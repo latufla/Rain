@@ -13,11 +13,13 @@ public class FieldObject extends ObjectBase{
     private var _spawn_point:SpawnPoint;
 
     public function FieldObject(w:uint, l:uint, h:uint) {
-        _id = count++;
+        super();
 
         width = w;
         length = l;
         _debug_height = h;
+
+        _spawn_point = new SpawnPoint(0, 0);
     }
 
     public function create_default_spawn_point(grid:IsoGrid, bot_count:uint = 0):void {
@@ -32,18 +34,24 @@ public class FieldObject extends ObjectBase{
         var p:Point = nearest_points[0];
         _spawn_point = new SpawnPoint(p.x, p.y);
 
+        var t:IsoTile = grid.get_tile(p.x,  p.y);
+        t.has_spawn_point = true;
+
         for (var i:uint = 0; i < bot_count; i++){
             _spawn_point.add_bot(new Bot(1));
         }
     }
 
-
-    public function get spawn_point():SpawnPoint {
-        return _spawn_point;
+    public function get bots():Vector.<Bot> {
+        return _spawn_point.bots;
     }
 
-    public function set spawn_point(value:SpawnPoint):void {
-        _spawn_point = value;
+    public function get spawn_interval():Number{
+        return _spawn_point.interval;
+    }
+
+    public function get next_bot():Bot{
+        return _spawn_point.next_bot();
     }
 }
 }

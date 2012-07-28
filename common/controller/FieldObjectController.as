@@ -7,6 +7,7 @@
  */
 package common.controller {
 
+import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
@@ -18,6 +19,8 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.utils.clearInterval;
+import flash.utils.setInterval;
 
 import utils.iso.IsoMathUtil;
 
@@ -26,8 +29,10 @@ public class FieldObjectController extends ControllerBase{
     private var _object:FieldObject;
     private var _view:FieldObjectView = new FieldObjectView();
 
-    public function FieldObjectController() {
+    private var _spawn_interval:uint;
 
+    public function FieldObjectController() {
+        super();
     }
 
     override public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
@@ -69,6 +74,25 @@ public class FieldObjectController extends ControllerBase{
 
     override public function set object(value:ObjectBase):void {
         _object = value as FieldObject;
+    }
+
+    public function start_spawn_bots(field_c:FieldController):void{
+        var bot:Bot = _object.next_bot;
+        if(!bot)
+            return;
+
+        _spawn_interval = setInterval(function ():void {
+            if(bot)
+                field_c.add_bot(bot);
+            else
+                stop_spawn_bots();
+
+            bot = _object.next_bot;
+        }, _object.spawn_interval);
+    }
+
+    public function stop_spawn_bots():void{
+        clearInterval(_spawn_interval);
     }
 }
 }

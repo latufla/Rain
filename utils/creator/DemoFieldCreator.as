@@ -7,6 +7,7 @@
  */
 package utils.creator {
 import common.controller.FieldController;
+import common.controller.FieldObjectController;
 import common.model.Bot;
 import common.model.FieldObject;
 import common.model.SpawnPoint;
@@ -133,22 +134,6 @@ public class DemoFieldCreator {
             field_c.add_building(b);
         }
 
-        var b:FieldObject;
-        var j:int = 0;
-        for each (var p:* in field_c.buildings){
-            b = p.object;
-            if(!b.spawn_point)
-                continue;
-
-            i = 0;
-            j += 70
-            for each (var bot:Bot in b.spawn_point.bots){
-                setTimeout(function (bot:Bot):void{
-                    field_c.add_bot(bot);
-                }, (i++) * 1000 + j, bot);
-            }
-        }
-//
         return field_c;
     }
 }

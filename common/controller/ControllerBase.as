@@ -17,9 +17,11 @@ public class ControllerBase {
 
     protected var _static_zordered:Boolean; // should be used once when field created
 
-    protected var _id_on_tile:int = -1;
+    protected var _id:int = -1;
+    public static var count:uint;
 
     public function ControllerBase() {
+        _id = count++;
     }
 
     public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
@@ -48,6 +50,10 @@ public class ControllerBase {
 
     public function set static_zordered(value:Boolean):void {
         _static_zordered = value;
+    }
+
+    public function get id():int {
+        return _id;
     }
 }
 }

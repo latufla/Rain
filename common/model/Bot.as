@@ -23,7 +23,7 @@ public class Bot extends ObjectBase{
     protected var _target:IsoTile;
 
     public function Bot(type:int) {
-        _id = count++;
+        super();
 
         _type = type;
         _is_reachable = true;

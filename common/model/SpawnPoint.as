@@ -6,19 +6,28 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-import common.controller.BotController;
 
 public class SpawnPoint {
 
     private var _x:uint; // tile field pos
     private var _y:uint;
 
+
+
     private var _bots:Vector.<Bot> = new Vector.<Bot>();
-    private var _timeout:Number = 1000;
+    private var _next_bot_id:uint  = 0;
+    private var _interval:Number = 1000;
 
     public function SpawnPoint(x:uint, y:uint) {
         _x = x;
         _y = y;
+    }
+
+    public function next_bot():Bot{
+        if(_next_bot_id >= _bots.length)
+            return null;
+
+        return _bots[_next_bot_id++];
     }
 
     public function add_bot(o:Bot):void{
@@ -59,12 +68,12 @@ public class SpawnPoint {
         _bots = value;
     }
 
-    public function get timeout():Number {
-        return _timeout;
+    public function get interval():Number {
+        return _interval;
     }
 
-    public function set timeout(value:Number):void {
-        _timeout = value;
+    public function set interval(value:Number):void {
+        _interval = value;
     }
 }
 }

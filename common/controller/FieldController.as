@@ -110,6 +110,7 @@ public class FieldController {
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);
+        b_c.start_spawn_bots(this);
 
         _buildings.push(b_c);
         _all_objects.push(b_c);

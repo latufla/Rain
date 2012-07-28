@@ -27,14 +27,14 @@ public class ObjectBase {
     protected var _is_reachable:Boolean; // true - u can walk here
     protected var _is_occupied:Boolean;  // false - u can build here
     protected var _is_target:Boolean; // true - bots go for it
-    protected var _is_spawn_point:Boolean; // true - ,bots spawns here
+    protected var _has_spawn_point:Boolean; // true - ,bots spawns here
 
     protected var _type:int; // use for bots etc.
 
     protected var _id:int = -1;
     public static var count:int = 0;
     public function ObjectBase() {
-
+        _id = count++;
     }
 
     // move to exact tile, pos in definite point into the tile
@@ -194,12 +194,12 @@ public class ObjectBase {
         return _id;
     }
 
-    public function get is_spawn_point():Boolean {
-        return _is_spawn_point;
+    public function get has_spawn_point():Boolean {
+        return _has_spawn_point;
     }
 
-    public function set is_spawn_point(value:Boolean):void {
-        _is_spawn_point = value;
+    public function set has_spawn_point(value:Boolean):void {
+        _has_spawn_point = value;
     }
 
     public function get left ():int

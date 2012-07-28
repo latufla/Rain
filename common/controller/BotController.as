@@ -33,6 +33,7 @@ public class BotController extends ControllerBase{
     private var _moving_queue:TimelineLite = new TimelineLite();
 
     public function BotController() {
+        super();
     }
 
     override public function draw(bd:BitmapData, update_only:Boolean = false, x_offset:Number = 0):void{
