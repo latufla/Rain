@@ -11,6 +11,8 @@ public class TargetPoint {
     private var _x:uint; // tile field pos
     private var _y:uint;
 
+    private var _priority:int = -1; // -1 is inactive
+
     private var _bots_type:String;
     private var _bots_count:uint;
 
@@ -45,6 +47,14 @@ public class TargetPoint {
 
     public function set cur_count(value:uint):void {
         _cur_count = value;
+    }
+
+    public function get priority():int {
+        return _priority;
+    }
+
+    public function set priority(value:int):void {
+        _priority = value;
     }
 }
 }

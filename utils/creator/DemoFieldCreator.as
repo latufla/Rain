@@ -71,7 +71,7 @@ public class DemoFieldCreator {
         {x:5, y:19, w:3, l:1, h:2},
         {x:9, y:21, w:2, l:1, h:2},
         {x:1, y:22, w:1, l:2, h:4},
-        {x:3, y:27, w:3, l:2, h:2},
+        {x:3, y:27, w:3, l:2, h:2, t:true, tp:1},
         {x:13, y:26, w:1, l:2, h:2},
         {x:13, y:22, w:1, l:3, h:2},
         {x:17, y:27, w:1, l:2, h:2},
@@ -80,7 +80,7 @@ public class DemoFieldCreator {
         {x:17, y:13, w:1, l:2, h:2},
         {x:15, y:11, w:2, l:1, h:2},
 
-        {x:19, y:28, w:1, l:1, h:3},
+        {x:19, y:28, w:1, l:1, h:3, t:true, tp:2},
         {x:19, y:24, w:1, l:3, h:4},
         {x:19, y:16, w:1, l:5, h:2},
         {x:9, y:11, w:3, l:1, h:3},
@@ -131,8 +131,14 @@ public class DemoFieldCreator {
         for each (var p:Object in PASSIVE_OBJECTS){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
             b.move_to(p.x, p.y);
+
+            if(p.t)
+                b.create_target_point(p.tp);
+
             field_c.add_building(b);
         }
+
+        trace("TB: ", field_c.target_buildings);
 
         return field_c;
     }

@@ -21,10 +21,11 @@ public class FieldObject extends ObjectBase{
         _debug_height = h;
     }
 
-    public function create_spawn_point(grid:IsoGrid, bots_count:uint = 0):void {
+    public function create_spawn_point(bots_count:uint = 0):void {
         if(bots_count == 0)
             return;
 
+        var grid:IsoGrid = Config.field_c.grid;
         var nearest_points:Vector.<Point> = get_nearest_points(grid);
 
         if(nearest_points.length == 0)
@@ -41,10 +42,11 @@ public class FieldObject extends ObjectBase{
         }
     }
 
-    public function create_target_point(grid:IsoGrid, bots_type:String, bots_count:uint = 5):void {
+    public function create_target_point(priority:int, bots_type:String = "def", bots_count:uint = 5):void {
         if(bots_count == 0)
             return;
 
+        var grid:IsoGrid = Config.field_c.grid;
         var nearest_points:Vector.<Point> = get_nearest_points(grid);
 
         if(nearest_points.length == 0)
@@ -52,6 +54,7 @@ public class FieldObject extends ObjectBase{
 
         var p:Point = nearest_points[0];
         _target_point = new TargetPoint(p.x, p.y, bots_type, bots_count);
+        _target_point.priority = priority;
 
         var t:IsoTile = grid.get_tile(p.x,  p.y);
         t.is_target = true;
@@ -76,6 +79,10 @@ public class FieldObject extends ObjectBase{
             return null;
 
         return _spawn_point.next_bot();
+    }
+
+    public function get target_point():TargetPoint {
+        return _target_point;
     }
 }
 }

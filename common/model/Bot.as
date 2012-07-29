@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.FieldObjectController;
+
 import utils.PathfindUtils;
 
 public class Bot extends ObjectBase{
@@ -31,16 +33,19 @@ public class Bot extends ObjectBase{
         return _path;
     }
 
+    public function find_path_to_next_target():Array{
+        return find_path(next_target);
+    }
+
     public function get position_tile():IsoTile{
         return Config.field_c.grid.get_tile(x, y);
     }
 
-    public function find_target():IsoTile{
-        return Config.field_c.grid.get_tile(0, 29);
+    public function get next_target():IsoTile{
+        var target_point:TargetPoint = Config.field_c.target_buildings[0].target_point;
+        var tile:IsoTile = Config.field_c.grid.get_tile(target_point.x, target_point.y);
+        return tile;
     }
 
-    public function find_path_to_target():Array{
-        return find_path(find_target());
-    }
 }
 }

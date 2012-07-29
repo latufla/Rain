@@ -45,7 +45,7 @@ public class IsoTileRenderer {
         if(tile.is_spawn)
             color = SPAWN_POINT_COLOR;
 
-        var size:Rectangle = new Rectangle(tile.x_px, tile.y_px, FieldController.TILE_WIDTH, FieldController.TILE_LENGTH);
+        var size:Rectangle = new Rectangle(tile.x_px, tile.y_px, FieldController.TILE_WIDTH - 2, FieldController.TILE_LENGTH - 2);
         IsoRenderUtil.draw_iso_rect(layer, size, 1, color, color, 1);
     }
 

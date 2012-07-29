@@ -80,7 +80,7 @@ public class BotController extends ControllerBase{
     }
 
     public function move_to_target(single_resorter:Function){
-        move_to(_object.find_target(), single_resorter);
+        move_to(_object.next_target, single_resorter);
     }
 
     // procedurin` wrapper

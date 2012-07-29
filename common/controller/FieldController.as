@@ -11,6 +11,7 @@ import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.model.SpawnPoint;
+import common.model.TargetPoint;
 import common.view.IsoGridView;
 
 import flash.display.Bitmap;
@@ -108,7 +109,7 @@ public class FieldController {
                 return false;
         }
 
-        b.create_spawn_point(_grid, bot_count);
+        b.create_spawn_point(bot_count);
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
         b_c.apply_params_to_grid(_grid);
@@ -269,6 +270,33 @@ public class FieldController {
 
     public function get buildings():Vector.<FieldObjectController> {
         return _buildings;
+    }
+
+    public function get target_buildings():Vector.<FieldObject> {
+        var b_cs = _buildings.filter(function (item:FieldObjectController, index:int, vector:Vector.<FieldObjectController>):Boolean{
+            return (item.object as FieldObject).target_point;
+        })
+
+        var res:Vector.<FieldObject> = new Vector.<FieldObject>();
+        for each(var b_c:FieldObjectController in b_cs){
+            res.push(b_c.object);
+        }
+
+        // desc
+        res.sort(function(a:FieldObject, b:FieldObject):int{
+            var a_target_priority:int = a.target_point.priority;
+            var b_target_priority:int = b.target_point.priority;
+
+            if(a_target_priority > b_target_priority)
+                return -1;
+
+            if(a_target_priority < b_target_priority)
+                return 1;
+
+            return 0;
+        });
+
+        return res;
     }
 }
 }
