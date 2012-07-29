@@ -6,8 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 package {
+import common.controller.FieldController;
+
 public class Config {
     public function Config() {
     }
+
+    public static var field_c:FieldController;
 }
 }

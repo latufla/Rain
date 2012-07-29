@@ -57,6 +57,8 @@ public class FieldController {
     }
 
     private function init():void {
+        Config.field_c = this;
+
         _view.addEventListener(MouseEvent.CLICK, on_click);
         _view.addEventListener(Event.ENTER_FRAME, on_ef_render);
         _view.addChild(_grid_view);
@@ -129,8 +131,6 @@ public class FieldController {
             if(p.object.intersects(b))
                 return false;
         }
-
-        b.grid = _grid;
 
         var b_c:BotController = new BotController();
         b_c.object = b;

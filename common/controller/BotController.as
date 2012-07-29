@@ -101,22 +101,25 @@ public class BotController extends ControllerBase{
             _moving_queue.append(new TweenLite(_object, 2, step));
         }
 
-       var self:BotController = this;
+        var grid:IsoGrid;
+        var tile:IsoTile;
+        var self:BotController = this;
         function on_complete_step():void{
-            _grid.get_tile(_object.x, _object.y).remove_object(self);
-            _object.move_to_px(_object.x_px, _object.y_px); // tweening via
-            _grid.get_tile(_object.x, _object.y).add_object(self);
+            grid = Config.field_c.grid;
+            tile = grid.get_tile(_object.x, _object.y);
+            tile.remove_object(self);
 
-          //  on_complete_resort(self);
+            _object.move_to_px(_object.x_px, _object.y_px); // tweening via
+
+            tile = grid.get_tile(_object.x, _object.y);
+            tile.add_object(self);
         }
     }
 
-
-    private var _grid:IsoGrid;
     override public function apply_params_to_grid(grid:IsoGrid):void{
-        _grid = grid;
         var t:IsoTile = grid.get_tile(object.x, object.y);
         t.add_object(this);
     }
+
 }
 }
