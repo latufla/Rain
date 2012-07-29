@@ -113,7 +113,7 @@ public class DemoFieldCreator {
                         field_c.grid.get_tile(i, j).is_reachable = false;
                         break;
                     case 2:
-                        field_c.grid.get_tile(i, j).has_target_point = true;
+                        field_c.grid.get_tile(i, j).is_target = true;
                     default:
                         // do nothing
                 }

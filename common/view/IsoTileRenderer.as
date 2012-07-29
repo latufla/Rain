@@ -39,10 +39,10 @@ public class IsoTileRenderer {
             color = REACHABLE_COLOR;
 
 
-        if(tile.has_target_point)
+        if(tile.is_target)
             color = TARGET_POINT_COLOR;
 
-        if(tile.has_spawn_point)
+        if(tile.is_spawn)
             color = SPAWN_POINT_COLOR;
 
         var size:Rectangle = new Rectangle(tile.x_px, tile.y_px, FieldController.TILE_WIDTH, FieldController.TILE_LENGTH);

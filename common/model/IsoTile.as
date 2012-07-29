@@ -13,7 +13,9 @@ import utils.PNode;
 // field tile, not normally use for extending
 public class IsoTile extends ObjectBase{
 
-    //
+    private var _is_target:Boolean; // true - bots go for it
+    private var _is_spawn:Boolean; // true - bots spawn here
+
     private var _field_object_c:ControllerBase;
     private var _objects:Vector.<ControllerBase> = new Vector.<ControllerBase>();
 
@@ -82,5 +84,20 @@ public class IsoTile extends ObjectBase{
         return o;
     }
 
+    public function get is_target():Boolean {
+        return _is_target;
+    }
+
+    public function set is_target(value:Boolean):void {
+        _is_target = value;
+    }
+
+    public function get is_spawn():Boolean {
+        return _is_spawn;
+    }
+
+    public function set is_spawn(value:Boolean):void {
+        _is_spawn = value;
+    }
 }
 }

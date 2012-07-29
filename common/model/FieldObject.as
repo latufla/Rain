@@ -34,7 +34,7 @@ public class FieldObject extends ObjectBase{
         _spawn_point = new SpawnPoint(p.x, p.y);
 
         var t:IsoTile = grid.get_tile(p.x,  p.y);
-        t.has_spawn_point = true;
+        t.is_spawn = true;
 
         for (var i:uint = 0; i < bots_count; i++){
             _spawn_point.add_bot(new Bot(1));
@@ -54,7 +54,7 @@ public class FieldObject extends ObjectBase{
         _target_point = new TargetPoint(p.x, p.y, bots_type, bots_count);
 
         var t:IsoTile = grid.get_tile(p.x,  p.y);
-        t.has_target_point = true;
+        t.is_target = true;
     }
 
     public function get bots():Vector.<Bot> {
