@@ -161,7 +161,8 @@ public class FieldController {
     // RENDER
     // first render
     public function draw(need_resort:Boolean = false):void{
-        _all_objects = z_sort();
+        if(need_resort)
+            _all_objects = z_sort();
 
         draw_grid();
         draw_all_objects();
@@ -172,28 +173,14 @@ public class FieldController {
         return ZorderUtils.z_sort_multi(_grid);
     }
 
-    // ----
-    // normally iso coords are both - and + by x
-    // but we want display field view in 0, 0 of screen and
-    // see all the field from the most left point
-    // ----
-    // next time we click on _view or add some objects we translate
-    // coords with _x_grid_offset
-    private var _x_grid_offset:int;
     public function draw_grid():void{
         _grid_view.draw();
-
-        var bounds:Rectangle = _grid_view.getBounds(_grid_view);
-        _grid_view.x = -bounds.x;
-        _grid_view.y = -bounds.y;
-
-        _x_grid_offset = -bounds.x;// TODO: Resolve Y offset needness
 //        _grid_view.visible = false;
     }
 
     public function draw_all_objects(update_only:Boolean = false):void{
         for each(var p:ControllerBase in _all_objects){
-            p.draw(_bd, update_only, _x_grid_offset);
+            p.draw(_bd, update_only, _grid_view.offset.x);
         }
     }
     //RENDER END
@@ -289,14 +276,14 @@ public class FieldController {
     }
 
     private function process_building_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - _grid_view.offset.x, e.localY);
         var b:FieldObject = new FieldObject(1, 1, 2);
         b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
         add_building(b);
     }
 
     private function process_grid_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX - _x_grid_offset, e.localY);  // TODO: resolve 748
+        var coords:Point = IsoMathUtil.screenToIso(e.localX - _grid_view.offset.x, e.localY);  // TODO: resolve 748
         var tiles:Array = _grid.get_tiles_in_square(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH, 1, 1);
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;
