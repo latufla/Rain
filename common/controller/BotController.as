@@ -80,8 +80,10 @@ public class BotController extends ControllerBase{
         start_moving_queue()
     }
 
-    public function move_to_target(single_resorter:Function){
-        move_to(_object.next_target, single_resorter);
+    public function move_to_target(single_resorter:Function = null){
+        var target:IsoTile = _object.next_target;
+        if(target)
+            move_to(target, single_resorter);
     }
 
     // procedurin` wrapper

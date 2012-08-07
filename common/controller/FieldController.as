@@ -145,7 +145,7 @@ public class FieldController {
 
         var b_c:BotController = new BotController();
         b_c.object = b;
-        b_c.move_to_target(null);
+        b_c.move_to_target();
 
         _bots.push(b_c);
         _all_objects.push(b_c);
@@ -273,6 +273,7 @@ public class FieldController {
                 break;
             }
         }
+        draw_grid();
     }
 
     private function process_grid_click(e:MouseEvent):void {

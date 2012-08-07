@@ -103,7 +103,11 @@ public class FieldObjectController extends ControllerBase{
     }
 
     public function process_click(){
-        start_spawn_bots();
+        if(_object.has_spawn_point){
+            start_spawn_bots();
+        }else if(_object.target_point){
+            _object.remove_target_point();
+        }
     }
 }
 }

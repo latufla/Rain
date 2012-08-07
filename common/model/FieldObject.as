@@ -60,6 +60,17 @@ public class FieldObject extends ObjectBase{
         t.is_target = true;
     }
 
+    public function remove_target_point():void{
+        if(!_target_point)
+            return;
+
+        var grid:IsoGrid = Config.field_c.grid;
+        var t:IsoTile = grid.get_tile(_target_point.x,  _target_point.y);
+        t.is_target = false;
+
+        _target_point = null;
+    }
+
     public function get bots():Vector.<Bot> {
         if(!_spawn_point)
             return null;
@@ -83,6 +94,10 @@ public class FieldObject extends ObjectBase{
 
     public function get target_point():TargetPoint {
         return _target_point;
+    }
+
+    public function get has_spawn_point():Boolean{
+        return _spawn_point;
     }
 }
 }
