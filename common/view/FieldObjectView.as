@@ -47,8 +47,11 @@ public class FieldObjectView extends Sprite{
         bd.draw(sp, m);
     }
 
-    public function contains_px(pnt_px:Point):Boolean{
-        return _bd.hitTest(new Point(x, y), 0xFFFFFF, pnt_px);
+    private var _left_bd_pnt:Point = new Point();
+    public function contains_px(pnt:Point):Boolean{
+        _left_bd_pnt.x = x;
+        _left_bd_pnt.y = y;
+        return _bd.hitTest(_left_bd_pnt, 0xFFFFFF, pnt);
     }
 
     private function get sprite_to_draw():Sprite{

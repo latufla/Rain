@@ -78,11 +78,12 @@ public class FieldObjectController extends ControllerBase{
         apply_params_to_grid();
     }
 
-    public function start_spawn_bots(field_c:FieldController):void{
+    public function start_spawn_bots():void{
         var bot:Bot = _object.next_bot;
         if(!bot)
             return;
 
+        var field_c:FieldController = Config.field_c;
         _spawn_interval = setInterval(function ():void {
             if(bot)
                 field_c.add_bot(bot);
@@ -95,6 +96,14 @@ public class FieldObjectController extends ControllerBase{
 
     public function stop_spawn_bots():void{
         clearInterval(_spawn_interval);
+    }
+
+    public function contains_px(pnt:Point):Boolean{
+        return _view.contains_px(pnt);
+    }
+
+    public function process_click(){
+        start_spawn_bots();
     }
 }
 }

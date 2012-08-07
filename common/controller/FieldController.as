@@ -114,7 +114,6 @@ public class FieldController {
 
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
-        b_c.start_spawn_bots(this);
 
         _buildings.push(b_c);
         _all_objects.push(b_c);
@@ -260,29 +259,20 @@ public class FieldController {
 //        trace("on_mouse_move");
     }
 
-    // TODO: don`t use before refactoring
-    private function process_bot_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
-//        _bots[0].object.find_path(tile);
-        _bots[0].move_to(tile, null);
-        draw_grid();
-    }
-
+    private var _click_pnt:Point = new Point();
     private function process_building_click(e:MouseEvent):void {
-        //var coords:Pt = IsoMathUtil.screenToIso(e.localX - _grid_view.offset.x, e.localY) as Pt;
-        var coords:Point = new Point(e.localX  - _grid_view.offset.x, e.localY)
-        trace("coords", coords);
-//        var a:Point;
-//        var b:Point;
-        for each(var o:FieldObjectController in _buildings){
-            if((o.view as FieldObjectView).contains_px(coords))
-                trace("CONTAINS");
-        }
+        _click_pnt.x = e.localX - _grid_view.offset.x;
+        _click_pnt.y = e.localY;
 
-//        var b:FieldObject = new FieldObject(1, 1, 2);
-//        b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
-       // add_building(b);
+        var c:FieldObjectController;
+        var n:uint = _all_objects.length;
+        for (var i:int = n - 1; i >= 0; i--) {
+            c = _all_objects[i] as FieldObjectController;
+            if(c && c.contains_px(_click_pnt)){
+                c.process_click();
+                break;
+            }
+        }
     }
 
     private function process_grid_click(e:MouseEvent):void {
@@ -293,5 +283,15 @@ public class FieldController {
         }
         draw_grid();
     }
+
+    // TODO: don`t use before refactoring
+    private function process_bot_click(e:MouseEvent):void {
+        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
+        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
+//        _bots[0].object.find_path(tile);
+        _bots[0].move_to(tile, null);
+        draw_grid();
+    }
+
 }
 }
