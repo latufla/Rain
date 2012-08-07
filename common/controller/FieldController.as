@@ -29,6 +29,8 @@ import flash.geom.Rectangle;
 import utils.ArrayUtils;
 
 import utils.DebugUtils;
+import utils.DoubleBuffer;
+import utils.DoubleBuffer;
 
 import utils.FieldUtils;
 import utils.MovieClipHelper;
@@ -92,22 +94,13 @@ public class FieldController {
         _grid_view.grid = _grid;
     }
 
-    private var _buffer:Array = [new Bitmap(), new Bitmap()];
-    private var _bd:BitmapData = new BitmapData(1280, 768, true, 0xFFFFFF);
+    private var d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
     private function on_ef_render(e:Event):void {
-        _bd = new BitmapData(1280, 768, true, 0xFFFFFF);
         _all_objects = z_sort();
-        draw_all_objects(true);
-        _buffer[1].bitmapData = _bd;
 
-        //swap
-        var tmp:Bitmap;
-        tmp = _buffer[0];
-        _buffer[0] = _buffer[1];
-        _buffer[1] = tmp;
-
-        _objects_view.addChild(_buffer[0])
-        MovieClipHelper.try_remove(_buffer[1]);
+        d_buffer.refresh();
+        draw_all_objects(d_buffer, true);
+        d_buffer.draw(_objects_view);
     }
 
     public function add_building(b:FieldObject, bot_count:uint = 0):Boolean{
@@ -165,7 +158,7 @@ public class FieldController {
             _all_objects = z_sort();
 
         draw_grid();
-        draw_all_objects();
+        draw_all_objects(d_buffer);
     }
 
     // sort
@@ -178,9 +171,9 @@ public class FieldController {
 //        _grid_view.visible = false;
     }
 
-    public function draw_all_objects(update_only:Boolean = false):void{
+    public function draw_all_objects(d_buffer:DoubleBuffer, update_only:Boolean = false):void{
         for each(var p:ControllerBase in _all_objects){
-            p.draw(_bd, update_only, _grid_view.offset.x);
+            p.draw(d_buffer.bd, update_only, _grid_view.offset.x);
         }
     }
     //RENDER END
