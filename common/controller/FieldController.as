@@ -145,19 +145,11 @@ public class FieldController {
 
     public function add_bot(b:Bot):Boolean{
         // check if out of borders
-        if(b.x + b.width > field_width || b.y + b.length > field_length)
+        if(!can_add(b))
             return false;
-
-        // check if there is another object on this place
-        // can be added on another bot tile
-        for each(var p:FieldObjectController in _buildings){
-            if(p.object.intersects(b))
-                return false;
-        }
 
         var b_c:BotController = new BotController();
         b_c.object = b;
-
         b_c.move_to_target(null);
 
         _bots.push(b_c);
