@@ -56,7 +56,8 @@ public class FieldObjectController extends ControllerBase{
         _view.y = pnt.y;
     }
 
-    override public function apply_params_to_grid(grid:IsoGrid):void{
+    override public function apply_params_to_grid():void{
+        var grid:IsoGrid = Config.field_c.grid;
         var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
         for each(var t:IsoTile in tiles){
             t.is_reachable = object.is_reachable;
@@ -74,6 +75,7 @@ public class FieldObjectController extends ControllerBase{
 
     override public function set object(value:ObjectBase):void {
         _object = value as FieldObject;
+        apply_params_to_grid();
     }
 
     public function start_spawn_bots(field_c:FieldController):void{

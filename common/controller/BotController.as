@@ -67,6 +67,7 @@ public class BotController extends ControllerBase{
 
     override public function set object(value:ObjectBase):void {
         _object = value as Bot;
+        apply_params_to_grid();
     }
 
     public function move_to(end:IsoTile, single_resorter:Function):void{
@@ -116,7 +117,8 @@ public class BotController extends ControllerBase{
         }
     }
 
-    override public function apply_params_to_grid(grid:IsoGrid):void{
+    override public function apply_params_to_grid():void{
+        var grid:IsoGrid = Config.field_c.grid;
         var t:IsoTile = grid.get_tile(object.x, object.y);
         t.add_object(this);
     }

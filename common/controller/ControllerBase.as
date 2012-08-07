@@ -28,7 +28,7 @@ public class ControllerBase {
         // override me
     }
 
-    public function apply_params_to_grid(grid:IsoGrid):void{
+    public function apply_params_to_grid():void{
         // override me
     }
 
