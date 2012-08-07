@@ -185,18 +185,6 @@ public class FieldController {
     }
     //RENDER END
 
-    //utils
-    public function debug_generate_random_buildings():void{
-        var b:FieldObject;
-        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_width, h:field_length}, new Point(1, 1));
-        for each(var o:Object in fld){
-            b = new FieldObject(o.w, o.h, 2);
-            b.move_to(o.x, o.y);
-            add_building(b);
-           // trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
-        }
-    }
-
     public function get view():Sprite {
         return _view;
     }
@@ -206,11 +194,17 @@ public class FieldController {
     }
 
     // field width is same to grid width
-    private function get field_width():uint{
+    public function get field_width():uint{
+        if(!_grid)
+            return 0;
+
         return _grid.width;
     }
 
-    private function get field_length():uint{
+    public function get field_length():uint{
+        if(!_grid)
+            return 0;
+
         return _grid.length;
     }
 

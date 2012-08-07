@@ -16,6 +16,8 @@ import flash.geom.Point;
 
 import flash.utils.setTimeout;
 
+import utils.FieldUtils;
+
 public class DemoFieldCreator {
 
     private static const GRID:Array = [
@@ -120,7 +122,7 @@ public class DemoFieldCreator {
             }
         }
 //
-//        field_c.debug_generate_random_buildings();
+//        FieldUtils.debug_generate_random_buildings(field_c);
 
         for each (var p:Object in OBJECTS){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);

@@ -6,6 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package utils {
+import common.controller.FieldController;
+import common.model.FieldObject;
+
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.getTimer;
@@ -74,6 +77,18 @@ public class FieldUtils {
         _rect2.height = b.h;
 
         return _rect1.containsRect(_rect2);
+    }
+
+    //utils
+    public static function debug_generate_random_buildings(field_c:FieldController):void{
+        var b:FieldObject;
+        var fld:Array = FieldUtils.generate_field_with_objects(3, {w:field_c.field_width, h:field_c.field_length}, new Point(1, 1));
+        for each(var o:Object in fld){
+            b = new FieldObject(o.w, o.h, 2);
+            b.move_to(o.x, o.y);
+            field_c.add_building(b);
+            // trace("{ x:" + o.x + ", y:" + o.y + ", w:" + o.w + ", l:" + o.h + " }")
+        }
     }
 
 }
