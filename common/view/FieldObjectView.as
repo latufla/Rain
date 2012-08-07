@@ -15,6 +15,7 @@ import flash.display.BitmapData;
 
 import flash.display.Sprite;
 import flash.geom.Matrix;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.text.TextField;
 
@@ -43,13 +44,11 @@ public class FieldObjectView extends Sprite{
         var m:Matrix = new Matrix();
         m.translate(-_x_offset, -_y_offset);
 
-
-//        _t_f.text = String(_object.id);
-//        _t_f.y = -60;
-//        _t_f.x = -10;
-//        sp.addChild(_t_f);
-
         bd.draw(sp, m);
+    }
+
+    public function contains_px(pnt_px:Point):Boolean{
+        return _bd.hitTest(new Point(x, y), 0xFFFFFF, pnt_px);
     }
 
     private function get sprite_to_draw():Sprite{

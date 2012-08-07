@@ -116,6 +116,10 @@ public class ObjectBase {
         return FieldUtils.intersects(obj_1, obj_2);
     }
 
+//    public function contains_px(x_px:int, y_px:int):Boolean{
+//
+//    }
+
     public function contains(x:int, y:int):Boolean{
         return (this.x <= x && x < this.x + this.width) && (this.y <= y && y < this.y + this.length);
     }

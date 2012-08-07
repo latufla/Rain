@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
+import as3isolib.geom.Pt;
+
 import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
@@ -13,6 +15,7 @@ import common.model.IsoTile;
 import common.model.ObjectBase;
 import common.model.SpawnPoint;
 import common.model.TargetPoint;
+import common.view.FieldObjectView;
 import common.view.IsoGridView;
 
 import flash.display.Bitmap;
@@ -201,6 +204,10 @@ public class FieldController {
         return _grid.length;
     }
 
+    private function get_building_by_coords_px(x_px:int, y_px:int):void{
+
+    }
+
     public function get buildings():Vector.<FieldObjectController> {
         return _buildings;
     }
@@ -237,20 +244,20 @@ public class FieldController {
         trace("click");
 
        //process_grid_click(e)
-    //    process_building_click(e);
+        process_building_click(e);
         //process_bot_click(e);
     }
 
     private function on_mouse_over(e:MouseEvent):void {
-        trace("on_mouse_over");
+//        trace("on_mouse_over");
     }
 
     private function on_mouse_out(e:MouseEvent):void{
-        trace("on_mouse_out");
+//        trace("on_mouse_out");
     }
 
     private function on_mouse_move(e:MouseEvent):void {
-        trace("on_mouse_move");
+//        trace("on_mouse_move");
     }
 
     // TODO: don`t use before refactoring
@@ -263,10 +270,19 @@ public class FieldController {
     }
 
     private function process_building_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX - _grid_view.offset.x, e.localY);
-        var b:FieldObject = new FieldObject(1, 1, 2);
-        b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
-        add_building(b);
+        //var coords:Pt = IsoMathUtil.screenToIso(e.localX - _grid_view.offset.x, e.localY) as Pt;
+        var coords:Point = new Point(e.localX  - _grid_view.offset.x, e.localY)
+        trace("coords", coords);
+//        var a:Point;
+//        var b:Point;
+        for each(var o:FieldObjectController in _buildings){
+            if((o.view as FieldObjectView).contains_px(coords))
+                trace("CONTAINS");
+        }
+
+//        var b:FieldObject = new FieldObject(1, 1, 2);
+//        b.move_to(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
+       // add_building(b);
     }
 
     private function process_grid_click(e:MouseEvent):void {
