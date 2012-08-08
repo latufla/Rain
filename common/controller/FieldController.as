@@ -41,8 +41,8 @@ import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
-    public static const TILE_WIDTH:uint = 22;
-    public static const TILE_LENGTH:uint = 22;
+    public static const TILE_WIDTH:uint = 40;
+    public static const TILE_LENGTH:uint = 40;
 
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
@@ -106,11 +106,9 @@ public class FieldController {
         d_buffer.draw(_objects_view);
     }
 
-    public function add_building(b:FieldObject, bot_count:uint = 0):Boolean{
+    public function add_building(b:FieldObject):Boolean{
         if(!can_add(b))
             return false;
-
-        b.create_spawn_point(bot_count);
 
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
@@ -242,7 +240,7 @@ public class FieldController {
     private function on_click(e:MouseEvent):void {
         trace("click");
 
-       //process_grid_click(e)
+//       process_grid_click(e)
         process_building_click(e);
         //process_bot_click(e);
     }

@@ -42,7 +42,7 @@ public class FieldObject extends ObjectBase{
         }
     }
 
-    public function create_target_point(priority:int, bots_type:String = "def", bots_count:uint = 5):void {
+    public function create_target_point(pnt:Point = null, priority:int = 1, bots_type:String = "def", bots_count:uint = 5):void {
         if(bots_count == 0)
             return;
 
@@ -52,7 +52,7 @@ public class FieldObject extends ObjectBase{
         if(nearest_points.length == 0)
             throw new Error("can`t create target point");
 
-        var p:Point = nearest_points[0];
+        var p:Point = pnt ? pnt : nearest_points[0];
         _target_point = new TargetPoint(p.x, p.y, bots_type, bots_count);
         _target_point.priority = priority;
 
