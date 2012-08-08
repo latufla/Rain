@@ -12,6 +12,7 @@ import flash.events.MouseEvent;
 import flash.geom.Point;
 
 import utils.creator.DemoFieldCreator;
+import utils.creator.GameplayDemoFieldCreator;
 
 import utils.iso.IsoMathUtil;
 
@@ -23,7 +24,7 @@ public class SceneController {
     }
 
     private function init():void {
-        _field_c = DemoFieldCreator.create();
+        _field_c = GameplayDemoFieldCreator.create();
 //        _field_c.create_grid(10, 10);
 
 //        _field_c.create_building(2, 1, 1, 1);

@@ -1,24 +1,15 @@
 /**
  * Created with IntelliJ IDEA.
  * User: alexvasilyev
- * Date: 7/8/00
- * Time: 00:49 PM
+ * Date: 8/8/12
+ * Time: 3:47 PM
  * To change this template use File | Settings | File Templates.
  */
 package utils.creator {
 import common.controller.FieldController;
-import common.controller.FieldObjectController;
-import common.model.Bot;
 import common.model.FieldObject;
-import common.model.SpawnPoint;
 
-import flash.geom.Point;
-
-import flash.utils.setTimeout;
-
-import utils.FieldUtils;
-
-public class DemoFieldCreator {
+public class GameplayDemoFieldCreator {
 
     private static const GRID:Array = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -73,7 +64,7 @@ public class DemoFieldCreator {
         {x:5, y:19, w:3, l:1, h:2},
         {x:9, y:21, w:2, l:1, h:2},
         {x:1, y:22, w:1, l:2, h:4},
-        {x:3, y:27, w:3, l:2, h:2, t:true, tp:1},
+        {x:3, y:27, w:3, l:2, h:2},
         {x:13, y:26, w:1, l:2, h:2},
         {x:13, y:22, w:1, l:3, h:2},
         {x:17, y:27, w:1, l:2, h:2},
@@ -89,17 +80,7 @@ public class DemoFieldCreator {
         {x:13, y:12, w:1, l:3, h:2}
     ]
 
-    private static const BOTS:Array = [
-//        {x:11, y:10, w:1, l:1},
-//        {x:13, y:10, w:1, l:1},
-//        {x:14, y:10, w:1, l:1},
-//        {x:15, y:10, w:1, l:1},
-//        {x:15, y:9, w:1, l:1},
-//        {x:15, y:8, w:1, l:1},
-//        {x:15, y:7, w:1, l:1}
-    ]
-
-    public function DemoFieldCreator() {
+    public function GameplayDemoFieldCreator() {
     }
 
     public static function create():FieldController{
@@ -117,7 +98,7 @@ public class DemoFieldCreator {
                     case 2:
                         field_c.grid.get_tile(i, j).is_target = true;
                     default:
-                        // do nothing
+                    // do nothing
                 }
             }
         }
@@ -155,10 +136,5 @@ public class DemoFieldCreator {
     protected static function get passive_objects():Array{
         return PASSIVE_OBJECTS;
     }
-
-    protected static function get bots():Array{
-        return BOTS;
-    }
-
 }
 }
