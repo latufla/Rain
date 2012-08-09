@@ -17,7 +17,7 @@ public class Bot extends ObjectBase{
     protected var _path:Array = [];
     protected var _target:IsoTile;
 
-    public function Bot(type:int) {
+    public function Bot(type:String = "def") {
         super();
 
         _type = type;

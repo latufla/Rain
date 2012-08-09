@@ -28,6 +28,7 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.utils.setTimeout;
 
 import utils.ArrayUtils;
 
@@ -117,11 +118,24 @@ public class FieldController {
 
         var b_c:FieldObjectController = new FieldObjectController();
         b_c.object = b;
+        b_c.apply_params_to_grid();
 
         _buildings.push(b_c);
         _all_objects.push(b_c);
 
         return true;
+    }
+
+    public function remove_building_controller(b_c:FieldObjectController):void{
+        var idx:int = _all_objects.indexOf(b_c);
+        if(idx != -1)
+            _all_objects.splice(idx,  1)
+
+        idx = _buildings.indexOf(b_c);
+        if(idx != -1)
+            _buildings.splice(idx,  1)
+
+        b_c.remove_params_from_grid();
     }
 
     // fuck zero here
@@ -154,6 +168,10 @@ public class FieldController {
         _all_objects.push(b_c);
 
         return true;
+    }
+
+    public function try_find_path_for_bots():void{
+
     }
 
     // RENDER
@@ -300,6 +318,22 @@ public class FieldController {
 
     public function set redraw_grid(value:Boolean):void {
         _redraw_grid = value;
+    }
+
+    // PROCESSORS
+    // TARGET
+    public function process_target_complete(b_c:FieldObjectController):void {
+        remove_building_controller(b_c);
+        find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots);
+    }
+
+
+
+    private function find_path_for_bots(bots:Vector.<ControllerBase>):void {
+        var i:uint;
+        for each(var p:ControllerBase in bots){
+            setTimeout((p as BotController).move_to_target, 1000 * i++);
+        }
     }
 }
 }

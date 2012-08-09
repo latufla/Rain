@@ -8,12 +8,14 @@
 package common.model {
 import common.controller.FieldController;
 
+import flash.events.EventDispatcher;
+
 import flash.geom.Point;
 
 import utils.FieldUtils;
 
 // base not abstract
-public class ObjectBase {
+public class ObjectBase extends EventDispatcher{
 
     protected var _x_px:Number; // draw by this pixel coords
     protected var _y_px:Number;
@@ -27,7 +29,7 @@ public class ObjectBase {
     protected var _is_reachable:Boolean; // true - u can walk here
     protected var _is_occupied:Boolean;  // false - u can build here
 
-    protected var _type:int; // use for bots etc.
+    protected var _type:String; // use for bots etc.
 
     protected var _id:int = -1;
     public static var count:int = 0;
@@ -152,11 +154,11 @@ public class ObjectBase {
         return !contains(i, j) && i >= 0 && j >= 0  && grid.get_tile(i, j).is_reachable;
     }
 
-    public function get type():int {
+    public function get type():String {
         return _type;
     }
 
-    public function set type(value:int):void {
+    public function set type(value:String):void {
         _type = value;
     }
 

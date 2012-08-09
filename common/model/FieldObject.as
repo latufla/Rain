@@ -6,9 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.BotController;
+import common.controller.ControllerBase;
 import common.event.GameEvent;
+import common.model.IsoTile;
 
 import flash.geom.Point;
+import flash.utils.setTimeout;
 
 public class FieldObject extends ObjectBase{
 
@@ -40,7 +44,7 @@ public class FieldObject extends ObjectBase{
         t.is_spawn = true;
 
         for (var i:uint = 0; i < bots_count; i++){
-            _spawn_point.add_bot(new Bot(1));
+            _spawn_point.add_bot(new Bot());
         }
     }
 
@@ -62,7 +66,7 @@ public class FieldObject extends ObjectBase{
     }
 
     private function on_complete_target(e:GameEvent):void {
-        remove_target_point();
+        dispatchEvent(new GameEvent(GameEvent.COMPLETE_TARGET, {object:e.data.object}));
     }
 
     public function remove_target_point():void{

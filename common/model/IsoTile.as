@@ -50,7 +50,7 @@ public class IsoTile extends ObjectBase{
         return _p_node;
     }
 
-    public function toString():String{
+    override public function toString():String{
         return "x: " + _x + ", y: " + _y +
                 ", is_reachable: " + _is_reachable;
 //                + ", debug type: " + _debug_type;

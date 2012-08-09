@@ -7,6 +7,7 @@
  */
 package common.controller {
 
+import common.event.GameEvent;
 import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
@@ -21,6 +22,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.clearInterval;
 import flash.utils.setInterval;
+import flash.utils.setTimeout;
 
 import utils.iso.IsoMathUtil;
 
@@ -57,11 +59,20 @@ public class FieldObjectController extends ControllerBase{
     }
 
     override public function apply_params_to_grid():void{
-        var grid:IsoGrid = Config.field_c.grid;
-        var tiles:Array = grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
+        var tiles:Array = this.tiles;
         for each(var t:IsoTile in tiles){
             t.is_reachable = object.is_reachable;
             t.add_object(this);
+        }
+    }
+
+    public function remove_params_from_grid():void{
+        var tiles:Array = this.tiles;
+        for each(var t:IsoTile in tiles){
+            if(_object.type == "border")
+                t.is_reachable = true;
+
+            t.remove_object(this);
         }
     }
 
@@ -74,8 +85,18 @@ public class FieldObjectController extends ControllerBase{
     }
 
     override public function set object(value:ObjectBase):void {
+        if(_object)
+            _object.removeEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+
         _object = value as FieldObject;
-        apply_params_to_grid();
+        _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+    }
+
+    private function on_complete_target(e:GameEvent):void {
+        if(_object.type == "border")
+            Config.field_c.process_target_complete(this);
+
+        _object.remove_target_point();
     }
 
     public function start_spawn_bots():void{
@@ -103,11 +124,13 @@ public class FieldObjectController extends ControllerBase{
     }
 
     public function process_click(){
-        if(_object.has_spawn_point){
+        if(_object.has_spawn_point)
             start_spawn_bots();
-        }else if(_object.target_point){
-            _object.remove_target_point();
-        }
+    }
+
+    public function get tiles():Array{
+        var grid:IsoGrid = Config.field_c.grid;
+        return grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
     }
 }
 }

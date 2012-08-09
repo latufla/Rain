@@ -72,6 +72,7 @@ public class GameplayDemoFieldCreator {
         var pnt:Point;
         for each (var p:Object in objects){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
+            b.type = p.type;
             b.move_to(p.x, p.y);
 
             if(p.spawn){
