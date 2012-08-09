@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.event.GameEvent;
+
 import flash.geom.Point;
 
 public class FieldObject extends ObjectBase{
@@ -55,20 +57,22 @@ public class FieldObject extends ObjectBase{
         var p:Point = pnt ? pnt : nearest_points[0];
         _target_point = new TargetPoint(p.x, p.y, bots_type, bots_count);
         _target_point.priority = priority;
+        _target_point.apply_params_to_grid();
+        _target_point.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+    }
 
-        var t:IsoTile = grid.get_tile(p.x,  p.y);
-        t.is_target = true;
+    private function on_complete_target(e:GameEvent):void {
+        remove_target_point();
     }
 
     public function remove_target_point():void{
         if(!_target_point)
             return;
 
-        var grid:IsoGrid = Config.field_c.grid;
-        var t:IsoTile = grid.get_tile(_target_point.x,  _target_point.y);
-        t.is_target = false;
-
+        _target_point.remove_params_from_grid();
         _target_point = null;
+
+        Config.field_c.redraw_grid = true;
     }
 
     public function get bots():Vector.<Bot> {

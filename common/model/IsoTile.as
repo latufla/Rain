@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import common.controller.BotController;
 import common.controller.ControllerBase;
 
 import utils.PNode;
@@ -98,6 +99,13 @@ public class IsoTile extends ObjectBase{
 
     public function set is_spawn(value:Boolean):void {
         _is_spawn = value;
+    }
+
+    public function get bots():Vector.<ControllerBase> {
+        var tile:IsoTile = Config.field_c.grid.get_tile(x, y);
+        return tile.objects.filter(function (item:ControllerBase, index:int, vector:Vector.<ControllerBase>):Boolean{
+            return item is BotController;
+        });
     }
 }
 }

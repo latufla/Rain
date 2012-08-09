@@ -6,7 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-public class TargetPoint {
+import common.controller.ControllerBase;
+import common.event.GameEvent;
+
+import flash.events.EventDispatcher;
+
+public class TargetPoint extends EventDispatcher{
 
     private var _x:uint; // tile field pos
     private var _y:uint;
@@ -23,6 +28,26 @@ public class TargetPoint {
         _y = y;
         _bots_type  = bots_type;
         _bots_count = bots_count;
+    }
+
+    public function apply_params_to_grid():void{
+        var grid:IsoGrid = Config.field_c.grid;
+        var t:IsoTile = grid.get_tile(_x,  _y);
+        t.is_target = true;
+    }
+
+    public function remove_params_from_grid():void{
+        var grid:IsoGrid = Config.field_c.grid;
+        var t:IsoTile = grid.get_tile(_x,  _y);
+        t.is_target = false;
+    }
+
+    public function refresh():void {
+        var tile:IsoTile = Config.field_c.grid.get_tile(_x, _y);
+        var bots:Vector.<ControllerBase> = tile.bots;
+        if (bots.length >= _bots_count){
+            dispatchEvent(new GameEvent(GameEvent.COMPLETE_TARGET, {object:this}));
+        }
     }
 
     public function get x():uint {

@@ -55,6 +55,8 @@ public class FieldController {
 
     private var _view:Sprite = new Sprite();
 
+    private var _redraw_grid:Boolean = false;
+
     public function FieldController() {
         init();
     }
@@ -99,6 +101,9 @@ public class FieldController {
 
     private var d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
     private function on_ef_render(e:Event):void {
+        if(_redraw_grid)
+            draw_grid();
+
         _all_objects = z_sort();
 
         d_buffer.refresh();
@@ -168,6 +173,7 @@ public class FieldController {
 
     public function draw_grid():void{
         _grid_view.draw();
+        _redraw_grid = false;
 //        _grid_view.visible = false;
     }
 
@@ -271,7 +277,7 @@ public class FieldController {
                 break;
             }
         }
-        draw_grid();
+        _redraw_grid = true;
     }
 
     private function process_grid_click(e:MouseEvent):void {
@@ -280,7 +286,7 @@ public class FieldController {
         for each(var p:IsoTile in tiles){
             p.is_reachable = !p.is_reachable;
         }
-        draw_grid();
+        _redraw_grid = true;
     }
 
     // TODO: don`t use before refactoring
@@ -292,5 +298,8 @@ public class FieldController {
         draw_grid();
     }
 
+    public function set redraw_grid(value:Boolean):void {
+        _redraw_grid = value;
+    }
 }
 }
