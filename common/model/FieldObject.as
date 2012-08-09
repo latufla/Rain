@@ -6,13 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
-import common.controller.BotController;
-import common.controller.ControllerBase;
 import common.event.GameEvent;
-import common.model.IsoTile;
 
 import flash.geom.Point;
-import flash.utils.setTimeout;
 
 public class FieldObject extends ObjectBase{
 
@@ -75,8 +71,6 @@ public class FieldObject extends ObjectBase{
 
         _target_point.remove_params_from_grid();
         _target_point = null;
-
-        Config.field_c.redraw_grid = true;
     }
 
     public function get bots():Vector.<Bot> {

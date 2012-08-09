@@ -32,14 +32,18 @@ public class TargetPoint extends EventDispatcher{
 
     public function apply_params_to_grid():void{
         var t:IsoTile = tile;
-        if(t)
+        if(t){
             t.is_target = true;
+            Config.field_c.redraw_grid = true;
+        }
     }
 
     public function remove_params_from_grid():void{
         var t:IsoTile = tile;
-        if(t)
+        if(t){
             t.is_target = false;
+            Config.field_c.redraw_grid = true;
+        }
     }
 
     public function refresh():void {
