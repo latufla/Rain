@@ -58,7 +58,7 @@ public class RainProject extends Sprite {
         _engine = new Engine();
         _engine.init();
 //
-        //STAGE.addChild(new FPSCounter());
+        STAGE.addChild(new FPSCounter());
     }
 
     private var bd:BitmapData;

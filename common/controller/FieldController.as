@@ -320,19 +320,20 @@ public class FieldController {
         _redraw_grid = value;
     }
 
-    // PROCESSORS
-    // TARGET
     public function process_target_complete(b_c:FieldObjectController):void {
         remove_building_controller(b_c);
         find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots);
     }
 
-
-
-    private function find_path_for_bots(bots:Vector.<ControllerBase>):void {
-        var i:uint;
-        for each(var p:ControllerBase in bots){
-            setTimeout((p as BotController).move_to_target, 1000 * i++);
+    private function find_path_for_bots(delay_bots:Vector.<ControllerBase>):void {
+        var bot_c:BotController;
+        var n:uint = _bots.length;
+        for (var i:uint = 0; i < n; i++) {
+            bot_c = _bots[i];
+            if(delay_bots.indexOf(bot_c) != -1)
+                setTimeout(bot_c.move_to_target, 1000 * i);
+            else
+                bot_c.move_to_target();
         }
     }
 }

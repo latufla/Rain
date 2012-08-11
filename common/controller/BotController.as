@@ -98,11 +98,23 @@ public class BotController extends ControllerBase{
         _moving_queue.play();
     }
 
+    private var _speed:Number = 4;
     private function fill_moving_queue(path:Array, on_complete_resort:Function):void{
+        var p:IsoTile;
+        var time_for_one_step:Number;
         var step:Object;
-        for each(var p:IsoTile in path){
+        for (var i:int = 0; i < path.length; i++) {
+            p = path[i];
+            if(i == 0){
+                time_for_one_step = _speed * (Math.abs(p.x_px -_object.x_px) / FieldController.TILE_WIDTH
+                        + Math.abs(p.y_px - _object.y_px) / FieldController.TILE_LENGTH) / 2;
+            }
+            else{
+                time_for_one_step = _speed / 2;
+            }
+
             step = {x_px:p.x_px, y_px:p.y_px, ease:Linear.easeNone, onComplete: on_complete_step};
-            _moving_queue.append(new TweenLite(_object, 2, step));
+            _moving_queue.append(new TweenLite(_object, time_for_one_step, step));
         }
 
         var grid:IsoGrid;
