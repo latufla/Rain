@@ -14,6 +14,7 @@ import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.model.ObjectBase;
 import common.view.FieldObjectView;
+import common.view.window.TargetWindow;
 
 import flash.display.BitmapData;
 
@@ -133,9 +134,8 @@ public class FieldObjectController extends ControllerBase{
         if(!_can_click)
             return;
 
-        if(_object.target_point){
-            Config.scene_c.show_target_window({x:_view.x, y:_view.y});
-        }
+        if(_object.target_point)
+            Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
 
         if(_object.has_spawn_point)
             start_spawn_bots();

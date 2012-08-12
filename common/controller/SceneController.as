@@ -6,10 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import common.view.window.TargetWindow;
+import flash.geom.Point;
+import flash.utils.Dictionary;
+
+import utils.MovieClipHelper;
+
 import utils.creator.GameplayDemoFieldCreator;
 
 public class SceneController {
+
+    private var _windows:Dictionary = new Dictionary();
 
     private var _field_c:FieldController;
     public function SceneController() {
@@ -30,11 +36,48 @@ public class SceneController {
         RainProject.STAGE.addChild(_field_c.view);
     }
 
-    public function show_target_window(params:Object):void{
-        var target_wnd:TargetWindow = new TargetWindow();
-        target_wnd.x = params.x + _field_c.grid_view.offset.x + 50;
-        target_wnd.y = params.y;
-        RainProject.STAGE.addChild(target_wnd);
+    public function show_window(wnd_class:Class, key:*, params:Object):void{
+        if(!key || window_already_shown(key))
+            return;
+
+        var wnd:* = new wnd_class(params);
+        _windows[key] = wnd;
+        RainProject.STAGE.addChild(wnd);
+    }
+
+    private function window_already_shown(key:*):Boolean{
+        var wnd:* = _windows[key];
+        if(!wnd)
+            return false;
+
+        return wnd.hasOwnProperty("parent") && wnd.parent;
+    }
+
+    public function refresh_window(key:*, params:Object):void{
+        if(!key)
+            return;
+
+        var wnd:* = _windows[key];
+        if(!wnd)
+            return;
+
+        wnd.refresh(params);
+    }
+
+    public function remove_window(key:*):void{
+        if(!key)
+            return;
+
+        var wnd:* = _windows[key];
+        if(!wnd)
+            return;
+
+        MovieClipHelper.try_remove(wnd);
+        delete _windows[key];
+    }
+
+    public function get field_gui_offset():Point{
+        return _field_c.grid_view.offset;
     }
 }
 }

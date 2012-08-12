@@ -21,8 +21,6 @@ public class TargetPoint extends EventDispatcher{
     private var _bots_type:String;
     private var _bots_count:uint;
 
-    private var _cur_count:uint;
-
     public function TargetPoint(x:uint, y:uint, bots_type:String = "def", bots_count:uint = 5) {
         _x = x;
         _y = y;
@@ -77,20 +75,16 @@ public class TargetPoint extends EventDispatcher{
         _y = value;
     }
 
-    public function get cur_count():uint {
-        return _cur_count;
-    }
-
-    public function set cur_count(value:uint):void {
-        _cur_count = value;
-    }
-
     public function get priority():int {
         return _priority;
     }
 
     public function set priority(value:int):void {
         _priority = value;
+    }
+
+    public function get description():String{
+        return "" + tile.bots.length + "/" + _bots_count;
     }
 }
 }

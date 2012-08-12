@@ -130,11 +130,8 @@ public class BotController extends ControllerBase{
             tile = grid.get_tile(_object.x, _object.y);
             tile.add_object(self);
 
-            if(tile == path[path.length - 1]){
-                for each(var p:FieldObject in Config.field_c.target_buildings){
-                    p.target_point.refresh();
-                }
-            }
+            if(tile == path[path.length - 1])
+                Config.field_c.refresh_target_points();
         }
     }
 

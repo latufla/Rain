@@ -337,8 +337,22 @@ public class FieldController {
         }
     }
 
+    public function refresh_target_points():void{
+        var target_pnt:TargetPoint;
+        for each(var p:FieldObject in target_buildings){
+            target_pnt = p.target_point;
+            p.target_point.refresh();
+
+            if(p.target_point)
+                Config.scene_c.refresh_window(p.target_point, {text: p.target_point.description});
+            else
+                Config.scene_c.remove_window(target_pnt);
+        }
+    }
+
     public function get grid_view():IsoGridView {
         return _grid_view;
     }
+
 }
 }
