@@ -6,20 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import common.model.IsoTile;
-
-import flash.events.MouseEvent;
-import flash.geom.Point;
-
-import utils.creator.DemoFieldCreator;
+import common.view.window.TargetWindow;
 import utils.creator.GameplayDemoFieldCreator;
-
-import utils.iso.IsoMathUtil;
 
 public class SceneController {
 
     private var _field_c:FieldController;
     public function SceneController() {
+        Config.scene_c = this;
         init();
     }
 
@@ -34,6 +28,13 @@ public class SceneController {
         _field_c.draw();
 
         RainProject.STAGE.addChild(_field_c.view);
+    }
+
+    public function show_target_window(params:Object):void{
+        var target_wnd:TargetWindow = new TargetWindow();
+        target_wnd.x = params.x + _field_c.grid_view.offset.x + 50;
+        target_wnd.y = params.y;
+        RainProject.STAGE.addChild(target_wnd);
     }
 }
 }

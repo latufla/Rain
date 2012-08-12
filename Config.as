@@ -7,11 +7,13 @@
  */
 package {
 import common.controller.FieldController;
+import common.controller.SceneController;
 
 public class Config {
     public function Config() {
     }
 
     public static var field_c:FieldController;
+    public static var scene_c:SceneController;
 }
 }

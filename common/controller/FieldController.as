@@ -336,5 +336,9 @@ public class FieldController {
                 bot_c.move_to_target();
         }
     }
+
+    public function get grid_view():IsoGridView {
+        return _grid_view;
+    }
 }
 }

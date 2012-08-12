@@ -133,6 +133,10 @@ public class FieldObjectController extends ControllerBase{
         if(!_can_click)
             return;
 
+        if(_object.target_point){
+            Config.scene_c.show_target_window({x:_view.x, y:_view.y});
+        }
+
         if(_object.has_spawn_point)
             start_spawn_bots();
     }
