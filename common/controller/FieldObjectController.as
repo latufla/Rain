@@ -104,18 +104,24 @@ public class FieldObjectController extends ControllerBase{
         if(!bot)
             return;
 
+        _can_click = false;
+
         var field_c:FieldController = Config.field_c;
         _spawn_interval = setInterval(function ():void {
-            if(bot)
+            if(bot){
                 field_c.add_bot(bot);
-            else
+            }
+            else{
                 stop_spawn_bots();
+                return;
+            }
 
             bot = _object.next_bot;
         }, _object.spawn_interval);
     }
 
     public function stop_spawn_bots():void{
+        _can_click = true;
         clearInterval(_spawn_interval);
     }
 
@@ -124,6 +130,9 @@ public class FieldObjectController extends ControllerBase{
     }
 
     public function process_click(){
+        if(!_can_click)
+            return;
+
         if(_object.has_spawn_point)
             start_spawn_bots();
     }

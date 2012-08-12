@@ -15,6 +15,7 @@ import flash.display.Sprite;
 
 public class ControllerBase {
 
+    protected var _can_click:Boolean = true;
     protected var _static_zordered:Boolean; // should be used once when field created
 
     protected var _id:int = -1;
@@ -54,6 +55,10 @@ public class ControllerBase {
 
     public function get id():int {
         return _id;
+    }
+
+    public function get can_click():Boolean {
+        return _can_click;
     }
 }
 }

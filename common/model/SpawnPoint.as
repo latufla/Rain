@@ -22,7 +22,7 @@ public class SpawnPoint {
     }
 
     public function next_bot():Bot{
-        if(_next_bot_id >= _bots.length)
+        if(all_spawned)
             return null;
 
         return _bots[_next_bot_id++];
@@ -40,6 +40,10 @@ public class SpawnPoint {
 
         bots.splice(idx, 1);
         return o;
+    }
+
+    public function get all_spawned():Boolean{
+        return _next_bot_id >= _bots.length;
     }
 
     public function get x():uint {
