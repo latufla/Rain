@@ -13,7 +13,6 @@ import flash.geom.Point;
 public class FieldObject extends ObjectBase{
     public static const BORDER_TYPE:String = "border"
 
-
     private var _spawn_point:SpawnPoint;
     private var _target_point:TargetPoint;
 
@@ -25,8 +24,8 @@ public class FieldObject extends ObjectBase{
         _debug_height = h;
     }
 
-    public function create_spawn_point(bots_count:uint = 0):void {
-        if(bots_count == 0)
+    public function create_spawn_point(bots_type:String = "def", bots_count:uint = 0):void {
+        if(_target_point || bots_count == 0)
             return;
 
         var grid:IsoGrid = Config.field_c.grid;
@@ -37,17 +36,15 @@ public class FieldObject extends ObjectBase{
 
         var p:Point = nearest_points[0];
         _spawn_point = new SpawnPoint(p.x, p.y);
-
-        var t:IsoTile = grid.get_tile(p.x,  p.y);
-        t.is_spawn = true;
+        _spawn_point.apply_params_to_grid();
 
         for (var i:uint = 0; i < bots_count; i++){
-            _spawn_point.add_bot(new Bot());
+            _spawn_point.add_bot(new Bot(bots_type));
         }
     }
 
     public function create_target_point(pnt:Point = null, priority:int = 1, bots_type:String = "def", bots_count:uint = 5):void {
-        if(bots_count == 0)
+        if(_spawn_point || bots_count == 0)
             return;
 
         var grid:IsoGrid = Config.field_c.grid;
@@ -67,32 +64,11 @@ public class FieldObject extends ObjectBase{
         dispatchEvent(new GameEvent(GameEvent.COMPLETE_TARGET, {object:e.data.object}));
     }
 
-    public function get bots():Vector.<Bot> {
-        if(!_spawn_point)
-            return null;
-
-        return _spawn_point.bots;
-    }
-
-    public function get spawn_interval():Number{
-        if(!_spawn_point)
-            return 2000;
-
-        return _spawn_point.interval;
-    }
-
-    public function get next_bot():Bot{
-        if(!_spawn_point)
-            return null;
-
-        return _spawn_point.next_bot();
-    }
-
     public function get target_point():TargetPoint {
         return _target_point;
     }
 
-    public function get has_spawn_point():Boolean{
+    public function get spawn_point():SpawnPoint{
         return _spawn_point;
     }
 

@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.model {
+import flash.utils.clearInterval;
+import flash.utils.setInterval;
 
 public class SpawnPoint {
 
@@ -15,14 +17,15 @@ public class SpawnPoint {
     private var _bots:Vector.<Bot> = new Vector.<Bot>();
     private var _next_bot_id:uint  = 0;
     private var _interval:Number = 1000;
+    private var _interval_id:uint;
 
     public function SpawnPoint(x:uint, y:uint) {
         _x = x;
         _y = y;
     }
 
-    public function next_bot():Bot{
-        if(all_spawned)
+    public function get next_bot():Bot{
+        if(completed)
             return null;
 
         return _bots[_next_bot_id++];
@@ -42,7 +45,46 @@ public class SpawnPoint {
         return o;
     }
 
-    public function get all_spawned():Boolean{
+    public function start_spawn_bots(bot_adder:Function):Boolean{
+        var bot:Bot = next_bot;
+        if(!bot)
+            return false;
+
+        _interval_id = setInterval(function ():void {
+            if(bot){
+                bot_adder(bot);
+                bot = next_bot;
+            }
+            else{
+                stop_spawn_bots();
+                return;
+            }
+        }, _interval);
+
+        return true;
+    }
+
+    public function stop_spawn_bots():void{
+        clearInterval(_interval_id);
+    }
+
+    public function apply_params_to_grid():void{
+        var t:IsoTile = tile;
+        if(t){
+            t.is_spawn = true;
+            Config.field_c.redraw_grid = true;
+        }
+    }
+
+    public function remove_params_from_grid():void{
+        var t:IsoTile = tile;
+        if(t){
+            t.is_spawn = false;
+            Config.field_c.redraw_grid = true;
+        }
+    }
+
+    public function get completed():Boolean{
         return _next_bot_id >= _bots.length;
     }
 
@@ -76,6 +118,10 @@ public class SpawnPoint {
 
     public function set interval(value:Number):void {
         _interval = value;
+    }
+
+    public function get tile():IsoTile{
+        return Config.field_c.grid.get_tile(_x, _y);
     }
 }
 }

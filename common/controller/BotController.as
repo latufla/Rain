@@ -98,7 +98,7 @@ public class BotController extends ControllerBase{
         _moving_queue.play();
     }
 
-    private var _speed:Number = 4;
+    private var _speed:Number = 2;
     private function fill_moving_queue(path:Array, on_complete_resort:Function):void{
         var p:IsoTile;
         var time_for_one_step:Number;

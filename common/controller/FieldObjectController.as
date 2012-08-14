@@ -8,11 +8,11 @@
 package common.controller {
 
 import common.event.GameEvent;
-import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.model.ObjectBase;
+import common.model.SpawnPoint;
 import common.view.FieldObjectView;
 import common.view.window.TargetWindow;
 
@@ -21,9 +21,6 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.utils.clearInterval;
-import flash.utils.setInterval;
-import flash.utils.setTimeout;
 
 import utils.iso.IsoMathUtil;
 
@@ -31,8 +28,6 @@ public class FieldObjectController extends ControllerBase{
 
     private var _object:FieldObject;
     private var _view:FieldObjectView = new FieldObjectView();
-
-    private var _spawn_interval:uint;
 
     public function FieldObjectController() {
         super();
@@ -70,8 +65,10 @@ public class FieldObjectController extends ControllerBase{
     public function remove_params_from_grid():void{
         var tiles:Array = this.tiles;
         for each(var t:IsoTile in tiles){
-            t.is_reachable = _object.is_border;
-            t.remove_object(this);
+            if(_object.is_border){
+                t.is_reachable = true;
+                t.remove_object(this);
+            }
         }
     }
 
@@ -80,29 +77,20 @@ public class FieldObjectController extends ControllerBase{
     }
 
     public function start_spawn_bots():void{
-        var bot:Bot = _object.next_bot;
-        if(!bot)
+        var spawn_point:SpawnPoint = _object.spawn_point;
+        if(!spawn_point)
             return;
 
-        _can_click = false;
-
-        var field_c:FieldController = Config.field_c;
-        _spawn_interval = setInterval(function ():void {
-            if(bot){
-                field_c.add_bot(bot);
-            }
-            else{
-                stop_spawn_bots();
-                return;
-            }
-
-            bot = _object.next_bot;
-        }, _object.spawn_interval);
+        _can_click = !spawn_point.start_spawn_bots(Config.field_c.add_bot);
     }
 
     public function stop_spawn_bots():void{
+        var spawn_point:SpawnPoint = _object.spawn_point;
+        if(!spawn_point)
+            return;
+
+        spawn_point.stop_spawn_bots();
         _can_click = true;
-        clearInterval(_spawn_interval);
     }
 
     public function contains_px(pnt:Point):Boolean{
@@ -116,7 +104,7 @@ public class FieldObjectController extends ControllerBase{
         if(_object.target_point)
             Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
 
-        if(_object.has_spawn_point)
+        if(_object.spawn_point)
             start_spawn_bots();
     }
 
@@ -138,7 +126,9 @@ public class FieldObjectController extends ControllerBase{
             _object.removeEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
 
         _object = value as FieldObject;
-        _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+
+        if(_object.target_point)
+            _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
     }
 }
 }

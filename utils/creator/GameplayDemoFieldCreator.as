@@ -76,7 +76,7 @@ public class GameplayDemoFieldCreator {
             b.move_to(p.x, p.y);
 
             if(p.spawn){
-                b.create_spawn_point(p.spawn.bots_count);
+                b.create_spawn_point(p.spawn.bots_type, p.spawn.bots_count);
             }
             else if(p.target){
                 pnt = p.target.x ? new Point(p.target.x, p.target.y) : null;

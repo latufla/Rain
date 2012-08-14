@@ -13,31 +13,17 @@ import common.model.FieldObject;
 import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.model.ObjectBase;
-import common.model.SpawnPoint;
 import common.model.TargetPoint;
-import common.view.FieldObjectView;
 import common.view.IsoGridView;
-
-import flash.display.Bitmap;
-
-import flash.display.BitmapData;
-import flash.display.MovieClip;
 
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
-import flash.geom.Rectangle;
 import flash.utils.setTimeout;
 
-import utils.ArrayUtils;
-
-import utils.DebugUtils;
-import utils.DoubleBuffer;
 import utils.DoubleBuffer;
 
-import utils.FieldUtils;
-import utils.MovieClipHelper;
 import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
@@ -246,10 +232,14 @@ public class FieldController {
     // --
     public function process_target_complete(b_c:FieldObjectController):void {
         remove_building_controller(b_c);
-        find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots); // TODO: RETHINK
+        find_path_for_bots((b_c.object as FieldObject).target_point);
     }
 
-    private function find_path_for_bots(delay_bots:Vector.<ControllerBase>):void {
+    private function find_path_for_bots(last_target:TargetPoint):void {
+        if(!last_target)
+            return;
+
+        var delay_bots:Vector.<ControllerBase> = last_target.tile.bots;
         var bot_c:BotController;
         var n:uint = _bots.length;
         for (var i:uint = 0; i < n; i++) {
@@ -267,7 +257,6 @@ public class FieldController {
         for each(var p:TargetPoint in active_target_points){
             target_pnt = p;
             p.refresh();
-
             if(p.completed)
                 Config.scene_c.remove_window(target_pnt);
             else
