@@ -77,22 +77,6 @@ public class FieldObjectController extends ControllerBase{
         }
     }
 
-    override public function get view():Sprite {
-        return _view;
-    }
-
-    override public function get object():ObjectBase {
-        return _object;
-    }
-
-    override public function set object(value:ObjectBase):void {
-        if(_object)
-            _object.removeEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
-
-        _object = value as FieldObject;
-        _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
-    }
-
     private function on_complete_target(e:GameEvent):void {
         if(_object.type == "border")
             Config.field_c.process_target_complete(this);
@@ -144,6 +128,22 @@ public class FieldObjectController extends ControllerBase{
     public function get tiles():Array{
         var grid:IsoGrid = Config.field_c.grid;
         return grid.get_tiles_in_square(object.x, object.y, object.width, object.length);
+    }
+
+    override public function get view():Sprite {
+        return _view;
+    }
+
+    override public function get object():ObjectBase {
+        return _object;
+    }
+
+    override public function set object(value:ObjectBase):void {
+        if(_object)
+            _object.removeEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+
+        _object = value as FieldObject;
+        _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
     }
 }
 }

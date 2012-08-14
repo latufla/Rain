@@ -131,7 +131,7 @@ public class BotController extends ControllerBase{
             tile.add_object(self);
 
             if(tile == path[path.length - 1])
-                Config.field_c.refresh_target_points();
+                Config.field_c.process_refresh_target_points();
         }
     }
 

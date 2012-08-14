@@ -52,9 +52,10 @@ public class FieldController {
     private var _objects_view:Sprite = new Sprite();
 
     private var _buildings:Vector.<FieldObjectController> = new Vector.<FieldObjectController>();
-    private var _bots:Vector.<BotController> = new Vector.<BotController>(); // draw on objects view
+    private var _bots:Vector.<BotController> = new Vector.<BotController>();
 
     private var _view:Sprite = new Sprite();
+    private var _d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
 
     private var _redraw_grid:Boolean = false;
 
@@ -64,6 +65,7 @@ public class FieldController {
 
     // TODO: finish before use
     public function destroy(){
+        stop_draw();
         remove_listeners();
     }
 
@@ -77,20 +79,17 @@ public class FieldController {
 
     private function add_listeners():void{
         _view.addEventListener(MouseEvent.CLICK, on_click);
-        _view.addEventListener(MouseEvent.MOUSE_OVER, on_mouse_over);
-        _view.addEventListener(MouseEvent.MOUSE_OUT, on_mouse_out);
-        _view.addEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
-
-        _view.addEventListener(Event.ENTER_FRAME, on_ef_render);
+//        _view.addEventListener(MouseEvent.MOUSE_OVER, on_mouse_over);
+//        _view.addEventListener(MouseEvent.MOUSE_OUT, on_mouse_out);
+//        _view.addEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
     }
 
     private function remove_listeners():void{
         _view.removeEventListener(MouseEvent.CLICK, on_click);
-        _view.removeEventListener(MouseEvent.MOUSE_OVER, on_mouse_over);
-        _view.removeEventListener(MouseEvent.MOUSE_OUT, on_mouse_out);
-        _view.removeEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
-
-        _view.removeEventListener(Event.ENTER_FRAME, on_ef_render);
+//        _view.removeEventListener(MouseEvent.MOUSE_OVER, on_mouse_over);
+//        _view.removeEventListener(MouseEvent.MOUSE_OUT, on_mouse_out);
+//        _view.removeEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
+//
     }
 
     // GRID
@@ -98,18 +97,6 @@ public class FieldController {
         _grid = new IsoGrid(w, h);
         _grid.create();
         _grid_view.grid = _grid;
-    }
-
-    private var d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
-    private function on_ef_render(e:Event):void {
-        if(_redraw_grid)
-            draw_grid();
-
-        _all_objects = z_sort();
-
-        d_buffer.refresh();
-        draw_all_objects(d_buffer, true);
-        d_buffer.draw(_objects_view);
     }
 
     public function add_building(b:FieldObject):Boolean{
@@ -170,18 +157,25 @@ public class FieldController {
         return true;
     }
 
-    public function try_find_path_for_bots():void{
-
+    // RENDER
+    public function draw():void{
+        _redraw_grid = true;
+        _view.addEventListener(Event.ENTER_FRAME, on_ef_render);
     }
 
-    // RENDER
-    // first render
-    public function draw(need_resort:Boolean = false):void{
-        if(need_resort)
-            _all_objects = z_sort();
+    private function on_ef_render(e:Event):void {
+        if(_redraw_grid)
+            draw_grid();
 
-        draw_grid();
-        draw_all_objects(d_buffer);
+        _all_objects = z_sort();
+
+        _d_buffer.refresh();
+        draw_all_objects(_d_buffer, true);
+        _d_buffer.draw(_objects_view);
+    }
+
+    public function stop_draw():void{
+        _view.removeEventListener(Event.ENTER_FRAME, on_ef_render);
     }
 
     // sort
@@ -192,7 +186,6 @@ public class FieldController {
     public function draw_grid():void{
         _grid_view.draw();
         _redraw_grid = false;
-//        _grid_view.visible = false;
     }
 
     public function draw_all_objects(d_buffer:DoubleBuffer, update_only:Boolean = false):void{
@@ -202,65 +195,7 @@ public class FieldController {
     }
     //RENDER END
 
-    public function get view():Sprite {
-        return _view;
-    }
-
-    public function get grid():IsoGrid{
-        return _grid;
-    }
-
-    // field width is same to grid width
-    public function get field_width():uint{
-        if(!_grid)
-            return 0;
-
-        return _grid.width;
-    }
-
-    public function get field_length():uint{
-        if(!_grid)
-            return 0;
-
-        return _grid.length;
-    }
-
-    private function get_building_by_coords_px(x_px:int, y_px:int):void{
-
-    }
-
-    public function get buildings():Vector.<FieldObjectController> {
-        return _buildings;
-    }
-
-    public function get target_buildings():Vector.<FieldObject> {
-        var b_cs = _buildings.filter(function (item:FieldObjectController, index:int, vector:Vector.<FieldObjectController>):Boolean{
-            return (item.object as FieldObject).target_point;
-        })
-
-        var res:Vector.<FieldObject> = new Vector.<FieldObject>();
-        for each(var b_c:FieldObjectController in b_cs){
-            res.push(b_c.object);
-        }
-
-        // desc
-        res.sort(function(a:FieldObject, b:FieldObject):int{
-            var a_target_priority:int = a.target_point.priority;
-            var b_target_priority:int = b.target_point.priority;
-
-            if(a_target_priority > b_target_priority)
-                return -1;
-
-            if(a_target_priority < b_target_priority)
-                return 1;
-
-            return 0;
-        });
-
-        return res;
-    }
-
-    // test clicks processing
+    // PROCESS MOUSE EVENTS
     private function on_click(e:MouseEvent):void {
         trace("click");
 
@@ -295,7 +230,6 @@ public class FieldController {
                 break;
             }
         }
-        _redraw_grid = true;
     }
 
     private function process_grid_click(e:MouseEvent):void {
@@ -307,19 +241,10 @@ public class FieldController {
         _redraw_grid = true;
     }
 
-    // TODO: don`t use before refactoring
-    private function process_bot_click(e:MouseEvent):void {
-        var coords:Point = IsoMathUtil.screenToIso(e.localX, e.localY);
-        var tile:IsoTile = _grid.get_tile(coords.x / TILE_WIDTH, coords.y / TILE_LENGTH);
-//        _bots[0].object.find_path(tile);
-        _bots[0].move_to(tile, null);
-        draw_grid();
-    }
+    // END PROCESS MOUSE EVENTS
 
-    public function set redraw_grid(value:Boolean):void {
-        _redraw_grid = value;
-    }
-
+    // PROCESS GAMEPLAY ACTIONS
+    // --
     public function process_target_complete(b_c:FieldObjectController):void {
         remove_building_controller(b_c);
         find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots);
@@ -337,7 +262,8 @@ public class FieldController {
         }
     }
 
-    public function refresh_target_points():void{
+    //--
+    public function process_refresh_target_points():void{
         var target_pnt:TargetPoint;
         for each(var p:FieldObject in target_buildings){
             target_pnt = p.target_point;
@@ -349,10 +275,68 @@ public class FieldController {
                 Config.scene_c.remove_window(target_pnt);
         }
     }
+    // END PROCESS GAMEPLAY ACTIONS
+
+    // GETTERS/SETTERS
+    public function set redraw_grid(value:Boolean):void {
+        _redraw_grid = value;
+    }
 
     public function get grid_view():IsoGridView {
         return _grid_view;
     }
+    public function get view():Sprite {
+        return _view;
+    }
 
+    public function get grid():IsoGrid{
+        return _grid;
+    }
+
+    // field width is same to grid width
+    public function get field_width():uint{
+        if(!_grid)
+            return 0;
+
+        return _grid.width;
+    }
+
+    public function get field_length():uint{
+        if(!_grid)
+            return 0;
+
+        return _grid.length;
+    }
+
+    public function get buildings():Vector.<FieldObjectController> {
+        return _buildings;
+    }
+
+    public function get target_buildings():Vector.<FieldObject> {
+        var b_cs = _buildings.filter(function (item:FieldObjectController, index:int, vector:Vector.<FieldObjectController>):Boolean{
+            return (item.object as FieldObject).target_point;
+        })
+
+        var res:Vector.<FieldObject> = new Vector.<FieldObject>();
+        for each(var b_c:FieldObjectController in b_cs){
+            res.push(b_c.object);
+        }
+
+        // desc
+        res.sort(function(a:FieldObject, b:FieldObject):int{
+            var a_target_priority:int = a.target_point.priority;
+            var b_target_priority:int = b.target_point.priority;
+
+            if(a_target_priority > b_target_priority)
+                return -1;
+
+            if(a_target_priority < b_target_priority)
+                return 1;
+
+            return 0;
+        });
+
+        return res;
+    }
 }
 }
