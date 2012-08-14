@@ -246,7 +246,7 @@ public class FieldController {
     // --
     public function process_target_complete(b_c:FieldObjectController):void {
         remove_building_controller(b_c);
-        find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots);
+        find_path_for_bots((b_c.object as FieldObject).target_point.tile.bots); // TODO: RETHINK
     }
 
     private function find_path_for_bots(delay_bots:Vector.<ControllerBase>):void {

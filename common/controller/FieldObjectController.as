@@ -70,16 +70,13 @@ public class FieldObjectController extends ControllerBase{
     public function remove_params_from_grid():void{
         var tiles:Array = this.tiles;
         for each(var t:IsoTile in tiles){
-            if(_object.type == "border")
-                t.is_reachable = true;
-
+            t.is_reachable = _object.is_border;
             t.remove_object(this);
         }
     }
 
     private function on_complete_target(e:GameEvent):void {
-        if(_object.type == "border")
-            Config.field_c.process_target_complete(this);
+        Config.field_c.process_target_complete(this);
     }
 
     public function start_spawn_bots():void{

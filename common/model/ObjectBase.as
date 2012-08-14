@@ -190,6 +190,10 @@ public class ObjectBase extends EventDispatcher{
         return _id;
     }
 
+    public function get is_border():Boolean{
+        return false;
+    }
+
     public function get left ():int
     {
         return x;

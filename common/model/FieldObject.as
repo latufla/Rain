@@ -11,6 +11,8 @@ import common.event.GameEvent;
 import flash.geom.Point;
 
 public class FieldObject extends ObjectBase{
+    public static const BORDER_TYPE:String = "border"
+
 
     private var _spawn_point:SpawnPoint;
     private var _target_point:TargetPoint;
@@ -92,6 +94,10 @@ public class FieldObject extends ObjectBase{
 
     public function get has_spawn_point():Boolean{
         return _spawn_point;
+    }
+
+    override public function get is_border():Boolean{
+        return _type == BORDER_TYPE;
     }
 }
 }
