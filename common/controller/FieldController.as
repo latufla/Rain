@@ -240,7 +240,6 @@ public class FieldController {
         }
         _redraw_grid = true;
     }
-
     // END PROCESS MOUSE EVENTS
 
     // PROCESS GAMEPLAY ACTIONS
@@ -265,14 +264,14 @@ public class FieldController {
     //--
     public function process_refresh_target_points():void{
         var target_pnt:TargetPoint;
-        for each(var p:FieldObject in target_buildings){
-            target_pnt = p.target_point;
-            p.target_point.refresh();
+        for each(var p:TargetPoint in active_target_points){
+            target_pnt = p;
+            p.refresh();
 
-            if(p.target_point)
-                Config.scene_c.refresh_window(p.target_point, {text: p.target_point.description});
-            else
+            if(p.completed)
                 Config.scene_c.remove_window(target_pnt);
+            else
+                Config.scene_c.refresh_window(p, {text: p.description});
         }
     }
     // END PROCESS GAMEPLAY ACTIONS
@@ -312,31 +311,21 @@ public class FieldController {
         return _buildings;
     }
 
-    public function get target_buildings():Vector.<FieldObject> {
-        var b_cs = _buildings.filter(function (item:FieldObjectController, index:int, vector:Vector.<FieldObjectController>):Boolean{
-            return (item.object as FieldObject).target_point;
-        })
 
-        var res:Vector.<FieldObject> = new Vector.<FieldObject>();
-        for each(var b_c:FieldObjectController in b_cs){
-            res.push(b_c.object);
+    public function get target_points():Array{
+        var res:Array = [];
+        var b:FieldObject;
+        for each(var b_c:FieldObjectController in _buildings){
+            b = b_c.object as FieldObject;
+            if(b && b.target_point)
+                res.push(b.target_point)
         }
-
-        // desc
-        res.sort(function(a:FieldObject, b:FieldObject):int{
-            var a_target_priority:int = a.target_point.priority;
-            var b_target_priority:int = b.target_point.priority;
-
-            if(a_target_priority > b_target_priority)
-                return -1;
-
-            if(a_target_priority < b_target_priority)
-                return 1;
-
-            return 0;
-        });
-
+        res.sortOn("priority", Array.NUMERIC | Array.DESCENDING);
         return res;
+    }
+
+    public function get active_target_points():Array{
+        return target_points.filter(function(item:TargetPoint, index:int, array:Array):Boolean{ return !item.completed; });
     }
 }
 }

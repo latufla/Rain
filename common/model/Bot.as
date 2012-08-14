@@ -43,14 +43,11 @@ public class Bot extends ObjectBase{
 
     public function get next_target():IsoTile{
         var field_c:FieldController = Config.field_c;
-        if(field_c.target_buildings.length == 0)
+        var target_points:Array = field_c.active_target_points;
+        if(target_points.length == 0)
             return null;
 
-        var target_building:FieldObject = field_c.target_buildings[0];
-        if(!target_building)
-            return null;
-
-        var target_point:TargetPoint = target_building.target_point;
+        var target_point:TargetPoint = target_points[0];
         var tile:IsoTile = field_c.grid.get_tile(target_point.x, target_point.y);
         return tile;
     }

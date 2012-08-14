@@ -20,6 +20,7 @@ public class TargetPoint extends EventDispatcher{
 
     private var _bots_type:String;
     private var _bots_count:uint;
+    private var _completed:Boolean;
 
     public function TargetPoint(x:uint, y:uint, bots_type:String = "def", bots_count:uint = 5) {
         _x = x;
@@ -51,8 +52,14 @@ public class TargetPoint extends EventDispatcher{
 
         var bots:Vector.<ControllerBase> = t.bots;
         if (bots.length >= _bots_count){
+            _completed = true;
+            remove_params_from_grid();
             dispatchEvent(new GameEvent(GameEvent.COMPLETE_TARGET, {object:this}));
         }
+    }
+
+    public function get completed():Boolean{
+        return _completed;
     }
 
     public function get tile():IsoTile{

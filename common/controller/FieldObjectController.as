@@ -80,8 +80,6 @@ public class FieldObjectController extends ControllerBase{
     private function on_complete_target(e:GameEvent):void {
         if(_object.type == "border")
             Config.field_c.process_target_complete(this);
-
-        _object.remove_target_point();
     }
 
     public function start_spawn_bots():void{

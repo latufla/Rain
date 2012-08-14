@@ -65,14 +65,6 @@ public class FieldObject extends ObjectBase{
         dispatchEvent(new GameEvent(GameEvent.COMPLETE_TARGET, {object:e.data.object}));
     }
 
-    public function remove_target_point():void{
-        if(!_target_point)
-            return;
-
-        _target_point.remove_params_from_grid();
-        _target_point = null;
-    }
-
     public function get bots():Vector.<Bot> {
         if(!_spawn_point)
             return null;
