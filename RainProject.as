@@ -7,6 +7,7 @@ import common.view.IsoTileRenderer;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.display.Stage;
 import flash.events.Event;
@@ -27,7 +28,7 @@ import utils.iso.IsoRenderUtil;
 public class RainProject extends Sprite {
 
     private var _engine:Engine;
-    public static var STAGE:Stage;
+    public static var main_stage:Stage;
 
     public function RainProject() {
         addEventListener(Event.ADDED_TO_STAGE, onAddStage)
@@ -37,33 +38,18 @@ public class RainProject extends Sprite {
         removeEventListener(Event.ADDED_TO_STAGE, onAddStage);
         stage.scaleMode = "noScale";
         stage.align = "left";
-        STAGE = stage;
+        main_stage = stage;
 
-        var s:Sprite = new Sprite();
-        IsoRenderUtil.draw_iso_box(s, 20, 20, 20, 0x00FF00);
-
-
-        var bounds:Rectangle = s.getBounds(s);
-        bd = new BitmapData(bounds.width, bounds.height, true, 0xFFFFFF);
-
-        var m:Matrix = new Matrix();
-        m.translate(-bounds.x, -bounds.y);
-        bd.draw(s, m);
-
-//        var b:Bitmap = new Bitmap(bd);
-//        addChild(b);
-//        b.x = 100;
-
-        stage.addEventListener(MouseEvent.CLICK, on_click);
         _engine = new Engine();
         _engine.init();
-//
-        STAGE.addChild(new FPSCounter());
+
+        add_to_main_stage(new FPSCounter());
     }
 
-    private var bd:BitmapData;
-    private function on_click(e:MouseEvent):void {
-       // trace(bd.hitTest(new Point(0, 0), 0xFFFFFF, new Point(e.localX, e.localY)));
+    public static function add_to_main_stage(view:DisplayObject):void{
+        if(main_stage)
+            main_stage.addChild(view);
     }
+
 }
 }

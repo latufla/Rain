@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
+import flash.display.Sprite;
 import flash.geom.Point;
 import flash.utils.Dictionary;
 
@@ -18,6 +19,8 @@ public class SceneController {
     private var _windows:Dictionary = new Dictionary();
 
     private var _field_c:FieldController;
+    private var _view:Sprite = new Sprite();
+
     public function SceneController() {
         Config.scene_c = this;
         init();
@@ -25,15 +28,9 @@ public class SceneController {
 
     private function init():void {
         _field_c = GameplayDemoFieldCreator.create();
-//        _field_c.create_grid(10, 10);
-
-//        _field_c.create_building(2, 1, 1, 1);
-//        _field_c.create_building(2, 2, 1, 1);
-
-//        _field_c.debug_generate_random_buildings();
         _field_c.draw();
 
-        RainProject.STAGE.addChild(_field_c.view);
+        _view.addChild(_field_c.view);
     }
 
     public function show_window(wnd_class:Class, key:*, params:Object):void{
@@ -42,7 +39,7 @@ public class SceneController {
 
         var wnd:* = new wnd_class(params);
         _windows[key] = wnd;
-        RainProject.STAGE.addChild(wnd);
+        _view.addChild(wnd);
     }
 
     private function window_already_shown(key:*):Boolean{
@@ -78,6 +75,10 @@ public class SceneController {
 
     public function get field_gui_offset():Point{
         return _field_c.grid_view.offset;
+    }
+
+    public function get view():Sprite {
+        return _view;
     }
 }
 }

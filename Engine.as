@@ -16,6 +16,7 @@ public class Engine {
 
     public function init():void{
         _scene_c = new SceneController();
+        RainProject.add_to_main_stage(_scene_c.view);
     }
 }
 }

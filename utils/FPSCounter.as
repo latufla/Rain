@@ -43,7 +43,7 @@ public class FPSCounter extends Sprite{
         if (delta >= 1000) {
             //trace(ticks / delta * 1000+" ticks:"+ticks+" delta:"+delta);
             var fps:Number = ticks / delta * 1000;
-            tf.text = fps.toFixed(1) + " fps" + " objects: " + ControllerBase.count + " gpu :" + RainProject.STAGE.wmodeGPU;
+            tf.text = fps.toFixed(1) + " fps" + " objects: " + ControllerBase.count + " gpu :" + RainProject.main_stage.wmodeGPU;
             ticks = 0;
             last = now;
         }
