@@ -258,7 +258,7 @@ public class FieldController {
             target_pnt = p;
             p.refresh();
             if(p.completed)
-                Config.scene_c.remove_window(target_pnt);
+                Config.scene_c.remove_window(target_pnt, true);
             else
                 Config.scene_c.refresh_window(p, {text: p.description});
         }

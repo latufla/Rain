@@ -10,10 +10,10 @@ import flash.display.MovieClip;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
-public class TargetWindow extends MainView{
+public class TargetWindow extends TipWindowDesign{
 
     public function get image_container():MovieClip { return Image; }
-    public function get desc_field():TextField { return Text; }
+    public function get desc_field():TextField { return DescText; }
 
     public function TargetWindow(params:Object) {
         init(params);

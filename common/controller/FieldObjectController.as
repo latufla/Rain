@@ -14,6 +14,7 @@ import common.model.IsoTile;
 import common.model.ObjectBase;
 import common.model.SpawnPoint;
 import common.view.FieldObjectView;
+import common.view.window.DialogWindow;
 import common.view.window.TargetWindow;
 
 import flash.display.BitmapData;
@@ -21,6 +22,8 @@ import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+
+import tr.Tr;
 
 import utils.iso.IsoMathUtil;
 
@@ -105,7 +108,7 @@ public class FieldObjectController extends ControllerBase{
             Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
 
         if(_object.spawn_point)
-            start_spawn_bots();
+            Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:_view.x, y:_view.y, text:Tr.invade_building_dialog_window, confirm_cb: start_spawn_bots});
     }
 
     public function get tiles():Array{
