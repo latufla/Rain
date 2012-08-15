@@ -253,12 +253,10 @@ public class FieldController {
 
     //--
     public function process_refresh_target_points():void{
-        var target_pnt:TargetPoint;
         for each(var p:TargetPoint in active_target_points){
-            target_pnt = p;
             p.refresh();
             if(p.completed)
-                Config.scene_c.remove_window(target_pnt, true);
+                Config.scene_c.remove_window(p, true);
             else
                 Config.scene_c.refresh_window(p, {text: p.description});
         }
