@@ -73,7 +73,6 @@ public class DialogWindow extends DialogWindowDesign{
 
     public function refresh(params:Object){
         _params = params;
-        trace("refresh", this);
         init();
     }
 }

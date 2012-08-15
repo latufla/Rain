@@ -11,7 +11,6 @@ import flash.geom.Point;
 import flash.utils.Dictionary;
 
 import utils.MovieClipHelper;
-import utils.ObjectUtils;
 
 import utils.creator.GameplayDemoFieldCreator;
 
@@ -45,8 +44,6 @@ public class SceneController {
             _windows[key] = new wnd_class(params);
         }
 
-        trace("windows");
-        ObjectUtils.debug_trace(_windows);
         _view.addChild(_windows[key]);
     }
 
@@ -58,6 +55,7 @@ public class SceneController {
         if(!wnd)
             return;
 
+        trace("refresh", wnd);
         wnd.refresh(params);
     }
 
@@ -73,6 +71,14 @@ public class SceneController {
 
         if(remove_from_cache)
             delete _windows[key];
+    }
+
+    public function window_already_shown(key:*):Boolean{
+        var wnd:* = _windows[key];
+        if(!wnd)
+            return false;
+
+        return wnd.hasOwnProperty("parent") && wnd.parent;
     }
 
     public function get field_gui_offset():Point{

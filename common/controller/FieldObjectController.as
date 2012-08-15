@@ -13,6 +13,7 @@ import common.model.IsoGrid;
 import common.model.IsoTile;
 import common.model.ObjectBase;
 import common.model.SpawnPoint;
+import common.model.TargetPoint;
 import common.view.FieldObjectView;
 import common.view.window.DialogWindow;
 import common.view.window.TargetWindow;
@@ -49,6 +50,9 @@ public class FieldObjectController extends ControllerBase{
         bd.copyPixels(_view.bd,
                 new Rectangle(0, 0, _view.bd.width, _view.bd.height),
                 new Point(_view.x + x_offset, _view.y), null, null, true);
+
+        if(should_show_target_window)
+            Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
     }
 
     private function update_position():void {
@@ -132,6 +136,11 @@ public class FieldObjectController extends ControllerBase{
 
         if(_object.target_point)
             _object.addEventListener(GameEvent.COMPLETE_TARGET, on_complete_target);
+    }
+
+    private function get should_show_target_window():Boolean{
+        var t_p:TargetPoint = _object.target_point;
+        return t_p && !t_p.completed && !Config.scene_c.window_already_shown(t_p);
     }
 }
 }

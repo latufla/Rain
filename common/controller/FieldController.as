@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import as3isolib.geom.Pt;
-
 import common.model.Bot;
 import common.model.FieldObject;
 import common.model.IsoGrid;
@@ -253,6 +251,11 @@ public class FieldController {
 
     //--
     public function process_refresh_target_points():void{
+//        var active_targets:Array = active_target_points;
+//        if(!Config.scene_c.window_already_shown(active_targets[0]))
+//            Config.scene_c.show_window(TargetWindow, active_targets[0], {x:active_targets[0].x * TILE_WIDTH,
+//                y:active_targets[0].y * TILE_LENGTH, text:active_targets[0].description});
+
         for each(var p:TargetPoint in active_target_points){
             p.refresh();
             if(p.completed)
