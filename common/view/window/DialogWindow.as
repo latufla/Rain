@@ -19,8 +19,8 @@ public class DialogWindow extends DialogWindowDesign{
     private var _params:Object;
 
     public static const KEY:String = "DialogWindow";
-    public function get cancel_button():ButtonDesign{ return CancelButton;}
-    public function get confirm_button():ButtonDesign{ return ConfirmButton;}
+    public function get cancel_button():CustomButtonDesign{ return CancelButton;}
+    public function get confirm_button():CustomButtonDesign{ return ConfirmButton;}
     public function get tip_field():TextField{ return TipText;}
 
     public function DialogWindow(params:Object) {

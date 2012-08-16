@@ -19,11 +19,11 @@ public class GameplayDemoFieldCreator {
         [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
@@ -37,7 +37,7 @@ public class GameplayDemoFieldCreator {
         {type: "mayor", x:10, y:3, w:3, l:1, h:2, target:{priority:1, bots_type:"def", bots_count:15}},
         {type: "civilean", x:11, y:9, w:2, l:1, h:2, spawn:{bots_type:"def", bots_count:5}},
         {type: "civilean", x:6, y:12, w:1, l:2, h:2, spawn:{bots_type:"def", bots_count:5}},
-        {type: "civilean", x:2, y:12, w:1, l:2, h:2, spawn:{bots_type:"def", bots_count:5}},
+        {type: "civilean", x:2, y:13, w:1, l:1, h:2, spawn:{bots_type:"def", bots_count:5}},
     ]
 
     private static const PASSIVE_OBJECTS:Array = [

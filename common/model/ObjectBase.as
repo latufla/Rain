@@ -151,7 +151,8 @@ public class ObjectBase extends EventDispatcher{
     }
 
     private function is_valid_nearest_point(i:uint, j:uint, grid:IsoGrid):Boolean{
-        return !contains(i, j) && i >= 0 && j >= 0  && grid.get_tile(i, j).is_reachable;
+        var t:IsoTile = grid.get_tile(i, j);
+        return t && t.is_reachable;
     }
 
     public function get type():String {
