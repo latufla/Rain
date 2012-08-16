@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.view.window {
+import flash.display.MovieClip;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
@@ -21,6 +23,7 @@ public class DialogWindow extends DialogWindowDesign{
     public static const KEY:String = "DialogWindow";
     public function get cancel_button():CustomButtonDesign{ return CancelButton;}
     public function get confirm_button():CustomButtonDesign{ return ConfirmButton;}
+    public function get close_button():MovieClip{return CloseButton;}
     public function get tip_field():TextField{ return TipText;}
 
     public function DialogWindow(params:Object) {
@@ -52,11 +55,15 @@ public class DialogWindow extends DialogWindowDesign{
             var cancel_text:String = _params.cancel_button.text? _params.cancel_button.text : Tr.cancel_button;
             GuiUtils.set_button(cancel_button, cancel_text, on_cancel);
         }
+
+        close_button.buttonMode = true;
+        close_button.addEventListener(MouseEvent.CLICK, close_window);
     }
 
     private function clear_buttons():void{
         GuiUtils.unset_button(confirm_button);
         GuiUtils.unset_button(cancel_button);
+        close_button.removeEventListener(MouseEvent.CLICK, close_window);
     }
 
     private function on_confirm(e:Event):void{
