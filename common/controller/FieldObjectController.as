@@ -112,7 +112,8 @@ public class FieldObjectController extends ControllerBase{
             Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
 
         if(_object.spawn_point)
-            Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:_view.x, y:_view.y, text:Tr.invade_building_dialog_window, confirm_cb: start_spawn_bots});
+            Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:_view.x, y:_view.y, text:Tr.invade_building_dialog_window,
+                confirm_button:{cb: start_spawn_bots}, cancel_button:{}});
     }
 
     public function get tiles():Array{

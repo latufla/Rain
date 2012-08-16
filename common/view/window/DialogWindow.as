@@ -39,10 +39,19 @@ public class DialogWindow extends DialogWindowDesign{
     private function init_buttons():void {
         clear_buttons();
 
-        var confirm_text:String = _params.confirm_text ? _params.confirm_text : Tr.confirm_button;
-        var cancel_text:String = _params.cancel_text? _params.cancel_text : Tr.cancel_button;
-        GuiUtils.set_button(confirm_button, confirm_text, on_confirm);
-        GuiUtils.set_button(cancel_button, cancel_text, on_cancel);
+        confirm_button.visible = _params.confirm_button;
+        confirm_button.gotoAndStop(1);
+        if(_params.confirm_button){
+            var confirm_text:String = _params.confirm_button.text ? _params.confirm_button.text : Tr.confirm_button;
+            GuiUtils.set_button(confirm_button, confirm_text, on_confirm);
+        }
+
+        cancel_button.gotoAndStop(1);
+        cancel_button.visible = _params.cancel_button;
+        if(_params.cancel_button){
+            var cancel_text:String = _params.cancel_button.text? _params.cancel_button.text : Tr.cancel_button;
+            GuiUtils.set_button(cancel_button, cancel_text, on_cancel);
+        }
     }
 
     private function clear_buttons():void{
@@ -52,14 +61,14 @@ public class DialogWindow extends DialogWindowDesign{
 
     private function on_confirm(e:Event):void{
         close_window();
-        if(_params.confirm_cb)
-            _params.confirm_cb();
+        if(_params.confirm_button.cb)
+            _params.confirm_button.cb();
     }
 
     private function on_cancel(e:Event):void{
         close_window();
-        if(_params.cancel_cb)
-            _params.cancel_cb();
+        if(_params.cancel_button.cb)
+            _params.cancel_button.cb();
     }
 
     private function close_window(e:Event = null):void{
