@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package common.controller {
-import common.model.IsoGrid;
 import common.model.ObjectBase;
 
 import flash.display.BitmapData;

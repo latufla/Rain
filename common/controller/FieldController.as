@@ -18,7 +18,11 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.ui.Mouse;
+import flash.ui.MouseCursor;
 import flash.utils.setTimeout;
+
+import utils.DebugUtils;
 
 import utils.DoubleBuffer;
 
@@ -41,6 +45,7 @@ public class FieldController {
     private var _view:Sprite = new Sprite();
     private var _d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
 
+    private var _cursor_point:Point = new Point();
     private var _redraw_grid:Boolean = false;
 
     public function FieldController() {
@@ -65,7 +70,7 @@ public class FieldController {
         _view.addEventListener(MouseEvent.CLICK, on_click);
 //        _view.addEventListener(MouseEvent.MOUSE_OVER, on_mouse_over);
 //        _view.addEventListener(MouseEvent.MOUSE_OUT, on_mouse_out);
-//        _view.addEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
+        _view.addEventListener(MouseEvent.MOUSE_MOVE, on_mouse_move);
     }
 
     private function remove_listeners():void{
@@ -188,32 +193,45 @@ public class FieldController {
         //process_bot_click(e);
     }
 
-    private function on_mouse_over(e:MouseEvent):void {
-//        trace("on_mouse_over");
-    }
-
-    private function on_mouse_out(e:MouseEvent):void{
-//        trace("on_mouse_out");
-    }
-
     private function on_mouse_move(e:MouseEvent):void {
-//        trace("on_mouse_move");
+        _cursor_point.x = e.localX - _grid_view.offset.x;
+        _cursor_point.y = e.localY;
+
+        var c:FieldObjectController = get_building_by_coords_px(_cursor_point);
+        if(c)
+            process_mouse_over_object();
+        else
+            process_mouse_out_object();
     }
 
-    private var _click_pnt:Point = new Point();
-    private function process_building_click(e:MouseEvent):void {
-        _click_pnt.x = e.localX - _grid_view.offset.x;
-        _click_pnt.y = e.localY;
+    private function process_mouse_over_object():void{
+        Mouse.cursor = MouseCursor.BUTTON;
+    }
 
-        var c:FieldObjectController;
-        var n:uint = _all_objects.length;
-        for (var i:int = n - 1; i >= 0; i--) {
-            c = _all_objects[i] as FieldObjectController;
-            if(c && c.contains_px(_click_pnt)){
-                c.process_click();
-                break;
-            }
+    private function process_mouse_out_object():void{
+        Mouse.cursor = MouseCursor.ARROW;
+    }
+
+    private function process_building_click(e:MouseEvent):void {
+        _cursor_point.x = e.localX - _grid_view.offset.x;
+        _cursor_point.y = e.localY;
+
+        var c:FieldObjectController = get_building_by_coords_px(_cursor_point);
+        if(c)
+            c.process_click();
+    }
+
+    private function get_building_by_coords_px(pnt:Point):FieldObjectController{
+        var objs:Vector.<ControllerBase> = _all_objects.filter(function (item:ControllerBase, index:int, vector:Vector.<ControllerBase>):Boolean{
+            return item is FieldObjectController;
+        });
+        objs.reverse();
+
+        for each(var p:FieldObjectController in objs){
+            if(p && p.contains_px(pnt))
+                return p;
         }
+        return null;
     }
 
     private function process_grid_click(e:MouseEvent):void {
@@ -317,5 +335,11 @@ public class FieldController {
     public function get active_target_points():Array{
         return target_points.filter(function(item:TargetPoint, index:int, array:Array):Boolean{ return !item.completed; });
     }
+
+//    3. Сделать рукомышь, когда наводишь на здание
+//    1. Приделать на конец уровня  - "Конец уровня"
+//    2. Сделать, чтобы вначале инфа показывалась только о текущей цели
+
+
 }
 }
