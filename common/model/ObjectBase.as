@@ -195,6 +195,10 @@ public class ObjectBase extends EventDispatcher{
         return false;
     }
 
+    public function get is_major():Boolean{
+        return false;
+    }
+
     public function get left ():int
     {
         return x;

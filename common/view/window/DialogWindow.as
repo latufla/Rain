@@ -33,7 +33,7 @@ public class DialogWindow extends DialogWindowDesign{
 
     private function init():void {
         alpha = .7;
-        x = _params.x + Config.scene_c.field_gui_offset.x + 50;
+        x = _params.x;
         y = _params.y;
         tip_text = _params.text;
         init_buttons();

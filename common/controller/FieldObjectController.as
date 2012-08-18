@@ -52,7 +52,7 @@ public class FieldObjectController extends ControllerBase{
                 new Point(_view.x + x_offset, _view.y), null, null, true);
 
         if(should_show_target_window)
-            Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
+            show_target_window();
     }
 
     private function update_position():void {
@@ -116,11 +116,11 @@ public class FieldObjectController extends ControllerBase{
     }
 
     private function show_target_window():void{
-        Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x, y:_view.y, text:_object.target_point.description});
+        Config.scene_c.show_window(TargetWindow, _object.target_point, {x:_view.x + Config.scene_c.field_gui_offset.x + 50, y:_view.y, text:_object.target_point.description});
     }
 
     private function show_invade_window():void{
-        Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:_view.x, y:_view.y, text:Tr.invade_building_dialog_window,
+        Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:_view.x + Config.scene_c.field_gui_offset.x + 50, y:_view.y, text:Tr.invade_building_dialog_window,
             confirm_button:{cb: start_spawn_bots}, cancel_button:{}});
     }
 

@@ -32,9 +32,9 @@ public class GameplayDemoFieldCreator {
     ];
 
     private static const OBJECTS:Array = [
-        {type: "border", x:8, y:4, w:1, l:1, h:1, target:{priority:2, bots_type:"def", bots_count:15}},
-        {type: "border", x:7, y:9, w:1, l:1, h:1, target:{x:7, y:10, priority:3, bots_type:"def", bots_count:10}},
-        {type: "mayor", x:10, y:3, w:3, l:1, h:2, target:{priority:1, bots_type:"def", bots_count:15}},
+        {type: FieldObject.BORDER_TYPE, x:8, y:4, w:1, l:1, h:1, target:{priority:2, bots_type:"def", bots_count:15}},
+        {type: FieldObject.BORDER_TYPE, x:7, y:9, w:1, l:1, h:1, target:{x:7, y:10, priority:3, bots_type:"def", bots_count:10}},
+        {type: FieldObject.MAJOR_TYPE, x:10, y:3, w:3, l:1, h:2, target:{priority:1, bots_type:"def", bots_count:15}},
         {type: "civilean", x:11, y:9, w:2, l:1, h:2, spawn:{bots_type:"def", bots_count:5}},
         {type: "civilean", x:6, y:12, w:1, l:2, h:2, spawn:{bots_type:"def", bots_count:5}},
         {type: "civilean", x:2, y:13, w:1, l:1, h:2, spawn:{bots_type:"def", bots_count:5}},

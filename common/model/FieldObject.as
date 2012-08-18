@@ -12,6 +12,7 @@ import flash.geom.Point;
 
 public class FieldObject extends ObjectBase{
     public static const BORDER_TYPE:String = "border"
+    public static const MAJOR_TYPE:String = "final_target"
 
     private var _spawn_point:SpawnPoint;
     private var _target_point:TargetPoint;
@@ -74,6 +75,10 @@ public class FieldObject extends ObjectBase{
 
     override public function get is_border():Boolean{
         return _type == BORDER_TYPE;
+    }
+
+    override public function get is_major():Boolean{
+        return _type == MAJOR_TYPE;
     }
 }
 }

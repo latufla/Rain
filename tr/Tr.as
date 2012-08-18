@@ -21,5 +21,9 @@ public class Tr {
     public static function get invade_building_dialog_window():String{
         return "Хотите захватить это здание?"
     }
+
+    public static function get level_completed():String{
+        return "Уровень пройден!";
+    }
 }
 }

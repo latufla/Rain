@@ -13,6 +13,7 @@ import common.model.IsoTile;
 import common.model.ObjectBase;
 import common.model.TargetPoint;
 import common.view.IsoGridView;
+import common.view.window.DialogWindow;
 
 import flash.display.Sprite;
 import flash.events.Event;
@@ -21,6 +22,8 @@ import flash.geom.Point;
 import flash.ui.Mouse;
 import flash.ui.MouseCursor;
 import flash.utils.setTimeout;
+
+import tr.Tr;
 
 import utils.DebugUtils;
 
@@ -98,7 +101,6 @@ public class FieldController {
 
         _buildings.push(b_c);
         _all_objects.push(b_c);
-
         return true;
     }
 
@@ -247,7 +249,14 @@ public class FieldController {
     // PROCESS GAMEPLAY ACTIONS
     // --
     public function process_target_complete(b_c:FieldObjectController):void {
-        remove_building_controller(b_c);
+        if(b_c.object.is_major){
+            process_level_complete();
+            return;
+        }
+
+        if(b_c.object.is_border)  // TODO: RETHINK THIS SHIT
+            remove_building_controller(b_c);
+
         find_path_for_bots((b_c.object as FieldObject).target_point);
     }
 
@@ -269,11 +278,6 @@ public class FieldController {
 
     //--
     public function process_refresh_target_points():void{
-//        var active_targets:Array = active_target_points;
-//        if(!Config.scene_c.window_already_shown(active_targets[0]))
-//            Config.scene_c.show_window(TargetWindow, active_targets[0], {x:active_targets[0].x * TILE_WIDTH,
-//                y:active_targets[0].y * TILE_LENGTH, text:active_targets[0].description});
-
         for each(var p:TargetPoint in active_target_points){
             p.refresh();
             if(p.completed)
@@ -282,6 +286,12 @@ public class FieldController {
                 Config.scene_c.refresh_window(p, {text: p.description});
         }
     }
+
+    //--
+    private function process_level_complete():void {
+        Config.scene_c.show_window(DialogWindow, DialogWindow.KEY, {x:500, y:200, text:Tr.level_completed});
+    }
+
     // END PROCESS GAMEPLAY ACTIONS
 
     // GETTERS/SETTERS
@@ -319,7 +329,6 @@ public class FieldController {
         return _buildings;
     }
 
-
     public function get target_points():Array{
         var res:Array = [];
         var b:FieldObject;
@@ -335,11 +344,6 @@ public class FieldController {
     public function get active_target_points():Array{
         return target_points.filter(function(item:TargetPoint, index:int, array:Array):Boolean{ return !item.completed; });
     }
-
-//    3. Сделать рукомышь, когда наводишь на здание
 //    1. Приделать на конец уровня  - "Конец уровня"
-//    2. Сделать, чтобы вначале инфа показывалась только о текущей цели
-
-
 }
 }

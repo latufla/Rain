@@ -21,7 +21,7 @@ public class TargetWindow extends TipWindowDesign{
 
     private function init(params:Object):void {
         alpha = .7;
-        x = params.x + Config.scene_c.field_gui_offset.x + 50;
+        x = params.x
         y = params.y;
         desc_text = params.text;
 
