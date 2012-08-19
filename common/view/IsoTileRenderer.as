@@ -19,13 +19,11 @@ import utils.iso.IsoMathUtil;
 import utils.iso.IsoRenderUtil;
 
 public class IsoTileRenderer {
-    private static const NON_REACHABLE_COLOR:uint = 0xFF0000;
-    private static const REACHABLE_COLOR:uint = 0x00FF00;
+    private static const NON_REACHABLE_COLOR:uint = 0xFF1111;
+    private static const REACHABLE_COLOR:uint = 0x11FF11;
 
-
-    private static const SPAWN_POINT_COLOR:uint = 0x0000FF;
-    private static const TARGET_POINT_COLOR:uint = 0x000000;
-
+    private static const SPAWN_POINT_COLOR:uint = 0x1111FF;
+    private static const TARGET_POINT_COLOR:uint = 0x111111;
 
     public function IsoTileRenderer() {
     }
@@ -50,6 +48,9 @@ public class IsoTileRenderer {
     }
 
     public function draw_debug_info(tile:IsoTile, layer:Sprite, debug_field:TextField):void {
+        if(!Config.SHOW_TILE_NUMBERS)
+            return;
+
         var iso:Point = IsoMathUtil.isoToScreen(tile.x_px, tile.y_px);
         debug_field.x = iso.x - 15;
         debug_field.y = iso.y + 5;

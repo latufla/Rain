@@ -55,7 +55,7 @@ public class SceneController {
         if(!wnd)
             return;
 
-        trace("refresh", wnd);
+//        trace("refresh", wnd);
         wnd.refresh(params);
     }
 

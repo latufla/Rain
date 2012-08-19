@@ -25,8 +25,6 @@ import flash.utils.setTimeout;
 
 import tr.Tr;
 
-import utils.DebugUtils;
-
 import utils.DoubleBuffer;
 
 import utils.ZorderUtils;
@@ -177,6 +175,7 @@ public class FieldController {
     public function draw_grid():void{
         _grid_view.draw();
         _redraw_grid = false;
+        _grid_view.visible = Config.SHOW_GRID;
     }
 
     public function draw_all_objects(d_buffer:DoubleBuffer, update_only:Boolean = false):void{
@@ -188,8 +187,6 @@ public class FieldController {
 
     // PROCESS MOUSE EVENTS
     private function on_click(e:MouseEvent):void {
-        trace("click");
-
 //       process_grid_click(e)
         process_building_click(e);
         //process_bot_click(e);

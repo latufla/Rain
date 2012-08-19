@@ -32,8 +32,8 @@ public class GuiUtils {
 
         _buttons[button] = {text: text, cb: cb};
 
-        trace("_buttons");
-        ObjectUtils.debug_trace(_buttons);
+//        trace("_buttons");
+//        ObjectUtils.debug_trace(_buttons);
     }
 
     public static function unset_button(button:CustomButtonDesign):void{

@@ -15,5 +15,8 @@ public class Config {
 
     public static var field_c:FieldController;
     public static var scene_c:SceneController;
+
+    public static const SHOW_TILE_NUMBERS:Boolean = false;
+    public static const SHOW_GRID:Boolean = true;
 }
 }
