@@ -31,8 +31,8 @@ import utils.ZorderUtils;
 import utils.iso.IsoMathUtil;
 
 public class FieldController {
-    public static const TILE_WIDTH:uint = 40;
-    public static const TILE_LENGTH:uint = 40;
+    public static const TILE_WIDTH:uint = Config.TILE_WIDTH;
+    public static const TILE_LENGTH:uint = Config.TILE_LENGTH;
 
     private var _grid:IsoGrid;
     private var _grid_view:IsoGridView = new IsoGridView();
@@ -44,7 +44,7 @@ public class FieldController {
     private var _bots:Vector.<BotController> = new Vector.<BotController>();
 
     private var _view:Sprite = new Sprite();
-    private var _d_buffer:DoubleBuffer = new DoubleBuffer(1280, 768);
+    private var _d_buffer:DoubleBuffer = new DoubleBuffer(1560, 778);
 
     private var _cursor_point:Point = new Point();
     private var _redraw_grid:Boolean = false;
@@ -89,6 +89,7 @@ public class FieldController {
         _grid_view.grid = _grid;
     }
 
+    private var _cur_spawn_timeout:int = 80;
     public function add_building(b:FieldObject):Boolean{
         if(!can_add(b))
             return false;
@@ -99,6 +100,12 @@ public class FieldController {
 
         _buildings.push(b_c);
         _all_objects.push(b_c);
+
+        //---DEMO
+        setTimeout(b_c.start_spawn_bots, _cur_spawn_timeout);
+        _cur_spawn_timeout += 80;
+        //---
+
         return true;
     }
 
@@ -188,7 +195,7 @@ public class FieldController {
     // PROCESS MOUSE EVENTS
     private function on_click(e:MouseEvent):void {
 //       process_grid_click(e)
-        process_building_click(e);
+       // process_building_click(e);
         //process_bot_click(e);
     }
 

@@ -11,6 +11,7 @@ import flash.geom.Point;
 import flash.utils.Dictionary;
 
 import utils.MovieClipHelper;
+import utils.creator.DemoFieldCreator;
 
 import utils.creator.GameplayDemoFieldCreator;
 
@@ -27,7 +28,7 @@ public class SceneController {
     }
 
     private function init():void {
-        _field_c = GameplayDemoFieldCreator.create();
+        _field_c = DemoFieldCreator.create();
         _field_c.draw();
 
         _view.addChild(_field_c.view);

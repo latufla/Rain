@@ -10,6 +10,7 @@ import common.controller.FieldController;
 import common.controller.FieldObjectController;
 import common.model.Bot;
 import common.model.FieldObject;
+import common.model.FieldObject;
 import common.model.SpawnPoint;
 
 import flash.geom.Point;
@@ -54,18 +55,16 @@ public class DemoFieldCreator {
     ];
 
     private static const OBJECTS:Array = [
-        {x:27, y:26, w:2, l:3, h:2, b: 50},
-        {x:6, y:2, w:1, l:3, h:2, b: 50},
-        {x:23, y:14, w:2, l:2, h:2, b: 50},
-        {x:11, y:2, w:2, l:4, h:2, b: 50},
-        {x:14, y:6, w:1, l:3, h:2, b: 50},
-        {x:10, y:17, w:2, l:2, h:4, b: 50},
-        {x:27, y:1, w:2, l:2, h:2, b: 100},
-        {x:16, y:17, w:2, l:3, h:2, b: 50},
-        {x:24, y:22, w:3, l:1, h:2, b: 50}
-    ]
-
-    private static const PASSIVE_OBJECTS:Array = [
+        {x:27, y:26, w:2, l:3, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:6, y:2, w:1, l:3, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:23, y:14, w:2, l:2, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:11, y:2, w:2, l:4, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:14, y:6, w:1, l:3, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:10, y:17, w:2, l:2, h:4, spawn:{bots_type:"def", bots_count:50}},
+        {x:27, y:1, w:2, l:2, h:2, spawn:{bots_type:"def", bots_count:100}},
+        {x:16, y:17, w:2, l:3, h:2, spawn:{bots_type:"def", bots_count:50}},
+        {x:24, y:22, w:3, l:1, h:2, spawn:{bots_type:"def", bots_count:50}},
+        //---------------------------------
         {x:6, y:9, w:1, l:3, h:2},
         {x:2, y:12, w:5, l:2, h:2},
         {x:1, y:16, w:1, l:3, h:2},
@@ -73,7 +72,7 @@ public class DemoFieldCreator {
         {x:5, y:19, w:3, l:1, h:2},
         {x:9, y:21, w:2, l:1, h:2},
         {x:1, y:22, w:1, l:2, h:4},
-        {x:3, y:27, w:3, l:2, h:2, t:true, tp:1},
+        {type: FieldObject.MAJOR_TYPE, x:3, y:27, w:3, l:2, h:2, target:{priority:2, bots_type:"def", bots_count:500}},
         {x:13, y:26, w:1, l:2, h:2},
         {x:13, y:22, w:1, l:3, h:2},
         {x:17, y:27, w:1, l:2, h:2},
@@ -82,11 +81,12 @@ public class DemoFieldCreator {
         {x:17, y:13, w:1, l:2, h:2},
         {x:15, y:11, w:2, l:1, h:2},
 
-        {x:19, y:28, w:1, l:1, h:3, t:true, tp:2},
+        {x:19, y:28, w:1, l:1, h:3},
         {x:19, y:24, w:1, l:3, h:4},
         {x:19, y:16, w:1, l:5, h:2},
         {x:9, y:11, w:3, l:1, h:3},
         {x:13, y:12, w:1, l:3, h:2}
+
     ]
 
     private static const BOTS:Array = [
@@ -117,27 +117,29 @@ public class DemoFieldCreator {
                     case 2:
                         field_c.grid.get_tile(i, j).is_target = true;
                     default:
-                        // do nothing
+                    // do nothing
                 }
             }
         }
 //
 //        FieldUtils.debug_generate_random_buildings(field_c);
 
+        var pnt:Point;
         for each (var p:Object in objects){
             var b:FieldObject = new FieldObject(p.w, p.l, p.h);
-            b.move_to(p.x, p.y);
-            field_c.add_building(b, 5);
-        }
-
-        for each (var p:Object in passive_objects){
-            var b:FieldObject = new FieldObject(p.w, p.l, p.h);
+            b.type = p.type;
             b.move_to(p.x, p.y);
 
-            if(p.t)
-                b.create_target_point(p.tp);
+            if(p.spawn){
+                b.create_spawn_point(p.spawn.bots_type, p.spawn.bots_count);
+            }
+            else if(p.target){
+                pnt = p.target.x ? new Point(p.target.x, p.target.y) : null;
+                b.create_target_point(pnt, p.target.priority, p.target.bots_type, p.target.bots_count);
+            }
 
             field_c.add_building(b);
+            pnt = null;
         }
 
         return field_c;
@@ -151,14 +153,5 @@ public class DemoFieldCreator {
     protected static function get objects():Array{
         return OBJECTS;
     }
-
-    protected static function get passive_objects():Array{
-        return PASSIVE_OBJECTS;
-    }
-
-    protected static function get bots():Array{
-        return BOTS;
-    }
-
 }
 }

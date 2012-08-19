@@ -91,7 +91,7 @@ public class TargetPoint extends EventDispatcher{
     }
 
     public function get description():String{
-        return "" + tile.bots.length + "/" + _bots_count;
+        return "" + tile.bots.length; //+ "/" + _bots_count;
     }
 }
 }

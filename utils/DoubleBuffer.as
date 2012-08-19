@@ -21,7 +21,6 @@ public class DoubleBuffer {
     public function DoubleBuffer(w:uint, h:uint) {
         _width = w;
         _height = h;
-        _bd = new BitmapData(1280, 768, true, 0xFFFFFF);
     }
 
     public function get width():uint {
@@ -37,7 +36,7 @@ public class DoubleBuffer {
     }
 
     public function refresh():void{
-        _bd = new BitmapData(1280, 768, true, 0xFFFFFF);
+        _bd = new BitmapData(_width, _height, true, 0xFFFFFF);
     }
 
     public function draw(view:DisplayObjectContainer):void{

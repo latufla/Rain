@@ -18,5 +18,10 @@ public class Config {
 
     public static const SHOW_TILE_NUMBERS:Boolean = false;
     public static const SHOW_GRID:Boolean = true;
+    public static const TILE_WIDTH:uint = 26;
+    public static const TILE_LENGTH:uint = 26;
+
+    public static const BOT_SPEED:int = 4;
+
 }
 }
